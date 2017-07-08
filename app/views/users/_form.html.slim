@@ -1,0 +1,23 @@
+= form_for(@user) do |f|
+  = render 'shared/error_messages'
+
+  = f.label :user_name, "用户名"
+  = f.text_field :user_name, class: "form-control"
+
+  = f.label :name, "ID名称"
+  = f.text_field :name, class: "form-control"
+
+  = f.label :mail, "邮箱"
+  = f.text_field :mail, class: "form-control"
+
+  = f.label :number, "编号"
+  = f.text_field :number, class: "form-control"
+
+  = f.label :password, "密码"
+  = f.password_field :password, class: "form-control"
+
+  = f.label :password_confirmation, "密码确认"
+  = f.password_field :password_confirmation, class: "form-control"
+
+  = f.submit "提交", class: "btn btn-primary"
+

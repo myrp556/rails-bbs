@@ -1,0 +1,8 @@
+- if @user.errors.any?
+  #error_detail
+    .alert-danger
+      | 以下内容不符合规范，请检查重新填写！
+    ul
+      - @user.errors.full_messages.each do |message|
+        li
+          = message
