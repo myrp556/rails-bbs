@@ -11,13 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170629131759) do
+ActiveRecord::Schema.define(version: 20170708153749) do
 
   create_table "users", force: :cascade do |t|
     t.string   "user_name"
     t.string   "name"
     t.string   "mail"
-    t.integer  "number"
+    t.string   "number"
     t.integer  "rank"
     t.integer  "zone_auth"
     t.datetime "created_at",      null: false

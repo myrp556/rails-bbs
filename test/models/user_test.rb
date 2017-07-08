@@ -5,7 +5,8 @@ class UserTest < ActiveSupport::TestCase
   #   assert true
   # end
   def setup
-    @user = User.new(name:"name", user_name: "user_name", mail: "email@163.com", rank: 0, zone_auth:0, number:1, \
+    @user = User.new(name:"name", user_name: "user_name", mail: "email@163.com", \
+                     rank: 0, zone_auth:0, number:201201128, \
                     password: "y123456", password_confirmation: "y123456")
   end
 
@@ -71,4 +72,10 @@ class UserTest < ActiveSupport::TestCase
     @user.password_confirmation = "1234"
     assert_not @user.valid?
   end
+
+  test "number should be in" do
+    @user.number = "0"*21
+    assert_not @user.valid?
+  end
+
 end
