@@ -1,0 +1,14 @@
+h1
+  | topic#home
+
+p
+  a href="/zone?id=#{@zone.id}"
+    = @zone.name
+  span
+    | >>
+  a href="/topic?id=#{@topic.id}"
+    = @topic.name
+
+- @notes.each do |note|
+  p
+    = note.detail

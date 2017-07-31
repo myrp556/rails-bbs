@@ -1,7 +1,27 @@
-h1 hello
-p
-  | u r
-  = @user.name
-  | id is 
-  = @user.id
+h1 
+  | user#detail
 
+table.table
+  tbody
+    tr
+      th
+        | 用户名
+      td
+        = @user.user_name
+    tr
+      th
+        | 名称ID
+      td
+        = @user.name
+    tr
+      th
+        | 邮箱
+      td
+        = @user.mail
+    tr
+      th
+        | 编号
+      td
+        = @user.number
+a.btn.btn-default href="/user/passwd?id=#{@user.id}"
+    | 修改密码

@@ -1,0 +1,7 @@
+h1
+  | zone#home
+
+- @topics.each do |topic|
+  p
+    a href = "/note?id=#{topic.id}"
+      = topic.name

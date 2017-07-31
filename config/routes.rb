@@ -1,10 +1,23 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  get '/users/detail' => 'users#detail'
+  get '/user/detail' => 'users#detail'
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
-  resources :users
+  get '/user/edit' => 'users#edit'
+  #patch '/user/update' => 'users#update'
+  get '/user/delete' => 'users#destroy'
+  get '/user/passwd' => 'users#passwd'
+  patch '/user/passwd' => 'user#update_passwd'
+  patch '/user/mail' => 'user#update_mail'
+
+  get '/login' => 'sessions#new'
+  post '/login' => 'sessions#create'
+  get '/logout' => 'sessions#destroy'
+
+  get '/zone' => 'zone#home'
+  get '/topic' => 'topic#home'
+  #resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

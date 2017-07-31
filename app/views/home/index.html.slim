@@ -1,0 +1,17 @@
+h1 home home
+- if logged_in?
+  p
+    = "hello #{@current_user.name}"
+  a href="/logout"
+    | logout
+- else
+  a href="/login"
+    | login
+
+- @zones.each do |zone|
+  p
+    a href="/zone?id=#{zone.id}"
+      = zone.name
+    small
+      = zone.description
+
