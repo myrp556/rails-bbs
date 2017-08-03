@@ -18,11 +18,13 @@ Rails.application.routes.draw do
   get '/zone' => 'zone#main'
   get '/topic' => 'topic#main'
 
-  post '/new_topic' => 'topic#create'
+  post '/new_topic' => 'zone#create_topic'
+  delete '/delete_topic' => 'zone#destroy_topic'
+  get '/edit_topic' => 'zone#edit_topic'
+  patch '/update_topic' => 'zone#update_topic'
 
   post '/new_reply' => 'topic#create_note'
-
-  get '/delete_reply' => 'topic#destroy_note'
+  delete '/delete_reply' => 'topic#destroy_note'
   get '/edit_reply' => 'topic#edit_note'
   patch '/update_reply' => 'topic#update_note'
 
