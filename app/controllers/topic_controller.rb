@@ -15,6 +15,9 @@ class TopicController < ApplicationController
   before_action :require_content_topic, only: [:main, :create_note]
   # require @note or redirect
   before_action :require_content_note, except: [:main, :create_note]
+  before_action :get_login
+  before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note]
+  before_action :require_privilege, only: [:edit_note, :update_note, :destroy_note]
 
   def main
     @url = new_reply_url(topic_id: @topic.id)
@@ -34,8 +37,10 @@ class TopicController < ApplicationController
       #puts note
       #puts floor
       if @note.save()
-        @topic.update_attribute(:floor_count, floor + 1)
-        @note.update_attribute(:floor, floor + 1)
+        @topic.update(floor_count: floor + 1)
+        @note.update(floor: floor + 1)
+        @note.update(author_id: @current_user.id)
+        @note.update(author_name: @current_user.name)
         redirect_to topic_url(id: @topic.id)
       else
         flash['danger'] = @note.errors.full_messages
@@ -100,6 +105,37 @@ class TopicController < ApplicationController
       end
     end
 
+    def get_login
+      logged_in?
+    end
+
+    def require_login
+      if @current_user.nil?
+        flash[:info] = '请先登录'
+        redirect_to login_url
+      end
+    end
+
+    def require_privilege
+      if !@current_user or @note.author_id != @current_user.id
+        flash[:danger] = '没有操作权限!'
+        redirect_back
+        return
+      end
+    end
+
+    def redirect_back
+      if !@topic.nil?
+        redirect_to topic_url(id: @topic.id)
+        return
+      end
+      if !@zone.nil?
+        redirect_to zone_url(id: @zone.id)
+        return
+      end
+      redirect_to root_url
+      return
+    end
     def permit_params_note(params)
       params.require(:note).permit(:detail, :author_id, :author_name, :floor)
     end

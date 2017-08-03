@@ -26,6 +26,7 @@ class ZoneController < ApplicationController
     ps = permit_params(params)
     @topic.detail = ps[:detail]
     if @topic.valid?
+      @topic.author_id = @current_user.id
       @topic.save
       @note = @topic.notes.new
       @note.detail = ps[:note_detail]
@@ -95,6 +96,34 @@ class ZoneController < ApplicationController
      if @topic.nil?
         redirect_to zone_url(id: @zone.id)
      end
+    end
+
+    def get_login
+      logged_in?
+    end
+
+    def require_login
+      if @current_user.nil?
+        flash[:info] = '请先登录!'
+        redirect_back
+      end
+    end
+
+    def require_privilege
+      if @current_user.nil? or @topic.nil? or @topic.author_id != @current_user.id
+        flash[:danger] = '没有操作权限!'
+        redirect_back
+        return
+      end
+    end
+
+    def redirect_back
+      if !@topic.nil?
+        redirect_to topic_url(id: @topic.id)
+      end
+      if !@zone.nil?
+        redirect_to zone_url(id: @zone.id)
+      end
     end
 
     def permit_params(params)
