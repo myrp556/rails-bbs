@@ -10,21 +10,21 @@ class TopicController < ApplicationController
   # @note
   # @topic
   # @zone
-  before_action :pre_action_note, only: [:edit_note, :update_note, :destroy_note]
+  before_action :pre_action_note, only: [:create_note, :edit_note, :update_note, :destroy_note]
   # require @zone, @topic, or redirect page!
-  before_action :require_content, only: [:edit_note, :destroy_note, :update_note]
+  before_action :require_content_topic, only: [:main, :create_note]
+  # require @note or redirect
+  before_action :require_content_note, except: [:main, :create_note]
 
   def main
-    @page = params[:page]
     @url = new_reply_url(topic_id: @topic.id)
+    @page = params[:page]
     if @page.nil?
       @page = 0
     end
     @note = @topic.notes.new
   end
 
-  def create_topic
-  end
 ## actions for notes
   def create_note
     if !@topic.nil? and !@zone.nil?
@@ -46,7 +46,7 @@ class TopicController < ApplicationController
       end
     else
       flash['danger'] = 'no topic specifc!' + @topic + ' ' + @zone
-      render 'main'
+      redirect_to topic_url(id: @topic.id)
     end
   end
 
@@ -55,11 +55,11 @@ class TopicController < ApplicationController
   end
 
   def update_note
-    if @note.update_attributes(permit_params_note)
+    if @note.update_attributes(permit_params_note(params))
       redirect_to topic_url(id: @topic.id)
     else
-      flash[:danger] = @note.errors.full_messages
-      render 'edit_note'
+      flash[:danger] = @note.errors.full_messages[0]
+      redirect_to edit_reply_url(id: @note.id)
     end
   end
 
@@ -73,7 +73,7 @@ class TopicController < ApplicationController
       end
     else
       flash[:danger] = @note.errors_full_messages
-      render 'main'
+      redirect_to topic_url(id: @topic.id)
     end
   end
 
@@ -85,12 +85,18 @@ class TopicController < ApplicationController
       @zone = @topic.zone if !@topic.nil?
     end
 
-    def require_content
+    def require_content_topic
       if @zone.nil?
-        redirect_to "/"
+        redirect_to root_url
       end
       if @topic.nil?
         redirect_to zone_url(id: @zone.id)
+      end
+    end
+
+    def require_content_note
+      if @note.nil?
+        redirect_to topic_url(id: @topic.id)
       end
     end
 

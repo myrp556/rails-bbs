@@ -11,16 +11,18 @@ p
 
 p
   = @topic.detail
-
+p
+  = @notes.size
 - @notes.each do |note|
-  p
-    = "##{note.floor} #{note.detail}"
+  - if note.valid?
+    p
+      = "##{note.floor} #{note.detail}"
 
-    a href="#{delete_reply_url(id: note.id)}"
-      | delete
-    | ' '
-    a href="#{note.edit_url}"
-      | edit
+      a href="#{note.delete_url}"
+        | delete
+      | ' '
+      a href="#{note.edit_url}"
+        | edit
 
 hr
 

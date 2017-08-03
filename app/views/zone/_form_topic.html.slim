@@ -1,0 +1,6 @@
+= form_for @topic, url: @url do |f|
+  = f.text_field :detail, class: "form-control"
+  - if (@topic.detail.nil? and @topic.note_detail.nil?) or (!@topic.detail.nil? and !@topic.note_detail.nil?)
+    = f.text_field :note_detail, class: "form-control"
+
+  = f.submit '提交'

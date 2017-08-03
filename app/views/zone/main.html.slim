@@ -2,6 +2,14 @@ h1
   | zone#home
 
 - @topics.each do |topic|
-  p
-    a href = "/topic?id=#{topic.id}"
-      = "#{topic.notes.size} #{topic.detail}"
+  - if topic.valid?
+    p
+      a href="/topic?id=#{topic.id}"
+        = "#{topic.notes.size} #{topic.detail}"
+      | 
+      a href = "/edit_topic?id=#{topic.id}"
+        | edit
+      a href="/delete_topic?id=#{topic.id}"
+        | delete
+
+= render 'form_topic'
