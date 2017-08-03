@@ -1,5 +1,5 @@
 class ZoneController < ApplicationController
-  def home
+  def main
     if !params[:id]
       redirect_to '/'
     end

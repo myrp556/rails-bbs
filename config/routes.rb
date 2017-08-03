@@ -11,12 +11,21 @@ Rails.application.routes.draw do
   patch '/user/passwd' => 'user#update_passwd'
   patch '/user/mail' => 'user#update_mail'
 
-  get '/login' => 'sessions#new'
+  get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
-  get '/logout' => 'sessions#destroy'
+  get '/logout' => 'session#destroy', as: :logout
 
-  get '/zone' => 'zone#home'
-  get '/topic' => 'topic#home'
+  get '/zone' => 'zone#main'
+  get '/topic' => 'topic#main'
+
+  post '/new_topic' => 'topic#create'
+
+  post '/new_reply' => 'topic#create_note'
+
+  get '/delete_reply' => 'topic#destroy_note'
+  get '/edit_reply' => 'topic#edit_note'
+  patch '/update_reply' => 'topic#update_note'
+
   #resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

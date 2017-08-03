@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170727142037) do
+ActiveRecord::Schema.define(version: 20170801022711) do
 
   create_table "notes", force: :cascade do |t|
     t.integer  "author_id"
@@ -31,8 +31,10 @@ ActiveRecord::Schema.define(version: 20170727142037) do
     t.string   "author_name"
     t.string   "detail"
     t.integer  "zone_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.string   "note_detail"
+    t.integer  "floor_count", default: 0
   end
 
   add_index "topics", ["updated_at"], name: "index_topics_on_updated_at"

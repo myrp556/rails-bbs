@@ -4,7 +4,7 @@ class CreateNotes < ActiveRecord::Migration
       t.integer :author_id
       t.string :author_name
       t.text :detail
-      t.integer :floor
+      t.integer :floor, default: 0
       t.references :topic, index: true, foreign_key: true
 
       t.timestamps null: false

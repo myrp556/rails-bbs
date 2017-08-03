@@ -1,0 +1,27 @@
+h1
+  | topic#home
+
+p
+  a href="#{@zone.url}"
+    = @zone.name
+  span
+    | >>
+  a href="#{@topic.url}"
+    = @topic.detail
+
+p
+  = @topic.detail
+
+- @notes.each do |note|
+  p
+    = "##{note.floor} #{note.detail}"
+
+    a href="#{delete_reply_url(id: note.id)}"
+      | delete
+    | ' '
+    a href="#{note.edit_url}"
+      | edit
+
+hr
+
+= render 'note_form'
