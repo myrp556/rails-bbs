@@ -22,10 +22,10 @@ class UsersController < ApplicationController
 
   def update_detail
     if @user.update_attributes(user_params)
-      flash[:success] = '更新成功'
+      flash[:success] = t :update_success
       redirect_to user_detail_url(id: @user.id)
     else
-      flash[:danger] = @user.errors.full_messages[0]
+      flash[:danger] = make_error_message(@user)
       render 'detail'
     end
   end
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
 
     def require_login
       if @current_user.nil?
-        flash[:info] = "请先登录"
+        flash[:info] = t :login_first
         redirect_to root_url
       end
     end

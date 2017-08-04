@@ -1,27 +1,26 @@
 h1 
   | user#detail
-
 = form_for @user, url: user_detail_url(id: @user.id) do |f|
-  = f.label '用户名'
+  = f.label t :user_name
   = f.text_field :user_name, class: "form-control"
 
-  = f.label '名称ID'
+  = f.label t :name
   = f.text_field :name, class: "form-control"
 
-  = f.label '编号'
+  = f.label t :num
   = f.text_field :number, class: "form-control"
 
-  = f.label '邮箱'
+  = f.label t :mail
   = f.text_field :mail, class: "form-control"
 
   hr
 
-  = f.label '密码'
+  = f.label t :password
   = f.password_field :password, class: "form-control"
 
-  = f.label '密码确认'
+  = f.label t :password_confirmation
   = f.password_field :password_confirmation, class: "form-control"
 
   hr
 
-  = f.submit '更改', class: "btn btn-primary"
+  = f.submit t(:change) , class: "btn btn-primary"

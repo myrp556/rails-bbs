@@ -6,20 +6,21 @@ class User < ActiveRecord::Base
     self.mail = mail.downcase
   }
   validates :name, presence: true, length: {in: 2..20}, \
-    uniqueness: {case_sensitive: false, message: "name has been used"}
+    uniqueness: {case_sensitive: false}
   validates :user_name, presence: true,  \
     length: {in: 5..15}, \
-    format: {with: /\A[a-z][a-z0-9\_]+\z/, message: "user name starts with letter and following letters and numbers"}, \
-    uniqueness: {case_sensitive: false, message: "user name has been used"}
+    format: {with: /\A[a-z][a-z0-9\_]+\z/}, \
+    uniqueness: {case_sensitive: false}
   validates :mail, presence: true, length: {in: 5..50}, \
-    format: {with: /\A[a-z0-9\_\-]+@[a-z0-9\-.]+\.[a-z]+\z/i, message: "please use valid mail address"},\
-    uniqueness: {case_sensitive: false, message: "mail address has been used"}
+    format: {with: /\A[a-z0-9\_\-]+@[a-z0-9\-.]+\.[a-z]+\z/i},\
+    uniqueness: {case_sensitive: false}
+    #attribute: I18n.t(:mail)
   validates :number, presence: true, \
     uniqueness: true, \
     length: {in: 1..10}
 
   validates :password, presence: true, allow_nil: true, \
-    length: {in:6..30, message: "password should be at least 6 letters long and no more than 30 letters"}
+    length: {in:6..30}
 
   has_secure_password
 
