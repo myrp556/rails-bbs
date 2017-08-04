@@ -25,13 +25,14 @@ class ZoneController < ApplicationController
     @topic = @zone.topics.new
     ps = permit_params(params)
     @topic.detail = ps[:detail]
-    if @topic.valid?
-      @topic.author_id = @current_user.id
-      @topic.save
+    if @topic.save
       @note = @topic.notes.new
       @note.detail = ps[:note_detail]
-      if @note.valid?
+      if @note.save
+        @topic.user(user: @current_user)
         @topic.update(floor_count: 1)
+
+        @note.update(user: @current_user)
         @note.update(floor: 1)
       else
         @topic.destroy
@@ -110,7 +111,7 @@ class ZoneController < ApplicationController
     end
 
     def require_privilege
-      if @current_user.nil? or @topic.nil? or @topic.author_id != @current_user.id
+      if @current_user.nil? or @topic.nil? or @topic.user.id != @current_user.id
         flash[:danger] = '没有操作权限!'
         redirect_back
         return
@@ -127,6 +128,6 @@ class ZoneController < ApplicationController
     end
 
     def permit_params(params)
-      params.require(:topic).permit(:detail, :author_id, :author_name, :note_detail)
+      params.require(:topic).permit(:detail, :note_detail)
     end
 end

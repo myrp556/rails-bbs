@@ -39,8 +39,9 @@ class TopicController < ApplicationController
       if @note.save()
         @topic.update(floor_count: floor + 1)
         @note.update(floor: floor + 1)
-        @note.update(author_id: @current_user.id)
-        @note.update(author_name: @current_user.name)
+        #@note.update(author_id: @current_user.id)
+        #@note.update(author_name: @current_user.name)
+        @note.update(user: @current_user)
         redirect_to topic_url(id: @topic.id)
       else
         flash['danger'] = @note.errors.full_messages
@@ -117,7 +118,7 @@ class TopicController < ApplicationController
     end
 
     def require_privilege
-      if !@current_user or @note.author_id != @current_user.id
+      if !@current_user or @note.user.id != @current_user.id
         flash[:danger] = '没有操作权限!'
         redirect_back
         return
@@ -137,7 +138,7 @@ class TopicController < ApplicationController
       return
     end
     def permit_params_note(params)
-      params.require(:note).permit(:detail, :author_id, :author_name, :floor)
+      params.require(:note).permit(:detail, :floor)
     end
 
     def pre_action_topic
