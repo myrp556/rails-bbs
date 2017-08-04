@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
     uniqueness: true, \
     length: {in: 1..10}
 
-  validates :password, presence: true, \
+  validates :password, presence: true, allow_nil: true, \
     length: {in:6..30, message: "password should be at least 6 letters long and no more than 30 letters"}
 
   has_secure_password

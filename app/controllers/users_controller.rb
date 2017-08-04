@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_user, except: [:new, :create]
+  before_action :get_login, except: [:new, :create]
+  before_action :require_login, except: [:new, :create]
 
   def new
     @user = User.new
@@ -21,34 +23,15 @@ class UsersController < ApplicationController
   def update_detail
     if @user.update_attributes(user_params)
       flash[:success] = '更新成功'
-      redirect_to user_detail_user(id: @user.id)
+      redirect_to user_detail_url(id: @user.id)
     else
       flash[:danger] = @user.errors.full_messages[0]
-      render 'user_detail'
+      render 'detail'
     end
-  end
-
-  def passwd
-
-  end
-
-  def update_passwd
-    #@user = User.find(params[:id])
   end
 
   def destroy
     #@user = User.find(params[:id])
-  end
-
-  def passwd
-  end
-
-  def passwd_update
-
-  end
-
-  def update_detail
-    @user.update_attributes(user_params)
   end
 
   private
@@ -63,4 +46,16 @@ class UsersController < ApplicationController
         redirect_to '/'
       end
     end
+
+    def get_login
+      logged_in?
+    end
+
+    def require_login
+      if @current_user.nil?
+        flash[:info] = "请先登录"
+        redirect_to root_url
+      end
+    end
+
 end
