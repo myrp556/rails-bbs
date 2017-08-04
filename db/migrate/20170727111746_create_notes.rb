@@ -1,7 +1,7 @@
 class CreateNotes < ActiveRecord::Migration
   def change
     create_table :notes do |t|
-      t.text :detail
+      t.text :note_detail
       t.integer :floor, default: 0
       t.references :topic, index: true, foreign_key: true
 

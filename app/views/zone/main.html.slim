@@ -5,7 +5,7 @@ h1
   - if topic.valid?
     p
       a href="/topic?id=#{topic.id}"
-        = "#{topic.notes.size} #{topic.detail}"
+        = "#{topic.notes.size} #{topic.topic_detail}"
       | 
       a href = "/edit_topic?id=#{topic.id}"
         | edit

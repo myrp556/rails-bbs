@@ -5,7 +5,7 @@ class Topic < ActiveRecord::Base
 
   #attr_accessible :detail
 
-  validates :detail, presence:true, length: {in: 3..30}
+  validates :topic_detail, presence:true, length: {in: 3..60}
 
   def url
     "/topic?id=#{self.id}"

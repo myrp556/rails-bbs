@@ -24,10 +24,10 @@ class ZoneController < ApplicationController
   def create_topic
     @topic = @zone.topics.new
     ps = permit_params(params)
-    @topic.detail = ps[:detail]
+    @topic.topic_detail = ps[:topic_detail]
     if @topic.save
       @note = @topic.notes.new
-      @note.detail = ps[:note_detail]
+      @note.note_detail = ps[:note_detail]
       if @note.save
         @topic.user(user: @current_user)
         @topic.update(floor_count: 1)
@@ -48,15 +48,15 @@ class ZoneController < ApplicationController
   def edit_topic
     @url = update_topic_url(id: @topic.id)
     if @topic.notes[0].floor==1
-      @topic.note_detail = @topic.notes[0].detail
+      @topic.note_detail = @topic.notes[0].note_detail
     end
   end
 
   def update_topic
     ps = permit_params(params)
     @note = @topic.notes[0]
-    @topic.detail = ps[:detail]
-    @note.detail = ps[:note_detail]
+    @topic.topic_detail = ps[:topic_detail]
+    @note.note_detail = ps[:note_detail]
     if @topic.valid? and @note.valid?
       @topic.save
       @note.save
@@ -128,6 +128,6 @@ class ZoneController < ApplicationController
     end
 
     def permit_params(params)
-      params.require(:topic).permit(:detail, :note_detail)
+      params.require(:topic).permit(:topic_detail, :note_detail)
     end
 end

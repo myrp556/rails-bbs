@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :user_name
       t.string :name
       t.string :mail
-      t.integer :number
+      t.string :number
       t.integer :rank
       t.integer :zone_auth
 

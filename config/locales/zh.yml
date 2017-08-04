@@ -19,6 +19,11 @@ zh:
   upload: "上传"
   update_success: "更新成功"
   update_failed: "更新失败"
+  no_privilege: "权限不足"
+  require_login: "需要登录"
+  login_first: "请先登录"
+  error: "错误"
+  not_open: "暂不开放"
 
   user_name: "用户名"
   name: "名称ID"
@@ -26,6 +31,15 @@ zh:
   num: "编号"
   password: "密码"
   password_confirmation: "密码确认"
+  user: "用户"
+  topic: "话题"
+  note: "帖子"
+  zone: "分区"
+  detail: "内容"
+  topic_detail: "话题内容"
+  note_detail: "帖子内容"
+  floor: "楼"
+  author: "作者"
 
   activerecord:
     errors:

@@ -138,7 +138,7 @@ class TopicController < ApplicationController
       return
     end
     def permit_params_note(params)
-      params.require(:note).permit(:detail, :floor)
+      params.require(:note).permit(:note_detail)
     end
 
     def pre_action_topic

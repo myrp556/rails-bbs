@@ -7,16 +7,15 @@ p
   span
     | >>
   a href="#{@topic.url}"
-    = @topic.detail
+    = @topic.topic_detail
 
 p
-  = @topic.detail
-p
-  = @notes.size
+  = @topic.topic_detail
+
 - @notes.each do |note|
   - if note.valid?
     p
-      = "##{note.floor} #{note.detail}"
+      = "##{note.floor} #{note.note_detail}"
 
       a href="#{note.delete_url}"
         | delete
