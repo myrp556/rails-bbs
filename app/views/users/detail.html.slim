@@ -1,27 +1,24 @@
 h1 
   | user#detail
 
-table.table
-  tbody
-    tr
-      th
-        | 用户名
-      td
-        = @user.user_name
-    tr
-      th
-        | 名称ID
-      td
-        = @user.name
-    tr
-      th
-        | 邮箱
-      td
-        = @user.mail
-    tr
-      th
-        | 编号
-      td
-        = @user.number
-a.btn.btn-default href="/user/passwd?id=#{@user.id}"
-    | 修改密码
+= form_for @user do |f|
+  = f.label '用户名', class: "form-control"
+  = f.text_field :user_name, class: "form-control"
+
+  = f.label '名称ID', class: "form-control"
+  = f.text_field :name, class: "form-control"
+
+  = f.label '编号', class: "form-control"
+  = f.text_field :number, class: "form-control"
+
+  = f.label '邮箱', class: "form-control"
+  = f.text_field :mail, class: "form-control"
+
+  hr
+
+  = f.label '密码', class: "form-contorl"
+  = f.password_field, class: "form-control"
+
+  hr
+
+  = f.submit '更改', class: "btn btn-primary"

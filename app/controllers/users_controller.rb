@@ -1,15 +1,5 @@
 class UsersController < ApplicationController
-  before_action :require_login, except: [:new, :create]
-
-  def detail
-    #@user = User.find(params[:id])
-    if @user.nil?
-      render plain: "no user"
-      return
-    end
-
-    #debugger
-  end
+  before_action :require_user, except: [:new, :create]
 
   def new
     @user = User.new
@@ -25,11 +15,16 @@ class UsersController < ApplicationController
     end
   end
 
-  def edit
-    #@user = User.find(params[:id])
-    @url = '/user/update'
-    if @user.nil
-      redirect_to '/'
+  def detail
+  end
+
+  def update_detail
+    if @user.update_attributes(user_params)
+      flash[:success] = '更新成功'
+      redirect_to user_detail_user(id: @user.id)
+    else
+      flash[:danger] = @user.errors.full_messages[0]
+      render 'user_detail'
     end
   end
 
@@ -37,7 +32,7 @@ class UsersController < ApplicationController
 
   end
 
-  def update
+  def update_passwd
     #@user = User.find(params[:id])
   end
 
@@ -52,8 +47,8 @@ class UsersController < ApplicationController
 
   end
 
-  def mail_update
-    @user.update_attribute(user_params)
+  def update_detail
+    @user.update_attributes(user_params)
   end
 
   private
@@ -62,7 +57,7 @@ class UsersController < ApplicationController
                                   :password, :password_confirmation)
     end
 
-    def require_login
+    def require_user
       @user=User.find_by(id: params[:id])
       if @user.nil?
         redirect_to '/'

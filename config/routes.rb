@@ -1,19 +1,20 @@
 Rails.application.routes.draw do
   root 'home#index'
 
-  get '/user/detail' => 'users#detail'
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
-  get '/user/edit' => 'users#edit'
   #patch '/user/update' => 'users#update'
   get '/user/delete' => 'users#destroy'
   get '/user/passwd' => 'users#passwd'
-  patch '/user/passwd' => 'user#update_passwd'
-  patch '/user/mail' => 'user#update_mail'
+  patch '/user_passwd' => 'users#update_passwd'
+  patch '/user_detail' => 'users#update_detail'
+  get '/user_detail' => 'users#detail'
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
   get '/logout' => 'session#destroy', as: :logout
+
+  get '/user_info' => 'user#info'
 
   get '/zone' => 'zone#main'
   get '/topic' => 'topic#main'

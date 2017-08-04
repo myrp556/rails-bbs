@@ -1,0 +1,29 @@
+nav.navbar.navbar-default
+  .container
+    .navbar-header
+      a.navbar-brand href="#{root_url}"
+        | 主页
+
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li
+          a href="#"
+            |link
+      ul.nav.navbar-nav.navbar-right
+        - if @current_user
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" role="button" href='#'
+              = @current_user.user_name
+              span.caret
+            ul.dropdown-menu
+              li
+                a href="#{user_detail_url(id: @current_user)}"
+                  | 个人信息
+              li
+                a href="#{logout_url}"
+                  | 登出
+        - else
+          li
+            a href="#{login_url}"
+              | 登录
+
