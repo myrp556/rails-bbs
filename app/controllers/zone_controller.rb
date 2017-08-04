@@ -29,7 +29,7 @@ class ZoneController < ApplicationController
       @note = @topic.notes.new
       @note.note_detail = ps[:note_detail]
       if @note.save
-        @topic.user(user: @current_user)
+        @topic.update(user: @current_user)
         @topic.update(floor_count: 1)
 
         @note.update(user: @current_user)
