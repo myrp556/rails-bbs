@@ -4,7 +4,7 @@ class CreateTopics < ActiveRecord::Migration
       t.string :topic_detail
       t.string :note_detail
       t.references :zone, index: true, foreign_key: true
-
+      t.references :user, index: true, foreign_key: true
       t.timestamps null: false
     end
 

@@ -7,6 +7,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :number
       t.integer :rank
       t.integer :zone_auth
+      t.string :icon
 
       t.timestamps null: false
     end

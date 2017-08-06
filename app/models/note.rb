@@ -1,6 +1,7 @@
 class Note < ActiveRecord::Base
   after_initialize :initilize
   belongs_to :topic
+  belongs_to :user
   
   validates :note_detail, presence:true, length: {in: 6..10000}
 

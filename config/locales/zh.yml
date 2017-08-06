@@ -21,6 +21,7 @@ zh:
   update_failed: "更新失败"
   no_privilege: "权限不足"
   require_login: "需要登录"
+  require_privilege: "需要权限"
   login_first: "请先登录"
   error: "错误"
   not_open: "暂不开放"

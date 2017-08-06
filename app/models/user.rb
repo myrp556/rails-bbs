@@ -23,6 +23,9 @@ class User < ActiveRecord::Base
 
   validates :icon, presence:true, allow_nil: true
 
+  has_many :topic
+  has_many :note
+
   has_secure_password
 
   class << self
@@ -51,5 +54,12 @@ class User < ActiveRecord::Base
   def authenticated?(remember_token)
     return false if remember_digest.nil?
     BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  end
+
+  def has_privilege?(thing)
+    if !thing.user.nil? and thing.user.id == self.id
+      return true
+    end
+    false
   end
 end

@@ -21,6 +21,7 @@ class ZoneController < ApplicationController
     if @page.nil?
       @page = 0
     end
+
     @topic = @zone.topics.new
   end
 
@@ -32,7 +33,6 @@ class ZoneController < ApplicationController
       @note = @topic.notes.new
       @note.note_detail = ps[:note_detail]
       if @note.save
-        puts @current_user
         @topic.update(user: @current_user)
         @topic.update(floor_count: 1)
 
@@ -40,11 +40,11 @@ class ZoneController < ApplicationController
         @note.update(floor: 1)
       else
         @topic.destroy
-        flash[:danger] = 'topic note content not valid!'
+        flash[:danger] = make_error_message(@note)
       end
       redirect_to zone_url(id: @zone.id)
     else
-      flash[:danger] = 'topic not valid!'
+      flash[:danger] = make_error_message(@topic)
       redirect_to zone_url(id: @zone.id)
     end
   end
@@ -103,17 +103,6 @@ class ZoneController < ApplicationController
      end
     end
 
-    def get_login
-      logged_in?
-    end
-
-    def require_login
-      if @current_user.nil?
-        flash[:info] = '请先登录!'
-        redirect_back
-      end
-    end
-
     def require_privilege
       if @current_user.nil? or @topic.nil? or @topic.user.id != @current_user.id
         flash[:danger] = '没有操作权限!'
@@ -144,7 +133,11 @@ class ZoneController < ApplicationController
     end
 
     def require_privilege
-
+      if @current_user.nil? or !@current_user.has_privilege?(@topic)
+        flash[:danger] = t :require_privilege
+        redirect_to zone_url(id: @zon_url)
+        return
+      end
     end
 
     def permit_params(params)

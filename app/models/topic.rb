@@ -3,6 +3,8 @@ class Topic < ActiveRecord::Base
   belongs_to :zone
   has_many :notes
 
+  belongs_to :user
+
   #attr_accessible :detail
 
   validates :topic_detail, presence:true, length: {in: 3..60}

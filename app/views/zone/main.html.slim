@@ -13,3 +13,7 @@ h1
         | delete
 
 = render 'form_topic'
+= @topic
+= @topic.new_record?
+= @topic.topic_detail
+= @topic.errors.full_messages

@@ -32,11 +32,32 @@ ActiveRecord::Schema.define(version: 20170806153321) do
     t.datetime "updated_at", null: false
   end
 
-# Could not dump table "notes" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  create_table "notes", force: :cascade do |t|
+    t.text     "note_detail"
+    t.integer  "floor",       default: 0
+    t.integer  "topic_id"
+    t.integer  "user_id"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
 
-# Could not dump table "topics" because of following NoMethodError
-#   undefined method `[]' for nil:NilClass
+  add_index "notes", ["created_at"], name: "index_notes_on_created_at"
+  add_index "notes", ["topic_id"], name: "index_notes_on_topic_id"
+  add_index "notes", ["user_id"], name: "index_notes_on_user_id"
+
+  create_table "topics", force: :cascade do |t|
+    t.string   "topic_detail"
+    t.string   "note_detail"
+    t.integer  "zone_id"
+    t.integer  "user_id"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.integer  "floor_count",  default: 0
+  end
+
+  add_index "topics", ["updated_at"], name: "index_topics_on_updated_at"
+  add_index "topics", ["user_id"], name: "index_topics_on_user_id"
+  add_index "topics", ["zone_id"], name: "index_topics_on_zone_id"
 
   create_table "users", force: :cascade do |t|
     t.string   "user_name"
@@ -45,11 +66,11 @@ ActiveRecord::Schema.define(version: 20170806153321) do
     t.string   "number"
     t.integer  "rank"
     t.integer  "zone_auth"
+    t.string   "icon"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
     t.string   "remember_digest"
-    t.string   "icon"
   end
 
   create_table "zones", force: :cascade do |t|

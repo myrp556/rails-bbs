@@ -118,7 +118,7 @@ class TopicController < ApplicationController
     end
 
     def require_privilege
-      if !@current_user or @note.user.id != @current_user.id
+      if @current_user.nil? or !@current_user.has_privilege?(@note)
         flash[:danger] = t :require_privilege
         redirect_back
         return
