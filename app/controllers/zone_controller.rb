@@ -11,6 +11,9 @@ class ZoneController < ApplicationController
   before_action :require_content_zone, only: [:main, :create_topic]
   # require @topic, or redirect
   before_action :require_content_topic, except: [:main, :create_topic]
+  before_action :get_login
+  before_action :require_login, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
+  before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
   def main
     @url = new_topic_url(zone_id: @zone.id)
@@ -29,6 +32,7 @@ class ZoneController < ApplicationController
       @note = @topic.notes.new
       @note.note_detail = ps[:note_detail]
       if @note.save
+        puts @current_user
         @topic.update(user: @current_user)
         @topic.update(floor_count: 1)
 
@@ -125,6 +129,22 @@ class ZoneController < ApplicationController
       if !@zone.nil?
         redirect_to zone_url(id: @zone.id)
       end
+    end
+
+    def get_login
+      logged_in?
+    end
+
+    def require_login
+      if @current_user.nil?
+        flash[:info] = :require_first
+        redirect_to login_url
+        return
+      end
+    end
+
+    def require_privilege
+
     end
 
     def permit_params(params)

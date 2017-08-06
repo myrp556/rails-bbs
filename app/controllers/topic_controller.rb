@@ -36,7 +36,7 @@ class TopicController < ApplicationController
       @note.assign_attributes(permit_params_note(params))
       #puts note
       #puts floor
-      if @note.save()
+      if @note.valid? and @note.save()
         @topic.update(floor_count: floor + 1)
         @note.update(floor: floor + 1)
         #@note.update(author_id: @current_user.id)
@@ -44,14 +44,14 @@ class TopicController < ApplicationController
         @note.update(user: @current_user)
         redirect_to topic_url(id: @topic.id)
       else
-        flash['danger'] = @note.errors.full_messages
+        flash['danger'] = make_error_message(@note)
         @notes = @topic.notes
         @zone = @topic.zone
         #render 'main', id: @topic.id
         redirect_to topic_url(id: @topic.id)
       end
     else
-      flash['danger'] = 'no topic specifc!' + @topic + ' ' + @zone
+      #flash['danger'] = 'no topic specifc!' + @topic + ' ' + @zone
       redirect_to topic_url(id: @topic.id)
     end
   end
@@ -64,7 +64,7 @@ class TopicController < ApplicationController
     if @note.update_attributes(permit_params_note(params))
       redirect_to topic_url(id: @topic.id)
     else
-      flash[:danger] = @note.errors.full_messages[0]
+      flash[:danger] = make_error_message(@note)
       redirect_to edit_reply_url(id: @note.id)
     end
   end
@@ -78,7 +78,7 @@ class TopicController < ApplicationController
         redirect_to topic_url(id: @topic.id)
       end
     else
-      flash[:danger] = @note.errors_full_messages
+      flash[:danger] = make_error_message(@note)
       redirect_to topic_url(id: @topic.id)
     end
   end
@@ -112,14 +112,14 @@ class TopicController < ApplicationController
 
     def require_login
       if @current_user.nil?
-        flash[:info] = '请先登录'
+        flash[:info] = t :login_first
         redirect_to login_url
       end
     end
 
     def require_privilege
       if !@current_user or @note.user.id != @current_user.id
-        flash[:danger] = '没有操作权限!'
+        flash[:danger] = t :require_privilege
         redirect_back
         return
       end

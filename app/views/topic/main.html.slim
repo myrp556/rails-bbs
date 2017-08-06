@@ -15,7 +15,8 @@ p
 - @notes.each do |note|
   - if note.valid?
     p
-      = "##{note.floor} #{note.note_detail}"
+      = "##{note.floor}"
+      = raw note.note_detail
 
       a href="#{note.delete_url}"
         | delete

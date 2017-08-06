@@ -1,6 +1,6 @@
-= form_for @topic, url: @url do |f|
+= bootstrap_form_for @topic, url: @url do |f|
   = f.text_field :topic_detail, class: "form-control"
   - if (@topic.topic_detail.nil? and @topic.note_detail.nil?) or (!@topic.topic_detail.nil? and !@topic.note_detail.nil?)
-    = f.text_field :note_detail, class: "form-control"
+    = f.cktext_area :note_detail, class: "form-control"
 
   = f.submit '提交'
