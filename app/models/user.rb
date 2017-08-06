@@ -23,8 +23,8 @@ class User < ActiveRecord::Base
 
   validates :icon, presence:true, allow_nil: true
 
-  has_many :topic
-  has_many :note
+  has_many :topics
+  has_many :notes
 
   has_secure_password
 

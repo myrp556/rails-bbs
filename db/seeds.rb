@@ -5,8 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-User.create(name: "name", user_name: "zhangsan", mail: "y123@163.con", \
-           number: 0,
-           password: "12345678", password_confirmation: "12345678")
+load(Rails.root.join('db', 'seeds', "#{Rails.env}.rb"))
 
-Zone.create(name: "zone000", description: "this is a short description")

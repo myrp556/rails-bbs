@@ -1,4 +1,6 @@
 class TopicController < ApplicationController
+  include PageHelper
+
   # get topic form id, and get zone, notes
   # params
   # @topic
@@ -21,10 +23,6 @@ class TopicController < ApplicationController
 
   def main
     @url = new_reply_url(topic_id: @topic.id)
-    @page = params[:page]
-    if @page.nil?
-      @page = 0
-    end
     @note = @topic.notes.new
   end
 
@@ -144,6 +142,8 @@ class TopicController < ApplicationController
     def pre_action_topic
       @topic = Topic.find_by(id: params[:id])
       @zone = @topic.zone if !@topic.nil?
-      @notes = @topic.notes if !@topic.nil?
+      #@notes = @topic.notes if !@topic.nil?
+      @base_url = "/topic?id=#{@topic.id}" if !@topic.nil?
+      @notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
     end
 end

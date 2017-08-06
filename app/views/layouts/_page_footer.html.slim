@@ -1,0 +1,35 @@
+nav.page-footer aria-label="page navigation"
+  ul.pagination
+
+    - if !@page_start.nil?
+      li
+        a href="#{@base_url}&page=#{@page_start}"
+          span
+            |&laquo;
+    - if !@page_previous.nil?
+      li
+        a href="#{@base_url}&page=#{@page_previous}"
+          span
+            |&larr;
+    - (@page_left..@page_right).each do |i|
+      - if @page.equal?(i)
+        li.active
+          a.active href="#"
+            = raw i
+            span.sr-only
+              |(current)
+      - else
+        li
+          a href="#{@base_url}&page=#{i}"
+            = raw i
+
+    - if !@page_next.nil?
+      li
+        a href="#{@base_url}&page=#{@page_next}"
+          span
+            |&rarr;
+    - if !@page_end.nil?
+      li
+        a href="#{@base_url}&page=#{@page_end}"
+          span
+            |&raquo;

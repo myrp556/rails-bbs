@@ -3,10 +3,25 @@ module CustomHelper
 
   def make_error_message(model)
     if !model.errors.messages.nil?
-      I18n.t(model.errors.messages.keys()[0]) + model.errors.messages[model.errors.messages.keys()[0]][0]
+      "<p>" + I18n.t(model.errors.messages.keys()[0]) + "</p>" + model.errors.messages[model.errors.messages.keys()[0]][0]
     else
       'rua'
     end
+  end
+
+  def current_user?(user)
+    !user.nil? and !@current_user.nil? and user.id == @current_user.id
+  end
+
+  def store_location
+    session[:forward_url] = request.original_url if request.get?
+  end
+
+  # redirect to default location
+  # or back to previous page stored in session[:forward_url]
+  def redirect_back(default)
+    redirect_to(session[:forward_url] || default)
+    session.delete(:forward_url)
   end
   # get a file with [ori]'s file format and named with name
   # @ori => 'app.jpg'
