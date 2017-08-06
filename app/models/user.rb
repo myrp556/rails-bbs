@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   attr_accessor :remember_token
-
   before_save {
     self.user_name = user_name.downcase
     self.mail = mail.downcase
@@ -8,7 +7,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true, length: {in: 2..20}, \
     uniqueness: {case_sensitive: false}
   validates :user_name, presence: true,  \
-    length: {in: 5..15}, \
+    length: {in: 2..15}, \
     format: {with: /\A[a-z][a-z0-9\_]+\z/}, \
     uniqueness: {case_sensitive: false}
   validates :mail, presence: true, length: {in: 5..50}, \

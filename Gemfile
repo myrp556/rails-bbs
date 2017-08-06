@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'config'
 #gem 'bootstrap-sass'
 gem 'slim-rails'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
