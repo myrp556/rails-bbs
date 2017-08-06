@@ -142,8 +142,9 @@ class TopicController < ApplicationController
     def pre_action_topic
       @topic = Topic.find_by(id: params[:id])
       @zone = @topic.zone if !@topic.nil?
-      #@notes = @topic.notes if !@topic.nil?
-      @base_url = "/topic?id=#{@topic.id}" if !@topic.nil?
-      @notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
+      if !@topic.nil?
+        @base_url = "/topic?id=#{@topic.id}"
+        @notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
+      end
     end
 end

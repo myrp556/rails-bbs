@@ -1,4 +1,5 @@
 class ZoneController < ApplicationController
+  include PageHelper
   # get zone from id, and topics
   # @zone
   # @topics
@@ -17,11 +18,6 @@ class ZoneController < ApplicationController
 
   def main
     @url = new_topic_url(zone_id: @zone.id)
-    @page = params[:page]
-    if @page.nil?
-      @page = 0
-    end
-
     @topic = @zone.topics.new
   end
 
@@ -65,7 +61,7 @@ class ZoneController < ApplicationController
       @topic.save
       @note.save
     else
-      flash[:danger] = 'update not valid'
+      flash[:danger] = make_error_message(@note)
     end
       redirect_to topic_url(id: @topic.id)
   end
@@ -74,7 +70,7 @@ class ZoneController < ApplicationController
     if @topic.destroy
       redirect_to zone_url(id: @zone.id)
     else
-      flash[:dange] = 'delete topic faild! ' + @topic.errors.full_messages[0]
+      flash[:danger] = make_error_message(@topic)
       redirect_to zone_url(id: @zone.id)
     end
   end
@@ -82,7 +78,10 @@ class ZoneController < ApplicationController
   private
     def pre_action_zone
       @zone = Zone.find_by(id: params[:id])
-      @topics = @zone.topics if !@zone.nil?
+      if !@zone.nil?
+        @base_url = "/zone?id#{@zone.id}"
+        @topics = make_up_page(@zone.topics, Settings.topic_lines_per_page)
+      end
     end
 
     def pre_action_topic
@@ -105,7 +104,7 @@ class ZoneController < ApplicationController
 
     def require_privilege
       if @current_user.nil? or @topic.nil? or @topic.user.id != @current_user.id
-        flash[:danger] = '没有操作权限!'
+        flash[:danger] = t :require_privilege
         redirect_back
         return
       end
