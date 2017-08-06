@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   patch '/user_passwd' => 'users#update_passwd'
   patch '/user_detail' => 'users#update_detail'
   get '/user_detail' => 'users#detail'
+  post '/user_icon' => 'users#update_icon'
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'

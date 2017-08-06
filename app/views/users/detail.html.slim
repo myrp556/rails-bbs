@@ -1,26 +1,36 @@
 h1 
   | user#detail
-= form_for @user, url: user_detail_url(id: @user.id) do |f|
-  = f.label t :user_name
-  = f.text_field :user_name, class: "form-control"
+.row
+  .col-md-4
+    = form_for :icon, url: "/user_icon?id=#{@user.id}" do |f|
 
-  = f.label t :name
-  = f.text_field :name, class: "form-control"
+      = image_tag "icon/#{@user.icon}"
+      = f.file_field :file, class: "form-control"
 
-  = f.label t :num
-  = f.text_field :number, class: "form-control"
+      = f.submit t(:change), class: 'btn btn-primary'
 
-  = f.label t :mail
-  = f.text_field :mail, class: "form-control"
+  .col-md-8
+    = form_for @user, url: user_detail_url(id: @user.id) do |f|
+      = f.label t :user_name
+      = f.text_field :user_name, class: "form-control"
 
-  hr
+      = f.label t :name
+      = f.text_field :name, class: "form-control"
 
-  = f.label t :password
-  = f.password_field :password, class: "form-control"
+      = f.label t :num
+      = f.text_field :number, class: "form-control"
 
-  = f.label t :password_confirmation
-  = f.password_field :password_confirmation, class: "form-control"
+      = f.label t :mail
+      = f.text_field :mail, class: "form-control"
 
-  hr
+      hr
 
-  = f.submit t(:change) , class: "btn btn-primary"
+      = f.label t :password
+      = f.password_field :password, class: "form-control"
+
+      = f.label t :password_confirmation
+      = f.password_field :password_confirmation, class: "form-control"
+
+      hr
+
+      = f.submit t(:change) , class: "btn btn-primary"

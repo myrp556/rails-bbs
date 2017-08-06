@@ -21,7 +21,7 @@ class UsersController < ApplicationController
   end
 
   def update_detail
-    if @user.update_attributes(user_params)
+    if @user.update_attributes(params_without_icon(user_params))
       flash[:success] = t :update_success
       redirect_to user_detail_url(id: @user.id)
     else
@@ -30,14 +30,36 @@ class UsersController < ApplicationController
     end
   end
 
+  def update_icon
+    icon = icon_params[:file]
+    puts icon
+    if valid_uploaded_file?(icon) and valid_image_file?(icon)
+      file_name = update_public_icon(@user.icon, icon)
+      @user.update(icon: file_name)
+
+      flash[:success] = :update_success
+      redirect_to user_detail_url(id: @user.id)
+    else
+      flash[:danger] = t :invalid_icon_file
+      render 'detail'
+    end
+  end
+
   def destroy
     #@user = User.find(params[:id])
+    delete_public_icon(@user.icon)
+    @user.destroy
+
   end
 
   private
     def user_params
       params.require(:user).permit(:user_name, :name, :mail, :number, \
-                                  :password, :password_confirmation)
+                                  :password, :password_confirmation, :icon)
+    end
+
+    def icon_params
+      params.require(:icon).permit(:file)
     end
 
     def require_user

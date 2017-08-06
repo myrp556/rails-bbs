@@ -41,6 +41,9 @@ zh:
   floor: "楼"
   author: "作者"
 
+  invalid_icon_file: "不正确的图标文件!"
+  invalid_image_file: "不正确的图片文件!"
+
   activerecord:
     errors:
       messages:

@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   validates :password, presence: true, allow_nil: true, \
     length: {in:6..30}
 
+  validates :icon, presence:true, allow_nil: true
+
   has_secure_password
 
   class << self

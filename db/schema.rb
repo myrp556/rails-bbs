@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170803093418) do
+ActiveRecord::Schema.define(version: 20170806041116) do
+
+  create_table "hexes", force: :cascade do |t|
+    t.string   "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
 # Could not dump table "notes" because of following NoMethodError
 #   undefined method `[]' for nil:NilClass
@@ -30,6 +36,7 @@ ActiveRecord::Schema.define(version: 20170803093418) do
     t.datetime "updated_at",      null: false
     t.string   "password_digest"
     t.string   "remember_digest"
+    t.string   "icon"
   end
 
   create_table "zones", force: :cascade do |t|
