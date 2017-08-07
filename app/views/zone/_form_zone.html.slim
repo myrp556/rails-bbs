@@ -1,0 +1,5 @@
+= form_for @zone, url: @url do |f|
+  = f.text_field :name, class: "form-control"
+  = f.text_field :description, class: "form-control"
+
+  = f.submit t :submit

@@ -30,6 +30,9 @@ module PageHelper
     end
   end
   def page_all(xxoo, lines_per_page)
+    if xxoo.nil? or xxoo.size==0
+      return 1
+    end
     t = xxoo.size / lines_per_page
     if xxoo.size % lines_per_page > 0
       t += 1

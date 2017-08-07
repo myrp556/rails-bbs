@@ -3,17 +3,18 @@ class ZoneController < ApplicationController
   # get zone from id, and topics
   # @zone
   # @topics
-  before_action :pre_action_zone, only: [:main]
+  before_action :pre_action_zone, only: [:main, :edit_zone, :update_zone, :destroy_zone, :update_icon]
   # get topic from id, and get zone from zone_id or from topic
   # @topic
   # @zone
   before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
   # require @zone, or redirect
-  before_action :require_content_zone, only: [:main, :create_topic]
+  before_action :require_content_zone, only: [:main, :create_topic, :edit_zone, :update_zone, :destroy_zone, :update_icon]
   # require @topic, or redirect
-  before_action :require_content_topic, except: [:main, :create_topic]
+  #before_action :require_content_topic, except: [:main, :create_topic, :new_zone, :create_zone]
+  before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic]
   before_action :get_login
-  before_action :require_login, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
+  before_action :require_login, except: [:main]
   before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
   def main
@@ -21,9 +22,59 @@ class ZoneController < ApplicationController
     @topic = @zone.topics.new
   end
 
+  def new_zone
+    @url = "/new_zone"
+    @zone = Zone.new
+  end
+  def create_zone
+    @zone = Zone.new(permit_params_zone(params))
+    if @zone.save
+      flash[:success] = t :create_success
+      redirect_to zone_url(id: @zone.id)
+    else
+      flash[:danger] = make_error_message(@zone)
+      render 'new_zone'
+    end
+  end
+  def edit_zone
+    @url = update_zone_url(id: @zone.id)
+  end
+  def update_zone
+    if @zone.update_attributes(permit_params_zone(params))
+      flash[:success] = t :update_success
+      redirect_to zone_url(id: @zone.id)
+    else
+      flash[:danger] = make_error_message(@zone)
+      render 'edit_zone'
+    end
+  end
+
+  def destroy_zone
+    if @zone.destroy
+      flash[:success] = t :delete_success
+      redirect_to root_url
+    else
+      flash[:danger] = make_error_message(@zone)
+      redirect_to zone_url(id: @zone.id)
+    end
+  end
+  def update_icon
+    icon = icon_params[:file]
+    if valid_uploaded_file?(icon) and valid_image_file?(icon)
+      file_name = update_public_icon(@zone.icon, icon)
+      @zone.update(icon: file_name)
+
+      flash[:success] = t :update_success
+      redirect_to zone_url(id: @zone.id)
+    else
+      flash[:danger] = t :invalid_icon_file
+      render 'edit_topic'
+    end
+  end
+
   def create_topic
     @topic = @zone.topics.new
-    ps = permit_params(params)
+    ps = permit_params_topic(params)
     @topic.topic_detail = ps[:topic_detail]
     if @topic.save
       @note = @topic.notes.new
@@ -53,7 +104,7 @@ class ZoneController < ApplicationController
   end
 
   def update_topic
-    ps = permit_params(params)
+    ps = permit_params_topic(params)
     @note = @topic.notes[0]
     @topic.topic_detail = ps[:topic_detail]
     @note.note_detail = ps[:note_detail]
@@ -79,7 +130,7 @@ class ZoneController < ApplicationController
     def pre_action_zone
       @zone = Zone.find_by(id: params[:id])
       if !@zone.nil?
-        @base_url = "/zone?id#{@zone.id}"
+        @base_url = "/zone?id=#{@zone.id}"
         @topics = make_up_page(@zone.topics, Settings.topic_lines_per_page)
       end
     end
@@ -139,7 +190,10 @@ class ZoneController < ApplicationController
       end
     end
 
-    def permit_params(params)
+    def permit_params_zone(params)
+      params.require(:zone).permit(:name, :description)
+    end
+    def permit_params_topic(params)
       params.require(:topic).permit(:topic_detail, :note_detail)
     end
 end

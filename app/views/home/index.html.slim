@@ -15,3 +15,11 @@ h1 home home
     small
       = zone.description
 
+    a href="/edit_zone?id=#{zone.id}"
+      | edit
+    a href="/delete_zone?id=#{zone.id}"
+      | delete
+
+a href="/new_zone"
+  | new zone
+

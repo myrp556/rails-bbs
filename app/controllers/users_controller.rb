@@ -37,7 +37,7 @@ class UsersController < ApplicationController
       file_name = update_public_icon(@user.icon, icon)
       @user.update(icon: file_name)
 
-      flash[:success] = :update_success
+      flash[:success] = t :update_success
       redirect_to user_detail_url(id: @user.id)
     else
       flash[:danger] = t :invalid_icon_file

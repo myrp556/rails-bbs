@@ -26,6 +26,14 @@ Rails.application.routes.draw do
   get '/zone' => 'zone#main'
   get '/topic' => 'topic#main'
 
+  get '/new_zone' => 'zone#new_zone'
+  post '/new_zone' => 'zone#create_zone'
+  get '/delete_zone' => 'zone#destroy_zone'
+  get '/edit_zone' => 'zone#edit_zone'
+  patch '/update_zone' => 'zone#update_zone'
+  get '/delete_zone' => 'zone#destroy_zone'
+  post '/zone_icon' => 'zone#update_icon'
+
   post '/new_topic' => 'zone#create_topic'
   get '/delete_topic' => 'zone#destroy_topic'
   get '/edit_topic' => 'zone#edit_topic'
