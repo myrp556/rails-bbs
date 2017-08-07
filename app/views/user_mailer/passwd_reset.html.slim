@@ -1,0 +1,4 @@
+h1 
+  |Password Reset
+p
+  = link_to "reset", password_reset_url(token: @user.reset_token, mail: @user.mail)

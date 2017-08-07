@@ -16,6 +16,11 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   get '/logout' => 'session#destroy', as: :logout
 
+  get '/passwd_reset' => 'passwd_reset#main'
+  post '/passwd_reset' => 'passwd_reset#create'
+  get '/password_reset' => 'passwd_reset#receive'
+  post '/password_reset' => 'passwd_reset#reset'
+
   get '/user_info' => 'user#info'
 
   get '/zone' => 'zone#main'

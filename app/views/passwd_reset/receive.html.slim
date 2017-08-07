@@ -1,0 +1,10 @@
+h1
+  |reset password
+
+= form_for @user, url: "/password_reset" do |f|
+  = hidden_field_tag :mail, @user.mail
+
+  = f.password_field :password, class: "form-control"
+  = f.password_field :password_confirmation, class: "form-control"
+
+  = f.submit t :submit

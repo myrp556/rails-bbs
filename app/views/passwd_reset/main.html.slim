@@ -1,0 +1,7 @@
+h1
+  |paddwd#reset
+
+= form_for :passwd_reset, url: "passwd_reset" do |f|
+  = f.text_field :user_name, class: "form-control"
+  = f.text_field :mail, class: "form-control"
+  = f.submit t :submit

@@ -15,6 +15,7 @@ zh:
   delete: "删除"
   update: "更新"
   change: "更改"
+  submit: "提交"
   download: "下载"
   upload: "上传"
   update_success: "更新成功"
@@ -25,6 +26,8 @@ zh:
   login_first: "请先登录"
   error: "错误"
   not_open: "暂不开放"
+  passwd_reset_email_set: "重置密码邮件已发送"
+  user_not_found: "未找到用户"
 
   user_name: "用户名"
   name: "名称ID"
