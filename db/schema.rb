@@ -11,7 +11,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807062845) do
+ActiveRecord::Schema.define(version: 20170811025251) do
+
+  create_table "agents", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "user_id"
+    t.integer  "zone_id"
+  end
+
+  add_index "agents", ["user_id"], name: "index_agents_on_user_id"
+  add_index "agents", ["zone_id"], name: "index_agents_on_zone_id"
 
   create_table "ckeditor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
