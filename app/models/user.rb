@@ -23,6 +23,7 @@ class User < ActiveRecord::Base
 
   validates :icon, presence:true, allow_nil: true
 
+  #has_many :zones
   has_many :topics
   has_many :notes
 

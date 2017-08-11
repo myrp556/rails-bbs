@@ -3,7 +3,7 @@ class CreateZones < ActiveRecord::Migration
     create_table :zones do |t|
       t.string :name
       t.text :description
-      t.icon :string
+      t.string :icon
 
       t.timestamps null: false
     end

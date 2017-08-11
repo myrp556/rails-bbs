@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170806153322) do
+ActiveRecord::Schema.define(version: 20170807062845) do
 
   create_table "ckeditor_assets", force: :cascade do |t|
     t.string   "data_file_name",               null: false
@@ -73,11 +73,17 @@ ActiveRecord::Schema.define(version: 20170806153322) do
     t.string   "remember_digest"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
+    t.integer  "topic_id"
+    t.integer  "note_id"
   end
+
+  add_index "users", ["note_id"], name: "index_users_on_note_id"
+  add_index "users", ["topic_id"], name: "index_users_on_topic_id"
 
   create_table "zones", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
+    t.string   "icon"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
