@@ -15,4 +15,4 @@
 //= require turbolinks
 //= require_tree ./bootstrap/
 //= require ckeditor/init
-//= require_tree .
+// require_tree .

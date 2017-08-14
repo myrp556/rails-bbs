@@ -27,7 +27,7 @@ class ZoneController < ApplicationController
     if !@zone.nil?
       @base_url = "/zone?id=#{@zone.id}"
       #@topics = make_up_page(@topics, Settings.topic_lines_per_page)
-      @topics = @zone.topics.order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
+      @topics = @topics.order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
       @topic = @zone.topics.new
     end 
   end
@@ -136,6 +136,16 @@ class ZoneController < ApplicationController
     end
   end
 
+  def get_zones
+    ret = []
+    for zone in Zone.all
+      ret.push({'name': zone.name, 'id': zone.id})
+    end
+    respond_to do |format|
+      format.json { render json:  ret }
+    end
+  end
+
   private
     def pre_action_zone
       @zone = Zone.find_by(id: params[:id])
@@ -150,22 +160,22 @@ class ZoneController < ApplicationController
 
     def require_content_zone
       if @zone.nil?
-        redirect_to root_url
+        respond_to do |format|
+          format.html { redirect_to '/' }
+          format.json { render json: {'message': 'zone_not_found'}, status: "error"}
+        end
+        return
       end
     end
 
     def require_content_topic
      if @topic.nil?
-        redirect_to zone_url(id: @zone.id)
-     end
-    end
-
-    def require_privilege
-      if @current_user.nil? or @topic.nil? or @topic.user.id != @current_user.id
-        flash[:danger] = t :require_privilege
-        redirect_back
+        respond_to do |format|
+          format.html { redirect_to zone_url(id: @zone.id) }
+          format.json { render json: {'message': "topic not found"}, status: "error"}
+        end
         return
-      end
+     end
     end
 
     def redirect_back
@@ -191,9 +201,10 @@ class ZoneController < ApplicationController
 
     def require_privilege
       if @current_user.nil? or !@current_user.has_privilege?(@topic)
-        flash[:danger] = t :require_privilege
-        redirect_to zone_url(id: @zon_url)
-        return
+        respond_to do |format|
+          format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
+          format.json { render(json: {"message": "require privilege"}, status: "error") and return}
+        end
       end
     end
 

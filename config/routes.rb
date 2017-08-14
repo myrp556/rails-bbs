@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   patch '/user_detail' => 'users#update_detail'
   get '/user_detail' => 'users#detail'
   post '/user_icon' => 'users#update_icon'
+  get '/user_manage' => 'users#manage'
+  
+  get '/user_manage_zones' => 'users#get_user_manage_zones'
+  post '/user_manage_zones' => 'users#post_user_manage_zones'
+  get '/zones' => 'zone#get_zones'
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'

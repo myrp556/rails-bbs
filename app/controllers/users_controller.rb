@@ -60,6 +60,34 @@ class UsersController < ApplicationController
 
   end
 
+  def manage
+
+  end
+
+  def get_user_manage_zones
+    ret = []
+    for zone in @user.zones
+      ret.push({'name': zone.name, 'id': zone.id})
+    end
+    respond_to do |format|
+      format.json { render json: ret }
+    end
+  end
+
+  def post_user_manage_zones
+    for zone in @user.zones
+      @user.zones.delete(zone)
+    end
+    if !params[:ids].nil? and params[:ids]
+      for zone_id in params[:ids]
+        @user.zones << Zone.find_by(id: zone_id)
+      end
+    end
+    respond_to do |format|
+      format.json { render json: {'message': 'update success'}}
+    end
+  end
+
   private
     def user_params
       params.require(:user).permit(:user_name, :name, :mail, :number, \
@@ -73,7 +101,11 @@ class UsersController < ApplicationController
     def require_user
       @user=User.find_by(id: params[:id])
       if @user.nil?
-        redirect_to '/'
+        respond_to do |format|
+          format.html { redirect_to '/' and return }
+          format.json { render(json: {'message': 'no user'}, status: 'error') and return }
+        end
+        #redirect_to '/'
       end
     end
 

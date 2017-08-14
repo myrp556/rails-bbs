@@ -16,6 +16,8 @@ table.table
         = t :mail
       th
         |-
+      th
+        |-
   tbody
     - for user in @users
       tr
@@ -28,4 +30,7 @@ table.table
         td
           a href="#{user_detail_url(id: user.id)}"
             = t :detail
+        td
+          a href="#{user_manage_url(id: user.id)}"
+            = t :manage
 

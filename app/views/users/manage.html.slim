@@ -1,0 +1,9 @@
+= javascript_include_tag 'users/manage'
+h1
+  | user#manage
+
+.zone-manage id="#{@user.id}"
+  .manage-zones
+
+  button.btn.btn-primary.post-zone-manage
+    = t :update
