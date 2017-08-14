@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
   #patch '/user/update' => 'users#update'
+  get '/users' => 'users#list'
   get '/user/delete' => 'users#destroy'
   get '/user/passwd' => 'users#passwd'
   patch '/user_passwd' => 'users#update_passwd'

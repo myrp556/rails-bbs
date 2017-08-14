@@ -12,6 +12,8 @@ p
 p
   = @topic.topic_detail
 
+= will_paginate @notes, :previous_label => '<', :next_label => '>'
+
 - @notes.each do |note|
   - if note.valid?
     p
@@ -24,7 +26,9 @@ p
       a href="#{note.edit_url}"
         | edit
 
-= render 'layouts/page_footer'
+= will_paginate @notes, :next_label => '>', :previous_label => '<'
+
+//= render 'layouts/page_footer'
 
 hr
 = render 'note_form'

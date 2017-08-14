@@ -25,13 +25,11 @@ module HexHelper
   # update a hex record with url, if it exist!
   def update_hex(url1, url2)
     hex = Hex.find_by(url: url1)
-    puts url1, url2, hex
-    puts ''
     if hex.nil?
-      r = Hex.create(url: url1)
+      r = Hex.create(url: url2)
       puts r
     else
-      hex.update(url: url)
+      hex.update(url: url2)
     end
     url2
   end

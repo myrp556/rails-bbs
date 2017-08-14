@@ -1,0 +1,31 @@
+h1
+  | users#list
+
+= form_tag users_url, method: :get do
+  = text_field_tag :search, params[:search]
+  = submit_tag t :search
+
+table.table
+  thead
+    tr
+      th
+        = t :name
+      th
+        = t :user_name
+      th
+        = t :mail
+      th
+        |-
+  tbody
+    - for user in @users
+      tr
+        td
+          = user.name
+        td
+          = user.user_name
+        td
+          = user.mail
+        td
+          a href="#{user_detail_url(id: user.id)}"
+            = t :detail
+

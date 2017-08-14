@@ -3,7 +3,8 @@ nav.page-footer aria-label="page navigation"
 
     - if !@page_start.nil?
       li
-        a href="#{@base_url}&page=#{@page_start}"
+        //a href="#{@base_url}&page=#{@page_start}"
+        = link_to request.original_url, :page => @page_start
           span
             |&laquo;
     - if !@page_previous.nil?

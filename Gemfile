@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gem 'config'
 gem 'bootstrap_form'
+gem 'will_paginate'
+gem 'bootstrap-will_paginate'
 # add ckedirot to use it!
 gem 'ckeditor'
 # this is for image upload!

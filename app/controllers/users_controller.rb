@@ -1,11 +1,19 @@
 class UsersController < ApplicationController
-  before_action :require_user, except: [:new, :create]
+  before_action :require_user, except: [:new, :create, :list]
   before_action :get_login, except: [:new, :create]
   before_action :require_login, except: [:new, :create]
 
   def new
     @user = User.new
     @url = '/signup'
+  end
+
+  def list
+    if params[:search]
+      @users = User.where('name LIKE ? OR user_name LIKE ? OR mail LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%")
+    else
+      @users = User.all
+    end
   end
 
   def create
@@ -76,7 +84,7 @@ class UsersController < ApplicationController
     def require_login
       if @current_user.nil?
         flash[:info] = t :login_first
-        redirect_to root_url
+        redirect_to login_url
       end
     end
 

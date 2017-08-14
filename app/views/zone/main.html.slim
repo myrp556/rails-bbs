@@ -1,6 +1,12 @@
 h1
   | zone#home
 = t :hello
+= form_tag zone_url(id: @zone.id), method: :get do
+  = hidden_field_tag :id, @zone.id
+  = text_field_tag :search, params[:search]
+  = submit_tag t :search, class: "btn btn-primary"
+
+= will_paginate @topics
 - if !@topics.nil?
   - @topics.each do |topic|
     - if topic.valid?
@@ -12,7 +18,8 @@ h1
           | edit
         a href="/delete_topic?id=#{topic.id}"
           | delete
+= will_paginate @topics
 
 = render 'form_topic'
 
-= render 'layouts/page_footer'
+//= render 'layouts/page_footer'

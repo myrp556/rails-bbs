@@ -19,7 +19,17 @@ class ZoneController < ApplicationController
 
   def main
     @url = new_topic_url(zone_id: @zone.id)
-    @topic = @zone.topics.new
+    if params[:search]
+      @topics = @zone.topics.where('topic_detail LIKE ?', "%#{params[:search]}%")
+    else
+      @topics = @zone.topics
+    end
+    if !@zone.nil?
+      @base_url = "/zone?id=#{@zone.id}"
+      #@topics = make_up_page(@topics, Settings.topic_lines_per_page)
+      @topics = @zone.topics.order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
+      @topic = @zone.topics.new
+    end 
   end
 
   def new_zone
@@ -129,10 +139,7 @@ class ZoneController < ApplicationController
   private
     def pre_action_zone
       @zone = Zone.find_by(id: params[:id])
-      if !@zone.nil?
-        @base_url = "/zone?id=#{@zone.id}"
-        @topics = make_up_page(@zone.topics, Settings.topic_lines_per_page)
-      end
+      
     end
 
     def pre_action_topic

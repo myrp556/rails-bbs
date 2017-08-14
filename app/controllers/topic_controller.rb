@@ -24,6 +24,12 @@ class TopicController < ApplicationController
   def main
     @url = new_reply_url(topic_id: @topic.id)
     @note = @topic.notes.new
+    if !@topic.nil?
+      @base_url = "/topic?id=#{@topic.id}"
+      #@notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
+      @notes = @topic.notes.paginate(page: params[:page], per_page: Settings.note_lines_per_page)
+      #@notes = @topic.notes
+    end
   end
 
 ## actions for notes
@@ -142,9 +148,5 @@ class TopicController < ApplicationController
     def pre_action_topic
       @topic = Topic.find_by(id: params[:id])
       @zone = @topic.zone if !@topic.nil?
-      if !@topic.nil?
-        @base_url = "/topic?id=#{@topic.id}"
-        @notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
-      end
     end
 end
