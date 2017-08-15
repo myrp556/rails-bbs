@@ -58,10 +58,11 @@ ActiveRecord::Schema.define(version: 20170811025251) do
   create_table "topics", force: :cascade do |t|
     t.string   "topic_detail"
     t.string   "note_detail"
+    t.boolean  "is_top",       default: false
     t.integer  "zone_id"
     t.integer  "user_id"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
     t.integer  "floor_count",  default: 0
   end
 

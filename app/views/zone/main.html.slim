@@ -7,6 +7,12 @@ h1
   = submit_tag t :search, class: "btn btn-primary"
 
 = will_paginate @topics
+- if !@top_topics.nil?
+  - @top_topics.each do |topic|
+    - if topic.valid?
+      a href="#{topic_url(id: topic.id)}"
+        = "#{topic.notes.size} #{topic.topic_detail}"
+  
 - if !@topics.nil?
   - @topics.each do |topic|
     - if topic.valid?
@@ -18,6 +24,12 @@ h1
           | edit
         a href="/delete_topic?id=#{topic.id}"
           | delete
+        - if topic.is_top
+          a href="#{cancle_top_topic_url(id: topic.id)}"
+            | cancle top
+        - else
+          a href="#{set_top_topic_url(id: topic.id)}"
+            | set top
 = will_paginate @topics
 
 = render 'form_topic'

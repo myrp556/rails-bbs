@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   get '/login' => 'sessions#new', as: :login
   post '/login' => 'sessions#create'
-  get '/logout' => 'session#destroy', as: :logout
+  get '/logout' => 'sessions#destroy', as: :logout
 
   get '/passwd_reset' => 'passwd_reset#main'
   post '/passwd_reset' => 'passwd_reset#create'
@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   patch '/update_zone' => 'zone#update_zone'
   get '/delete_zone' => 'zone#destroy_zone'
   post '/zone_icon' => 'zone#update_icon'
+  get '/set_top_topic' => 'zone#set_top_topic'
+  get '/cancle_top_topic' => 'zone#cancle_top_topic'
 
   post '/new_topic' => 'zone#create_topic'
   get '/delete_topic' => 'zone#destroy_topic'

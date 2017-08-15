@@ -1,5 +1,5 @@
 class ZoneController < ApplicationController
-  include PageHelper
+  include PrivilegeHelper
   # get zone from id, and topics
   # @zone
   # @topics
@@ -7,15 +7,17 @@ class ZoneController < ApplicationController
   # get topic from id, and get zone from zone_id or from topic
   # @topic
   # @zone
-  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
+  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic, :set_top_topic, :cancle_top_topic]
   # require @zone, or redirect
   before_action :require_content_zone, only: [:main, :create_topic, :edit_zone, :update_zone, :destroy_zone, :update_icon]
   # require @topic, or redirect
   #before_action :require_content_topic, except: [:main, :create_topic, :new_zone, :create_zone]
-  before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic]
+  before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic, :set_top_topic, :cancle_top_topic]
   before_action :get_login
   before_action :require_login, except: [:main]
-  before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
+  before_action :self_require, only: [:edit_topic, :update_topic]
+  before_action :manage_require, only: [:destroy_topic, :set_top_topic, :cancle_top_topic]
+  #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
   def main
     @url = new_topic_url(zone_id: @zone.id)
@@ -27,7 +29,10 @@ class ZoneController < ApplicationController
     if !@zone.nil?
       @base_url = "/zone?id=#{@zone.id}"
       #@topics = make_up_page(@topics, Settings.topic_lines_per_page)
-      @topics = @topics.order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
+      @topics = @topics.where("is_top = ?", FALSE).order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
+      if params[:page].nil? or params[:page]==1
+        @top_topics = @zone.topics.where('is_top = ?', TRUE)
+      end
       @topic = @zone.topics.new
     end 
   end
@@ -136,6 +141,16 @@ class ZoneController < ApplicationController
     end
   end
 
+  def set_top_topic
+    @topic.update(is_top: true)
+    redirect_to zone_url(id: @zone.id)
+  end
+
+  def cancle_top_topic
+    @topic.update(is_top: false)
+    redirect_to zone_url(id: @zone.id)
+  end
+
   def get_zones
     ret = []
     for zone in Zone.all
@@ -155,7 +170,7 @@ class ZoneController < ApplicationController
     def pre_action_topic
       @topic = Topic.find_by(id: params[:id])
       @zone = Zone.find_by(id: params[:zone_id])
-      @zone = @topic.zone if !@topic.nil?
+      @zone = @topic.zone if @zone.nil? and !@topic.nil?
     end
 
     def require_content_zone
@@ -181,9 +196,11 @@ class ZoneController < ApplicationController
     def redirect_back
       if !@topic.nil?
         redirect_to topic_url(id: @topic.id)
+        return
       end
       if !@zone.nil?
         redirect_to zone_url(id: @zone.id)
+        return
       end
     end
 
@@ -199,12 +216,23 @@ class ZoneController < ApplicationController
       end
     end
 
-    def require_privilege
-      if @current_user.nil? or !@current_user.has_privilege?(@topic)
+    def self_require
+      if !is_user_self?(@topic.user)
         respond_to do |format|
           format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
           format.json { render(json: {"message": "require privilege"}, status: "error") and return}
         end
+        return
+      end
+    end
+
+    def manage_require
+      if !is_user_self?(@topic.user) and !is_manage_zone?(@zone) and !is_super_user?
+        respond_to do |format|
+          format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
+          format.json { render(json: {"message": "require privilege"}, status: "error") and return}
+        end
+        return
       end
     end
 

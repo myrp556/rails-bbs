@@ -1,6 +1,6 @@
 class TopicController < ApplicationController
   include PageHelper
-
+  include PrivilegeHelper
   # get topic form id, and get zone, notes
   # params
   # @topic
@@ -19,7 +19,9 @@ class TopicController < ApplicationController
   before_action :require_content_note, except: [:main, :create_note]
   before_action :get_login
   before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note]
-  before_action :require_privilege, only: [:edit_note, :update_note, :destroy_note]
+  before_action :edit_require, only: [:edit_note, :update_note]
+  before_action :delete_require, only: [:destroy_note]
+  #before_action :require_privilege, only: [:edit_note, :update_note, :destroy_note]
 
   def main
     @url = new_reply_url(topic_id: @topic.id)
@@ -121,11 +123,17 @@ class TopicController < ApplicationController
       end
     end
 
-    def require_privilege
-      if @current_user.nil? or !@current_user.has_privilege?(@note)
+    def edit_require
+      if !is_user_self?(@note.user)
         flash[:danger] = t :require_privilege
         redirect_back
-        return
+      end
+    end
+
+    def delete_require
+      if !is_user_self?(@note.user) and !is_manage_zone?(@zone) and !is_super_user?
+        flash[:danger] = t :require_privilege
+        redirect_back
       end
     end
 
