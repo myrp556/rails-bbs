@@ -1,9 +1,63 @@
 = javascript_include_tag 'users/manage'
+= stylesheet_link_tag 'users/manage'
 h1
   | user#manage
 
+h2
+  = t :manage_zone
 .zone-manage id="#{@user.id}"
   .manage-zones
 
   button.btn.btn-primary.post-zone-manage
     = t :update
+    
+hr
+h2
+  = t :zone_ball
+- for zone in @current_user.zones
+  .zone-ball id="#{zone}"
+    .ball-status data-toggle='modal' data-target='#modal'
+      span
+        strong
+          = zone.name
+          |:
+      span
+        = ' '
+      span.ball.label id="#{zone.id}"
+        = t :normal
+      span.ball-duration id="#{zone.id}"
+    .ball-manage
+      .zone id="#{zone.id}"
+      input.ball-time.ball-day value="0" id="#{zone.id}"
+      span
+        = t :day
+      input.ball-time.ball-hour value="0" id="#{zone.id}"
+      span
+        = t :hour
+      input.ball-time.ball-minute value="0" id="#{zone.id}"
+      span
+        = t :minute
+      
+      .btn.btn-default.set-ball id="#{zone.id}"
+        = t :set
+
+.modal.fade id='modal'
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close data-dismiss='modal'
+          span
+            |&times;
+        h4.model-title
+          | title
+      .modal-body
+          | title
+      
+      .modal-footer
+        button.btn.btn-default data-dismiss='modal' type='button'
+          = t :close
+        button.btn.btn-primary.modal-set data-dismiss='modal' type='button'
+          = t :set
+      
+        
+     

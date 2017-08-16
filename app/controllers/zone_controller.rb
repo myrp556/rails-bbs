@@ -15,8 +15,10 @@ class ZoneController < ApplicationController
   before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic, :set_top_topic, :cancle_top_topic]
   before_action :get_login
   before_action :require_login, except: [:main]
-  before_action :self_require, only: [:edit_topic, :update_topic]
-  before_action :manage_require, only: [:destroy_topic, :set_top_topic, :cancle_top_topic]
+  before_action :edit_require, only: [:edit_topic, :update_topic]
+  before_action :delete_require, only: [:destroy_topic]
+  before_action :manage_require, only: [:set_top_topic, :cancle_top_topic]
+  before_action :require_no_ball, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
   #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
   def main
@@ -34,7 +36,7 @@ class ZoneController < ApplicationController
         @top_topics = @zone.topics.where('is_top = ?', TRUE)
       end
       @topic = @zone.topics.new
-    end 
+    end
   end
 
   def new_zone
@@ -164,7 +166,7 @@ class ZoneController < ApplicationController
   private
     def pre_action_zone
       @zone = Zone.find_by(id: params[:id])
-      
+
     end
 
     def pre_action_topic
@@ -216,7 +218,7 @@ class ZoneController < ApplicationController
       end
     end
 
-    def self_require
+    def edit_require
       if !is_user_self?(@topic.user)
         respond_to do |format|
           format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
@@ -226,7 +228,7 @@ class ZoneController < ApplicationController
       end
     end
 
-    def manage_require
+    def delete_require
       if !is_user_self?(@topic.user) and !is_manage_zone?(@zone) and !is_super_user?
         respond_to do |format|
           format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
@@ -236,10 +238,33 @@ class ZoneController < ApplicationController
       end
     end
 
+    def manage_require
+      if !is_manage_zone?(@zone) and !is_super_user?
+        respond_to do |format|
+          format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }
+          format.json { render(json: {"message": "require privilege"}, status: "error") and return}
+        end
+        return
+      end
+    end
+
+    def require_no_ball
+      if has_ball?(@current_user, @zone.id)
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:balling_zone)) and redirect_to(zone_url(id: @zone.id)) and return }
+          format.json { render(json: {'message': 'balling zone'}, status: 'error') and return }
+        end
+      end
+    end
+
     def permit_params_zone(params)
       params.require(:zone).permit(:name, :description)
     end
     def permit_params_topic(params)
       params.require(:topic).permit(:topic_detail, :note_detail)
+    end
+
+    def icon_params
+      params.require(:icon).permit(:file)
     end
 end

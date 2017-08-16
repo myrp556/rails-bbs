@@ -21,6 +21,7 @@ class TopicController < ApplicationController
   before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note]
   before_action :edit_require, only: [:edit_note, :update_note]
   before_action :delete_require, only: [:destroy_note]
+  before_action :require_no_ball, only: [:create_note, :edit_note, :update_note, :destroy_note]
   #before_action :require_privilege, only: [:edit_note, :update_note, :destroy_note]
 
   def main
@@ -134,6 +135,15 @@ class TopicController < ApplicationController
       if !is_user_self?(@note.user) and !is_manage_zone?(@zone) and !is_super_user?
         flash[:danger] = t :require_privilege
         redirect_back
+      end
+    end
+
+    def require_no_ball
+      if has_ball?(@current_user, @zone.id)
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:balling_zone)) and redirect_back and return }
+          format.json { render(json: {'message': 'balling zone'}, status: 'error') and return }
+        end
       end
     end
 

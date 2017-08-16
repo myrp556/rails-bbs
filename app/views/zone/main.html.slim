@@ -1,6 +1,8 @@
 h1
   | zone#home
-= t :hello
+a href="#{edit_zone_url(id: @zone.id)}"
+  = t :edit
+  
 = form_tag zone_url(id: @zone.id), method: :get do
   = hidden_field_tag :id, @zone.id
   = text_field_tag :search, params[:search]

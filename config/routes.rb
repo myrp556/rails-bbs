@@ -13,7 +13,10 @@ Rails.application.routes.draw do
   get '/user_detail' => 'users#detail'
   post '/user_icon' => 'users#update_icon'
   get '/user_manage' => 'users#manage'
-  
+  get '/get_user_ball' => 'users#get_user_ball'
+  get '/set_user_ball' => 'users#set_user_ball'
+  get '/set_user_ball' => 'users#cancle_user_ball'
+
   get '/user_manage_zones' => 'users#get_user_manage_zones'
   post '/user_manage_zones' => 'users#post_user_manage_zones'
   get '/zones' => 'zone#get_zones'

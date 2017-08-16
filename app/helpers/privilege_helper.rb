@@ -18,4 +18,12 @@ module PrivilegeHelper
   def is_super_user?
     return false
   end
+
+  def has_ball?(user, zone_id)
+    ball = user.balls.find_by(zone_id: zone_id)
+    if !ball.nil? and ball.expire > Time.current()
+      return true
+    end
+    return false
+  end
 end

@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
   has_many :zones, through: :agents
   has_many :topics
   has_many :notes
+  has_many :balls
 
   has_secure_password
 

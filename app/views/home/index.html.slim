@@ -10,6 +10,8 @@ h1 home home
 
 - @zones.each do |zone|
   p
+    = image_tag "icon/#{zone.icon}"
+    
     a href="/zone?id=#{zone.id}"
       = zone.name
     small
@@ -22,4 +24,3 @@ h1 home home
 
 a href="/new_zone"
   | new zone
-
