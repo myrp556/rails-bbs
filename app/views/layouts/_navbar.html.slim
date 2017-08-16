@@ -10,7 +10,12 @@ nav.navbar.navbar-default
           a href="#"
             |link
       ul.nav.navbar-nav.navbar-right
-        - if @current_user
+        - if !@current_user.nil?
+          - if is_high_rank_user?
+            li
+              a href="#{users_url}"
+                = t :user_list
+                
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" role="button" href='#'
               = @current_user.name
@@ -18,12 +23,11 @@ nav.navbar.navbar-default
             ul.dropdown-menu
               li
                 a href="#{user_detail_url(id: @current_user)}"
-                  | 个人信息
+                  = t :personal_info
               li
                 a href="#{logout_url}"
-                  | 登出
+                  = t :logout
         - else
           li
             a href="#{login_url}"
-              | 登录
-
+              = t :login

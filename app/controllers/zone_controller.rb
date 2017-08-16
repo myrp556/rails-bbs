@@ -17,7 +17,7 @@ class ZoneController < ApplicationController
   before_action :require_login, except: [:main]
   before_action :edit_require, only: [:edit_topic, :update_topic]
   before_action :delete_require, only: [:destroy_topic]
-  before_action :manage_require, only: [:set_top_topic, :cancle_top_topic]
+  before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon]
   before_action :require_no_ball, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
   #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
@@ -43,19 +43,25 @@ class ZoneController < ApplicationController
     @url = "/new_zone"
     @zone = Zone.new
   end
+
   def create_zone
     @zone = Zone.new(permit_params_zone(params))
     if @zone.save
       flash[:success] = t :create_success
+      for user in User.where('rank = ?', 2)
+        user.zones << @zone
+      end
       redirect_to zone_url(id: @zone.id)
     else
       flash[:danger] = make_error_message(@zone)
       render 'new_zone'
     end
   end
+
   def edit_zone
     @url = update_zone_url(id: @zone.id)
   end
+
   def update_zone
     if @zone.update_attributes(permit_params_zone(params))
       flash[:success] = t :update_success
@@ -75,6 +81,7 @@ class ZoneController < ApplicationController
       redirect_to zone_url(id: @zone.id)
     end
   end
+
   def update_icon
     icon = icon_params[:file]
     if valid_uploaded_file?(icon) and valid_image_file?(icon)
@@ -238,7 +245,7 @@ class ZoneController < ApplicationController
       end
     end
 
-    def manage_require
+    def require_manage_zone
       if !is_manage_zone?(@zone) and !is_super_user?
         respond_to do |format|
           format.html { (flash[:danger] = (t :require_privilege)) and redirect_back and return }

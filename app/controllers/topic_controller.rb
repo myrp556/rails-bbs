@@ -1,5 +1,4 @@
 class TopicController < ApplicationController
-  include PageHelper
   include PrivilegeHelper
   # get topic form id, and get zone, notes
   # params

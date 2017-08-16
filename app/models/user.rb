@@ -21,6 +21,9 @@ class User < ActiveRecord::Base
   validates :password, presence: true, allow_nil: true, \
     length: {in:6..30}
 
+  validates :rank, presence: true, \
+    inclusion: {in: 0..2}
+
   validates :icon, presence:true, allow_nil: true
 
   has_many :agents
@@ -75,4 +78,13 @@ class User < ActiveRecord::Base
     end
     false
   end
+
+  def is_admin?
+    return self.rank > 1
+  end
+
+  def high_rank?
+    return self.rank > 0
+  end
+
 end

@@ -85,11 +85,11 @@ ActiveRecord::Schema.define(version: 20170815060323) do
     t.string   "name"
     t.string   "mail"
     t.string   "number"
-    t.integer  "rank"
+    t.integer  "rank",            default: 0
     t.integer  "zone_auth"
     t.string   "icon"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "password_digest"
     t.string   "remember_digest"
     t.string   "reset_digest"

@@ -36,6 +36,7 @@ zh:
   require_login: "需要登录"
   require_privilege: "需要权限"
   login_first: "请先登录"
+  fault_login: "不存在的用户或者错误的密码！"
   error: "错误"
   not_open: "暂不开放"
   passwd_reset_email_set: "重置密码邮件已发送"
@@ -56,6 +57,9 @@ zh:
   note_detail: "帖子内容"
   floor: "楼"
   author: "作者"
+  user_list: "用户列表"
+  ball: "禁言"
+  personal_info: "个人信息"
 
   invalid_icon_file: "不正确的图标文件!"
   invalid_image_file: "不正确的图片文件!"

@@ -3,7 +3,7 @@ module CustomHelper
 
   def make_error_message(model)
     if !model.errors.messages.nil?
-      "<p>" + I18n.t(model.errors.messages.keys()[0]) + "</p>" + model.errors.messages[model.errors.messages.keys()[0]][0]
+      I18n.t(model.errors.messages.keys()[0]) + model.errors.messages[model.errors.messages.keys()[0]][0]
     else
       'rua'
     end
@@ -97,11 +97,6 @@ module CustomHelper
     File.delete(ori_file) if File.exist?(ori_file)
     delete_hex(get_prefix_from_name(name))
     name
-  end
-
-  def params_without_icon(params)
-    params[:icon] = nil
-    params
   end
 
   def valid_uploaded_file?(file)

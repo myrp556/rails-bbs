@@ -5,7 +5,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
       t.string :mail
       t.string :number
-      t.integer :rank
+      t.integer :rank, default: 0
       t.integer :zone_auth
       t.string :icon
 

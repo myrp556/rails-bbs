@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
   include PrivilegeHelper
   before_action :require_user, except: [:new, :create, :list]
-  before_action :get_login, except: [:new, :create]
   before_action :require_login, except: [:new, :create]
-  #before_action :require_user, only: [:manage, :get_user_ball, :set_user_ball, :cancle_user_ball]
+  before_action :require_user_self, only: [:update_detail, :update_icon]
+  before_action :require_admin, only: [:destroy]
+  before_action :require_rank, only: [:list]
+  before_action :require_has_manage_or_rank, only: [:manage]
   before_action :require_zone, only: [:get_user_ball, :set_user_ball, :cancle_user_ball]
-  before_action :zone_manage_require, only: [:set_user_ball, :cancle_user_ball]
+  before_action :require_manage_zone, only: [:set_user_ball, :cancle_user_ball]
 
   def new
     @user = User.new
@@ -32,7 +34,7 @@ class UsersController < ApplicationController
   end
 
   def update_detail
-    if @user.update_attributes(params_without_icon(user_params))
+    if @user.update_attributes(user_update_params)
       flash[:success] = t :update_success
       redirect_to user_detail_url(id: @user.id)
     else
@@ -60,7 +62,7 @@ class UsersController < ApplicationController
     #@user = User.find(params[:id])
     delete_public_icon(@user.icon)
     @user.destroy
-
+    redirect_to user_list_url
   end
 
   def manage
@@ -92,41 +94,14 @@ class UsersController < ApplicationController
   end
 
   def get_user_ball
-    ball = @user.balls.find_by(zone_id: @zone.id)
-    duration_s = 0
-    if ball.nil? or ball.expire.nil?
-      message = t :normal
+    duration_s = get_ball_duration_s(@user, @zone.id)
+    if duration_s == ''
       status = 'normal'
+      message = t :normal
     else
-      if ball.expire < Time.zone.now
-        message = t :normal
-        status = 'normal'
-        ball.destroy
-      else
-        message = t :balling
-        status = 'balling'
-        second = (ball.expire - Time.current()).to_i
-        minute = second/60.to_i
-        hour = minute/60.to_i
-        day = hour/24.to_i
-        hour = hour - day*24.to_i
-        minute = minute - day*24*60.to_i - hour*60.to_i
-        if day == 0 and hour == 0
-          minute += 1
-        end
-        duration_s = ''
-        if t(:lang) == 'en'
-          duration_s += day>0 ? (day.to_s + 'day'.pluralize(day)) : ''
-          duration_s += hour>0 ? (hour.to_s + 'hour'.pluralize(hour)) : ''
-          duration_s += minute>0 ? (minute.to_s + 'minute'.pluralize(minute)) : ''
-        else
-          duration_s += day>0 ? (day.to_s + t(:day)) : ''
-          duration_s += hour>0 ? (hour.to_s + t(:hour)) : ''
-          duration_s += minute>0 ? (minute.to_s + t(:minute)) : ''
-        end
-      end
+      status = 'balling'
+      message = t :balling
     end
-
     respond_to do |format|
       format.json { render json: {'message': message, 'status': status, 'duration_s': duration_s, 'user_id': @user.id, 'zone_id': @zone.id} }
     end
@@ -158,7 +133,11 @@ class UsersController < ApplicationController
   private
     def user_params
       params.require(:user).permit(:user_name, :name, :mail, :number, \
-                                  :password, :password_confirmation, :icon)
+                                  :password, :password_confirmation)
+    end
+
+    def user_update_params
+      params.require(:user).permit(:mail, :password, :password_confirmation)
     end
 
     def icon_params
@@ -174,16 +153,43 @@ class UsersController < ApplicationController
           format.html { redirect_to '/' and return }
           format.json { render(json: {'message': 'no user'}, status: 'error') and return }
         end
-        #redirect_to '/'
       end
     end
 
-    def get_login
-      logged_in?
+    def require_user_self
+      if !is_user_self?(@user)
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:no_privilege)) and (redirect_to('/')) and return }
+        end
+      end
+    end
+
+    def require_rank
+      if !is_high_rank_user?
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:no_privilege)) and (redirect_to('/')) and return }
+        end
+      end
+    end
+
+    def require_has_manage_or_rank
+      if !has_zone_manage? and !is_high_rank_user?
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:require_privilege)) and (redirect_to('/')) and return}
+        end
+      end
+    end
+
+    def require_admin
+      if !is_super_user?
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:no_privilege)) and (redirect_to('/')) and return }
+        end
+      end
     end
 
     def require_login
-      if @current_user.nil?
+      if !logged_in?
         flash[:info] = t :login_first
         redirect_to login_url
       end
@@ -199,7 +205,7 @@ class UsersController < ApplicationController
       end
     end
 
-    def zone_manage_require
+    def require_manage_zone
         if !is_manage_zone?(@zone) and !is_super_user?
           respond_to do |format|
             format.html { (flash[:danger] = (t :require_privilege)) and redirect_to(user_manage_url(id: @user.id)) and return }

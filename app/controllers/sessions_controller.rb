@@ -1,6 +1,8 @@
 class SessionsController < ApplicationController
   def new
-
+    if logged_in?
+      redirect '/'
+    end
   end
 
   def create
@@ -10,7 +12,7 @@ class SessionsController < ApplicationController
       remember user
       redirect_to root_path
     else
-      flash.now[:danger] = '不存在的用户或者错误的密码！'
+      flash.now[:danger] = t :fault_login
       render 'new'
     end
   end
@@ -22,6 +24,6 @@ class SessionsController < ApplicationController
 
   private
   def user_params
-    
+
   end
 end

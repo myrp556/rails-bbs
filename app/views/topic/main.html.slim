@@ -31,4 +31,7 @@ p
 //= render 'layouts/page_footer'
 
 hr
-= render 'note_form'
+- if has_ball?(@current_user, @zone.id)
+  = render 'layouts/balling_form'
+- else
+  = render 'note_form'

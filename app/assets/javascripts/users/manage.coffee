@@ -51,7 +51,7 @@ refresh_ball = () ->
     zone_id = $(this).attr('id')
     $.get '/get_user_ball.json?user_id='+user_id+'&zone_id='+zone_id, (respond, status) ->
       #console.log respond.message
-      console.log respond
+      #console.log respond
       if status == 'success'
         block.html respond.message
         if respond.status != 'normal' and respond.duration_s?
@@ -93,6 +93,7 @@ init_view = () ->
 
   $('.zone-ball').each ->
     $(this).click ->
+      $('.modal-title').html $(this).attr('name')
       $('.modal-body').html $(this).find('.ball-manage').html()
       $('.modal-set').one 'click', ->
         set_user_ball($('.modal-body'))
