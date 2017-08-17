@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/get_user_ball' => 'users#get_user_ball'
   get '/set_user_ball' => 'users#set_user_ball'
   get '/set_user_ball' => 'users#cancle_user_ball'
+  get '/search_user_name' => 'users#search_user_name'
 
   get '/user_manage_zones' => 'users#get_user_manage_zones'
   post '/user_manage_zones' => 'users#post_user_manage_zones'
@@ -55,6 +56,12 @@ Rails.application.routes.draw do
   get '/edit_reply' => 'topic#edit_note'
   patch '/update_reply' => 'topic#update_note'
 
+  get '/mails' => 'mail#main'
+  get '/new_mail' => 'mail#new'
+  post '/new_mail' => 'mail#create'
+  get '/delete_mail' => 'mail#delete'
+  get '/get_user_mails' => 'mail#get_user_pmails'
+  get '/get_user_mail' => 'mail#get_user_pmail'
   #resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

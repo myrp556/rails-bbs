@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170815060323) do
+ActiveRecord::Schema.define(version: 20170816121848) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(version: 20170815060323) do
   add_index "notes", ["created_at"], name: "index_notes_on_created_at"
   add_index "notes", ["topic_id"], name: "index_notes_on_topic_id"
   add_index "notes", ["user_id"], name: "index_notes_on_user_id"
+
+  create_table "pmails", force: :cascade do |t|
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.text     "mail_detail"
+    t.text     "sender_name"
+    t.text     "receiver_name"
+    t.boolean  "readed",        default: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
 
   create_table "topics", force: :cascade do |t|
     t.string   "topic_detail"

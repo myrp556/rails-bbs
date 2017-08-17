@@ -34,3 +34,4 @@ table.table
           a href="#{user_manage_url(id: user.id)}"
             = t :manage
 
+= will_paginate @users, :previous_label => '<', :next_label => '>'

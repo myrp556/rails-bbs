@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   include PrivilegeHelper
-  before_action :require_user, except: [:new, :create, :list]
+  before_action :require_user, except: [:new, :create, :list, :search_user_name]
   before_action :require_login, except: [:new, :create]
   before_action :require_user_self, only: [:update_detail, :update_icon]
   before_action :require_admin, only: [:destroy]
@@ -20,6 +20,7 @@ class UsersController < ApplicationController
     else
       @users = User.all
     end
+    @users = @users.paginate(page: params[:page], per_page: Settings.user_lines_per_page)
   end
 
   def create
@@ -127,6 +128,18 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {'message': 'success', 'user_id': @user.id, 'zone_id': @zone.id} }
+    end
+  end
+
+  def search_user_name
+    @users = User.where('name LIKE ?', "%#{params[:search]}%").first(5)
+    puts @users
+    names = []
+    for user in @users
+      names.push user.name
+    end
+    respond_to do |format|
+      format.json { render json: {'names': names} }
     end
   end
 

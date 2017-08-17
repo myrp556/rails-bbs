@@ -30,5 +30,6 @@ module Blank
     config.encoding = 'utf-8'
 
     config.assets.precompile += %w( users/* )
+    config.assets.precompile += %w( mail/* )
   end
 end

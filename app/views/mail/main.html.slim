@@ -1,0 +1,44 @@
+= javascript_include_tag 'mail/main'
+h1
+  |mails
+
+table.table
+  tbody
+     -for pmail in @receive_pmails
+      tr.pmail.receive id="#{pmail.id}" data-toggle='modal' data-target='#read-mail-modal'
+        td.name
+          = pmail.sender_name
+        td
+          = pmail.updated_at
+        td
+          = pmail.readed ? t(:readed) : t(:unread)
+
+table.table
+  tbody
+     - for pmail in @send_pmails
+      tr.pmail.send id="#{pmail.id}" data-toggle='modal' data-target='#read-mail-modal'
+        td.name
+          = pmail.receiver_name
+        td
+          = pmail.updated_at
+          
+- if !@current_user.nil?
+  .modal.fade id='read-mail-modal'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title.mail-name
+              | title
+          .modal-body
+            p.mail-detail
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.mail-reply data-dismiss='modal' type='button'
+              = t :reply
+  
+          

@@ -15,6 +15,21 @@ nav.navbar.navbar-default
             li
               a href="#{users_url}"
                 = t :user_list
+          li.dropdown
+            a.dropdown-toggle data-toggle="dropdown" role="button" href="#"
+              = t :pmail
+              - if @current_user.has_unread?
+                span.badge
+                  | !
+              - else
+                span.caret
+            ul.dropdown-menu
+              li
+                a.new-mail href="#" data-toggle='modal' data-target='#new-mail-modal'
+                  = t :write_mail
+              li
+                a.mail-inbox href="#{mails_url}"
+                  = t :mail_inbox
                 
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" role="button" href='#'
@@ -31,3 +46,25 @@ nav.navbar.navbar-default
           li
             a href="#{login_url}"
               = t :login
+              
+- if !@current_user.nil?
+  .modal.fade id='new-mail-modal'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title
+              = t :new_mail
+          .modal-body
+            input.mail-receiver.form-control
+            .receivers
+            textarea.mail-detail.form-control
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.mail-send data-dismiss='modal' type='button'
+              = t :send
+      

@@ -31,6 +31,7 @@ class User < ActiveRecord::Base
   has_many :topics
   has_many :notes
   has_many :balls
+  #has_many :pmails
 
   has_secure_password
 
@@ -85,6 +86,10 @@ class User < ActiveRecord::Base
 
   def high_rank?
     return self.rank > 0
+  end
+
+  def has_unread?
+    Pmail.where('receiver_id = ? AND readed = ?', @current_user, false).size() > 0
   end
 
 end
