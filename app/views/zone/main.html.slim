@@ -1,11 +1,12 @@
 = stylesheet_link_tag 'zone/main'
+//= javascript_include_tag 'zone/main'
+
 .zone-header
-  .header-font
+  .h2
     = @zone.name
     - if can_edit_zone?(@zone)
       .btn-group.zone-options
-        button.btn.btn-default.btn-xs.dropdown-toggle type="button" data-toggle="dropdown"
-          span.caret
+        span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown"
         ul.dropdown-menu
           li
             a href="#{edit_zone_url(id: @zone.id)}"

@@ -5,6 +5,13 @@
     .user-name
       strong
         = user.name
+    .center-line
+      .buttons
+        a.user-profile-detail.mr60 href="#{user_detail_url(id: user.id)}"
+          span.glyphicon.glyphicon-user
+        a.user-profile-mail
+          span.glyphicon.glyphicon-envelope
+      
   .note-content
     .note-content-head
       span

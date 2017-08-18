@@ -98,9 +98,8 @@ init_view = () ->
       $('.modal-set').one 'click', ->
         set_user_ball($('.modal-body'))
 
-$(document).ready ->
+$(document).on 'turbolinks:load',  ->
 #$(window).load ->
-  console.log 'ready'
 
   init_button()
   init_view()
