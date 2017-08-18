@@ -16,5 +16,5 @@ z2 = Zone.create(name: "zone001", description: "this is zon 2")
 #u2.zones << z2
 t = z.topics.create(topic_detail: "long topic", user: u1)
 (1..100).each do |n|
-  t.notes.create(note_detail: "233323333", floor: n, user: u1)
+  t.notes.create(note_detail: "233323333", floor: n, user: u1, zone_id: z.id)
 end

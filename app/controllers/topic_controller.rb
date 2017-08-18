@@ -40,6 +40,7 @@ class TopicController < ApplicationController
       floor = @topic.floor_count
       @note = @topic.notes.new()
       @note.assign_attributes(permit_params_note(params))
+      @note.zone_id = @zone.id
       #puts note
       #puts floor
       if @note.valid? and @note.save()
@@ -48,7 +49,9 @@ class TopicController < ApplicationController
         #@note.update(author_id: @current_user.id)
         #@note.update(author_name: @current_user.name)
         @note.update(user: @current_user)
-        redirect_to topic_url(id: @topic.id)
+        page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
+
+        redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
       else
         flash['danger'] = make_error_message(@note)
         @notes = @topic.notes
@@ -68,7 +71,9 @@ class TopicController < ApplicationController
 
   def update_note
     if @note.update_attributes(permit_params_note(params))
-      redirect_to topic_url(id: @topic.id)
+      page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
+
+      redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
     else
       flash[:danger] = make_error_message(@note)
       redirect_to edit_reply_url(id: @note.id)

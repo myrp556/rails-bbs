@@ -9,6 +9,13 @@ module CustomHelper
     end
   end
 
+  def get_page(list, object, per_page)
+    index = list.index(object) + 1
+    num = (index / per_page.to_i).to_i
+    num += 1 if index %  per_page.to_i > 0
+    return num
+  end
+
   def current_user?(user)
     !user.nil? and !@current_user.nil? and user.id == @current_user.id
   end
@@ -116,5 +123,18 @@ module CustomHelper
     File.open(dst, 'wb') do |file|
       file.write(input.read)
     end
+  end
+
+  def get_time_s(ts)
+    if Time.current() - ts < 1.day
+      date = t(:today)
+    else
+      date = ts.strftime('%Y-%m-%d')
+    end
+    date+' '+ts.strftime('%H:%M')
+  end
+
+  def get_time_s_s(ts)
+    ts.strftime('%Y-%m-%d %H:%M')
   end
 end

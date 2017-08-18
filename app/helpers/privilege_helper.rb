@@ -5,6 +5,7 @@ module PrivilegeHelper
   end
 
   def is_manage_zone?(zone)
+    return false if zone.nil?
     return false if @current_user.nil?
     return false if @current_user.zones.nil?
     for z in @current_user.zones
@@ -13,6 +14,11 @@ module PrivilegeHelper
       end
     end
     return false
+  end
+
+  def is_author?(thing)
+    return false if thing.user_id.nil?
+    thing.user_id == @current_user.id
   end
 
   def is_super_user?
@@ -72,7 +78,35 @@ module PrivilegeHelper
       has_ball?(@current_user, zone_id)
   end
 
-  def has_zone_manage?
-    !@current_user.zones.nil? and @current_user.zones.size() > 0
+  def topic_has_option?(topic)
+    is_super_user? or is_manage_zone?(topic.zone) or is_author?(topic)
+  end
+
+  def has_topic_options?(topic)
+    is_super_user? or is_manage_zone?(topic.zone) or is_author?(topic)
+  end
+
+  def can_edit_topic?(topic)
+    is_author?(topic)
+  end
+
+  def can_delete_topic?(topic)
+    is_super_user? or is_manage_zone?(topic.zone) or is_author?(topic)
+  end
+
+  def can_edit_zone?(zone)
+    is_super_user? or is_manage_zone?(zone)
+  end
+
+  def has_note_options?(note)
+    is_super_user? or is_manage_zone?(note.topic.zone) or is_author?(note)
+  end
+
+  def can_edit_note?(note)
+    is_author?(note)
+  end
+
+  def can_delete_note?(note)
+    is_super_user? or is_manage_zone?(note.topic.zone) or is_author?(note)
   end
 end

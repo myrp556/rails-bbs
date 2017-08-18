@@ -1,30 +1,13 @@
-h1
-  | topic#home
+= stylesheet_link_tag 'topic/main'
 
-p
-  a href="#{@zone.url}"
-    = @zone.name
-  span
-    | >>
-  a href="#{@topic.url}"
-    = @topic.topic_detail
-
-p
-  = @topic.topic_detail
-
+.topic-top-tools
+  = render 'layouts/nav_link'
+hr
 = will_paginate @notes, :previous_label => '<', :next_label => '>'
 
 - @notes.each do |note|
   - if note.valid?
-    p
-      = "##{note.floor}"
-      = raw note.note_detail
-
-      a href="#{note.delete_url}"
-        | delete
-      | ' '
-      a href="#{note.edit_url}"
-        | edit
+    = render 'note_floor', user: note.user, note: note
 
 = will_paginate @notes, :next_label => '>', :previous_label => '<'
 

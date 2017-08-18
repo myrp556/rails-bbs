@@ -1,44 +1,51 @@
-h1
-  | zone#home
-a href="#{edit_zone_url(id: @zone.id)}"
-  = t :edit
+= stylesheet_link_tag 'zone/main'
+.zone-header
+  .header-font
+    = @zone.name
+    - if can_edit_zone?(@zone)
+      .btn-group.zone-options
+        button.btn.btn-default.btn-xs.dropdown-toggle type="button" data-toggle="dropdown"
+          span.caret
+        ul.dropdown-menu
+          li
+            a href="#{edit_zone_url(id: @zone.id)}"
+              = t :edit_zone
   
-= form_tag zone_url(id: @zone.id), method: :get do
-  = hidden_field_tag :id, @zone.id
-  = text_field_tag :search, params[:search]
-  = submit_tag t :search, class: "btn btn-primary"
+.zone-top-tools
+  = render 'layouts/nav_link'  
+  = form_tag zone_url(id: @zone.id), :class => 'form-inline', :style => 'float:right', method: :get do
+      .form-group
+        = hidden_field_tag :id, @zone.id
+        = text_field_tag :search, params[:search], :class => 'form-control topic-search-input'
+        //= submit_tag t :search, class: 'btn btn-primary form-control'
+        input.btn.btn-primary type='submit' value="#{t :search}" name="commit"
+        
+hr
 
 = will_paginate @topics
 - if !@top_topics.nil?
-  - @top_topics.each do |topic|
-    - if topic.valid?
-      a href="#{topic_url(id: topic.id)}"
-        = "#{topic.notes.size} #{topic.topic_detail}"
-  
+  table.table.top-topics-table.plane-box
+    tbody
+      - @top_topics.each do |topic|
+        - if topic.valid?
+          = render 'tr_topic', :topic => topic
+  hr
+          
 - if !@topics.nil?
-  - @topics.each do |topic|
-    - if topic.valid?
-      p
-        a href="/topic?id=#{topic.id}"
-          = "#{topic.notes.size} #{topic.topic_detail}"
-        | 
-        a href="/edit_topic?id=#{topic.id}"
-          | edit
-        a href="/delete_topic?id=#{topic.id}"
-          | delete
-        - if topic.is_top
-          a href="#{cancle_top_topic_url(id: topic.id)}"
-            | cancle top
-        - else
-          a href="#{set_top_topic_url(id: topic.id)}"
-            | set top
-            
+  table.table.topics-table.plane-box
+    tbody
+      - @topics.each do |topic|
+        - if topic.valid?
+          = render 'tr_topic', :topic => topic
+          
 = will_paginate @topics
 
 hr
 - if has_ball?(@current_user, @zone.id)
   = render 'layouts/balling_form'
 - else
+  h2
+    = t :write_topic
   = render 'form_topic'
 
 //= render 'layouts/page_footer'

@@ -1,0 +1,28 @@
+.plane-box.note-floor.clear-fix id="floor#{note.floor}"
+  .user-profile
+    .user-icon
+      = image_tag "icons/#{user.icon}", class: 'user-icon-img'
+    .user-name
+      strong
+        = user.name
+  .note-content
+    .note-content-head
+      span
+        = "##{note.floor}"
+      - if has_note_options?(note)
+        .btn-group.note-options
+          span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
+          ul.dropdown-menu.pull-right
+            - if can_edit_note?(note)
+              li
+                a href="#{edit_reply_url(id: note.id)}"
+                  = t :edit
+            - if can_delete_note?(note)
+              li
+                a href="#{delete_reply_url(id: note.id)}"
+                  = t :delete
+  
+    hr.sm-hr
+    = raw note.note_detail
+  .timestamp
+    = get_time_s_s(note.created_at)

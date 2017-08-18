@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170816121848) do
   create_table "notes", force: :cascade do |t|
     t.text     "note_detail"
     t.integer  "floor",       default: 0
+    t.integer  "zone_id",     default: 0
     t.integer  "topic_id"
     t.integer  "user_id"
     t.datetime "created_at",              null: false

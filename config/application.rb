@@ -29,7 +29,7 @@ module Blank
     config.i18n.default_locale = :zh
     config.encoding = 'utf-8'
 
-    config.assets.precompile += %w( users/* )
-    config.assets.precompile += %w( mail/* )
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+
   end
 end

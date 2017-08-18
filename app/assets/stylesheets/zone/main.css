@@ -1,0 +1,44 @@
+.topics-table, .top-topics-table {
+  width: 100%;
+}
+.topic-table-cell {
+  padding: 15px !important;
+}
+.topic-table-td {
+  width: 100%;
+}
+.topic-table-cell {
+}
+.topic-table-tr-topic-count{
+  width: 10%;
+}
+.topic-table-tr-topic-detail {
+  width: auto;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+.topic-table-tr-topic-count, .topic-table-tr-created, .topic-table-tr-updated {
+  text-align: center;
+}
+.topic-table-tr-created, .topic-table-tr-updated {
+  width: 12%;
+  font-size: 12px;
+}
+
+.zone-options, .topic-options {
+  float: right;
+}
+.zone-options {
+  margin-top: 15px;
+}
+
+.form-topic-title, .form-topic-detail {
+  margin-bottom: 10px;
+}
+input.form-topic-submit {
+  margin-top: 10px;
+}
+
+.topic-search-input {
+  margin-right: 10px;
+}

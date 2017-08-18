@@ -1,26 +1,25 @@
-h1 home home
-- if logged_in?
-  p
-    = "hello #{@current_user.name}"
-  a href="/logout"
-    | logout
-- else
-  a href="/login"
-    | login
+= javascript_include_tag 'home/index'
+= stylesheet_link_tag 'home/index'
 
-- @zones.each do |zone|
-  p
-    = image_tag "icon/#{zone.icon}"
-    
-    a href="/zone?id=#{zone.id}"
-      = zone.name
-    small
-      = zone.description
+h1 
+  = t :zone
+hr
+- @info.each do |info|
+  .zone-block
+    .zone-icon
+      = image_tag "icon/#{info[:zone].icon}", class: 'wh100 img-circle'
+    .zone-info
+      .line
+        a href="/zone?id=#{info[:zone].id}"
+          strong.zone-name
+            = info[:zone].name
+      .line
+        small.zone-description
+          = info[:zone].description
+      .line
+        small.
+          = "#{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
 
-    a href="/edit_zone?id=#{zone.id}"
-      | edit
-    a href="/delete_zone?id=#{zone.id}"
-      | delete
-
-a href="/new_zone"
-  | new zone
+- if is_super_user?
+  a href="/new_zone"
+    | new zone

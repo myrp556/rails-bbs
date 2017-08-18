@@ -26,17 +26,14 @@ class ZoneController < ApplicationController
     if params[:search]
       @topics = @zone.topics.where('topic_detail LIKE ?', "%#{params[:search]}%")
     else
-      @topics = @zone.topics
+      @topics = @zone.topics.where("is_top = ?", FALSE).order('updated_at DESC')
+      @top_topics = @zone.topics.where('is_top = ?', TRUE).order('updated_at DESC').first(10)
     end
-    if !@zone.nil?
-      @base_url = "/zone?id=#{@zone.id}"
-      #@topics = make_up_page(@topics, Settings.topic_lines_per_page)
-      @topics = @topics.where("is_top = ?", FALSE).order('updated_at DESC').paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
-      if params[:page].nil? or params[:page]==1
-        @top_topics = @zone.topics.where('is_top = ?', TRUE)
-      end
-      @topic = @zone.topics.new
-    end
+    @topics = @topics.paginate(page: params[:page], per_page: Settings.topic_lines_per_page)
+    @topic = @zone.topics.new
+    @base_url = "/zone?id=#{@zone.id}"
+
+    #@is_manage_zone = is_manage_zone?(@zone)
   end
 
   def new_zone

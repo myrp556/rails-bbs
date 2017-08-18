@@ -1,0 +1,17 @@
+.zone-block {
+  margin-bottom: 10px;
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+}
+.zone-block:hover {
+  background-color: #ececec;
+}
+.zone-info, .zone-icon {
+  display: inline-block;
+}
+.zone-icon {
+  margin-right: 10px;
+  width: 80px;
+  height: 80px;
+}
