@@ -1,7 +1,6 @@
 inputTimer = 0
 
 $(document).on 'turbolinks:load', ->
-  console.log 'mail ready'
 
   $('.new-mail').click ->
     $('.mail-receiver').html ''
@@ -10,7 +9,6 @@ $(document).on 'turbolinks:load', ->
   $('.mail-receiver').change ->
     console.log 'changed'
     $.get '/search_user_name.json?search='+$(this).val(), (respond, status) ->
-      console.log respond
       html = ''
       for name in respond.names
           html += "<div class='receiver-name'>"+name+"</div>"

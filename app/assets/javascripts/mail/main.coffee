@@ -1,5 +1,4 @@
-$(document).ready ->
-  console.log 'mail#main ready'
+$(document).on 'turbolinks:load', ->
 
   $('.pmail').each ->
     $(this).click ->

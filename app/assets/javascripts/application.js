@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree ./bootstrap/
+//= require ./home/index.coffee
 //= require ./users/manage.coffee
 //= require ./mail/form.coffee
 //= require ./mail/main.coffee
