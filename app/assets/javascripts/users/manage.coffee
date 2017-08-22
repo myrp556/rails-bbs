@@ -65,14 +65,17 @@ refresh_ball = () ->
       else
         block.html 'error'
 
-set_user_ball = (block) ->
-  zone_id = block.find('.zone').attr('id')
+set_user_ball = (block, zone_id) ->
+  #zone_id = block.find('.zone').attr('id')
   user_id = $('.zone-manage').attr('id')
-  day = block.find('#'+zone_id+'.ball-day').val()
-  hour = block.find('#'+zone_id+'.ball-hour').val()
-  minute = block.find('#'+zone_id+'.ball-minute').val()
-  value = '&day='+day+'&hour='+hour+'&minute='+minute
-  #console.log value
+  day = block.find('.ball-day').val()
+  hour = block.find('.ball-hour').val()
+  minute = block.find('.ball-minute').val()
+  value = 'id: '+user_id+'&day='+day+'&hour='+hour+'&minute='+minute
+  for bb in block.find('.ball-minute')
+    console.log bb
+
+  console.log value
   $.get '/set_user_ball.json?user_id='+user_id+'&zone_id='+zone_id+value, (respond, status) ->
     #console.log respond.message
     if status == 'success'
@@ -94,9 +97,9 @@ init_view = () ->
   $('.zone-ball').each ->
     $(this).click ->
       $('.modal-title').html $(this).attr('name')
-      $('.modal-body').html $(this).find('.ball-manage').html()
+      #$('.modal-body').html $(this).find('.ball-manage').html()
       $('.modal-set').one 'click', ->
-        set_user_ball($('.modal-body'))
+        set_user_ball($('.modal-body'), $(this).attr('id'))
 
 $(document).on 'turbolinks:load',  ->
 #$(window).load ->

@@ -17,6 +17,7 @@ module PrivilegeHelper
   end
 
   def is_author?(thing)
+    return false if @current_user.nil?
     return false if thing.user_id.nil?
     thing.user_id == @current_user.id
   end

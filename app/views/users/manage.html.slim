@@ -18,7 +18,7 @@ h1
     = t :zone_ball
   - for zone in @current_user.zones
     .zone-ball id="#{zone.id}" name="#{zone.name}"
-      .ball-status data-toggle='modal' data-target='#modal'
+      .ball-status data-toggle='modal' data-target='#manage-modal'
         span
           strong
             = zone.name
@@ -30,17 +30,8 @@ h1
         span.ball-duration id="#{zone.id}"
       .ball-manage
         .zone id="#{zone.id}"
-        input.ball-time.ball-day value="0" id="#{zone.id}"
-        span
-          = t :day
-        input.ball-time.ball-hour value="0" id="#{zone.id}"
-        span
-          = t :hour
-        input.ball-time.ball-minute value="0" id="#{zone.id}"
-        span
-          = t :minute
-          
-  .modal.fade id='modal'
+         
+  .modal.fade id='manage-modal'
     .modal-dialog
       .modal-content
         .modal-header
@@ -50,7 +41,15 @@ h1
           h4.modal-title
             | title
         .modal-body
-            | title
+          input.ball-time.ball-day value="0"
+          span
+            = t :day
+          input.ball-time.ball-hour value="0"
+          span
+            = t :hour
+          input.ball-time.ball-minute value="0"
+          span
+            = t :minute
         
         .modal-footer
           button.btn.btn-default data-dismiss='modal' type='button'
