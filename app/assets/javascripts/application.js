@@ -19,5 +19,6 @@
 //= require ./mail/main.coffee
 //= require ./zone/main.coffee
 //= require ./topic/main.coffee
+//= require ./image_upload.coffee
 //= require ckeditor/init
 // require_tree .

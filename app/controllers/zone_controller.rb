@@ -269,6 +269,7 @@ class ZoneController < ApplicationController
     end
 
     def icon_params
+      return {:file => nil} if params[:icon].nil?
       params.require(:icon).permit(:file)
     end
 end

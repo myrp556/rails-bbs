@@ -1,0 +1,11 @@
+.image-upload-preview-block
+  = image_tag img_url, class: 'wh100 image-upload-preview'
+
+- if allow_commit
+= form_for tag, url: url, html:{class: "image-upload-form"} do |f|
+  = f.file_field :file, class: "form-control image-upload-file-field"
+  = f.submit t(:upload), class: "btn btn-primary btn-block image-upload-submit"
+.image-upload-change-button.btn.btn-default.btn-block
+  = t :change
+.image-upload-upload-button.btn.btn-primary.btn-block
+  = t :upload

@@ -96,10 +96,11 @@ init_view = () ->
 
   $('.zone-ball').each ->
     $(this).click ->
-      $('.modal-title').html $(this).attr('name')
+      zone_id = $(this).attr('id')
+      $('.ball-modal-title').html $(this).attr('name')
       #$('.modal-body').html $(this).find('.ball-manage').html()
       $('.modal-set').one 'click', ->
-        set_user_ball($('.modal-body'), $(this).attr('id'))
+        set_user_ball($('.modal-body'), zone_id)
 
 $(document).on 'turbolinks:load',  ->
 #$(window).load ->
