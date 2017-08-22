@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170822123527) do
+ActiveRecord::Schema.define(version: 20170822132005) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -88,6 +88,7 @@ ActiveRecord::Schema.define(version: 20170822123527) do
     t.integer  "floor_count",   default: 0
     t.integer  "first_user_id"
     t.integer  "last_user_id"
+    t.string   "color"
   end
 
   add_index "topics", ["updated_at"], name: "index_topics_on_updated_at"

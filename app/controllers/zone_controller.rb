@@ -7,17 +7,17 @@ class ZoneController < ApplicationController
   # get topic from id, and get zone from zone_id or from topic
   # @topic
   # @zone
-  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic, :set_top_topic, :cancle_top_topic]
+  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic, :set_top_topic, :cancle_top_topic, :set_topic_color]
   # require @zone, or redirect
   before_action :require_content_zone, only: [:main, :create_topic, :edit_zone, :update_zone, :destroy_zone, :update_icon]
   # require @topic, or redirect
   #before_action :require_content_topic, except: [:main, :create_topic, :new_zone, :create_zone]
-  before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic, :set_top_topic, :cancle_top_topic]
+  before_action :require_content_topic, only: [:edit_topic, :update_topic, :delete_topic, :set_top_topic, :cancle_top_topic, :set_topic_color]
   before_action :get_login
   before_action :require_login, except: [:main]
   before_action :edit_require, only: [:edit_topic, :update_topic]
   before_action :delete_require, only: [:destroy_topic]
-  before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon]
+  before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon, :set_topic_color]
   before_action :require_no_ball, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
   #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
@@ -157,6 +157,18 @@ class ZoneController < ApplicationController
   def cancle_top_topic
     @topic.update(is_top: false)
     redirect_to zone_url(id: @zone.id)
+  end
+
+  def set_topic_color
+    color = params[:color]
+    if color=='0'
+      @topic.update(color: nil)
+    else
+      @topic.update(color: color)
+    end
+    respond_to do |format|
+      format.json { render json: {message: 'success', color: color} }
+    end
   end
 
   def get_zones

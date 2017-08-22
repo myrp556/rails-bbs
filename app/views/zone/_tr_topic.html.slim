@@ -4,7 +4,12 @@ tr.topic-table-tr
       = topic.notes.size
   td.topic-table-tr-topic-detail.topic-table-cell.topic-table-font
     a href="#{topic_url(id: topic.id)}"
-      = topic.topic_detail
+      - if topic.color.nil?
+        = topic.topic_detail
+      - else
+        span class="#{topic.color}"
+          = topic.topic_detail
+          
   
     - if @has_zone_manage or has_topic_options?(topic)
       .btn-group.topic-options
@@ -26,6 +31,33 @@ tr.topic-table-tr
               - else
                 a href="#{set_top_topic_url(id: topic.id)}"
                   = t :set_top
+            li.divider
+            li.dropdown-submenu
+              a
+                = t :color
+              ul.dropdown-menu id="#{topic.id}"
+                li 
+                  a.select-topic-color id='0'
+                    = t :none
+                li
+                  a.select-topic-color id='red'
+                    = t :red
+                li
+                  a.select-topic-color id='green'
+                    = t :green
+                li
+                  a.select-topic-color id='blue'
+                    = t :blue
+                li
+                  a.select-topic-color id='gold'
+                    = t :gold
+                li
+                  a.select-topic-color id='purple'
+                    = t :purple
+                li
+                  a.select-topic-color id='oringe'
+                    = t :oringe
+                  
 
   td.topic-table-tr-created.topic-table-cell
     .line
