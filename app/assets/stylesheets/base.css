@@ -25,3 +25,14 @@
   display: inline-block;
   font-size: 35px;
 }
+
+.center-line {
+  text-align: center;
+}
+
+.mr40 {
+  margin-right: 30px;
+}
+.mr60 {
+  margin-right: 60px;
+}

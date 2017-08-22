@@ -1,4 +1,4 @@
-tr.topic-table-td
+tr.topic-table-tr
   td.topic-table-tr-topic-count.topic-table-cell
     strong
       = topic.notes.size
@@ -8,8 +8,7 @@ tr.topic-table-td
   
     - if @has_zone_manage or has_topic_options?(topic)
       .btn-group.topic-options
-        button.btn.btn-default.btn-xs.dropdown-toggle type="button" data-toggle="dropdown"
-          span.caret
+        span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown"
         ul.dropdown-menu
           - if can_edit_topic?(topic)
             li

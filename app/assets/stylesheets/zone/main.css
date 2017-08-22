@@ -4,7 +4,7 @@
 .topic-table-cell {
   padding: 15px !important;
 }
-.topic-table-td {
+.topic-table-tr {
   width: 100%;
 }
 .topic-table-cell {
@@ -29,7 +29,6 @@
   float: right;
 }
 .zone-options {
-  margin-top: 15px;
 }
 
 .form-topic-title, .form-topic-detail {

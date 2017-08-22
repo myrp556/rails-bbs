@@ -1,4 +1,5 @@
 = stylesheet_link_tag 'topic/main'
+//= javascript_include_tag 'topic/main'
 
 .topic-top-tools
   = render 'layouts/nav_link'
@@ -17,4 +18,6 @@ hr
 - if has_ball?(@current_user, @zone.id)
   = render 'layouts/balling_form'
 - else
+  h2
+    = t :write_note
   = render 'note_form'

@@ -74,6 +74,10 @@ module PrivilegeHelper
     return duration_s
   end
 
+  def has_zone_manage?
+    !@current_user.zones.nil? and @current_user.zones.size()>0
+  end
+
   def self_has_ball?(zone_id)
       has_ball?(@current_user, zone_id)
   end

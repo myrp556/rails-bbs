@@ -89,7 +89,7 @@ class User < ActiveRecord::Base
   end
 
   def has_unread?
-    Pmail.where('receiver_id = ? AND readed = ?', @current_user, false).size() > 0
+    Pmail.where('receiver_id = ? AND readed = ?', self.id, false).size() > 0
   end
 
 end

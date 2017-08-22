@@ -14,6 +14,10 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree ./bootstrap/
+//= require ./users/manage.coffee
 //= require ./mail/form.coffee
+//= require ./mail/main.coffee
+//= require ./zone/main.coffee
+//= require ./topic/main.coffee
 //= require ckeditor/init
 // require_tree .
