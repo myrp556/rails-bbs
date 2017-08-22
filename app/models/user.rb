@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  #404498
   attr_accessor :remember_token, :reset_token
   before_save {
     self.user_name = user_name.downcase
