@@ -16,6 +16,12 @@ module CustomHelper
     return num
   end
 
+  def get_user_name(id)
+    user = User.find_by(id: id)
+    return nil if user.nil?
+    user.name
+  end
+
   def current_user?(user)
     !user.nil? and !@current_user.nil? and user.id == @current_user.id
   end

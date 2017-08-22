@@ -102,6 +102,8 @@ class ZoneController < ApplicationController
       @note.note_detail = ps[:note_detail]
       if @note.save
         @topic.update(user: @current_user)
+        @topic.update(first_user_id: @current_user.id)
+        @topic.update(last_user_id: @current_user.id)
         @topic.update(floor_count: 1)
 
         @note.update(user: @current_user)

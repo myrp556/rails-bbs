@@ -1,8 +1,8 @@
 tr.topic-table-tr
-  td.topic-table-tr-topic-count.topic-table-cell
+  td.topic-table-tr-topic-count.topic-table-cell.topic-table-font
     strong
       = topic.notes.size
-  td.topic-table-tr-topic-detail.topic-table-cell
+  td.topic-table-tr-topic-detail.topic-table-cell.topic-table-font
     a href="#{topic_url(id: topic.id)}"
       = topic.topic_detail
   
@@ -28,6 +28,14 @@ tr.topic-table-tr
                   = t :set_top
 
   td.topic-table-tr-created.topic-table-cell
-    = get_time_s(topic.created_at)
+    .line
+      = get_time_s(topic.created_at)
+    .line
+      = get_user_name(topic.first_user_id)
+    
   td.topic-table-tr-updated.topic-table-cell
-    = get_time_s(topic.updated_at)
+    .line
+      = get_time_s(topic.updated_at)
+    .line
+      = get_user_name(topic.last_user_id)
+    

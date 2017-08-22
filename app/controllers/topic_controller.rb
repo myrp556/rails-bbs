@@ -49,6 +49,7 @@ class TopicController < ApplicationController
         #@note.update(author_id: @current_user.id)
         #@note.update(author_name: @current_user.name)
         @note.update(user: @current_user)
+        @topic.update(last_user_id: @current_user.id)
         page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
         redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"

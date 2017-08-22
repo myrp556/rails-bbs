@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170816121848) do
+ActiveRecord::Schema.define(version: 20170822123527) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -80,12 +80,14 @@ ActiveRecord::Schema.define(version: 20170816121848) do
   create_table "topics", force: :cascade do |t|
     t.string   "topic_detail"
     t.string   "note_detail"
-    t.boolean  "is_top",       default: false
+    t.boolean  "is_top",        default: false
     t.integer  "zone_id"
     t.integer  "user_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "floor_count",  default: 0
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "floor_count",   default: 0
+    t.integer  "first_user_id"
+    t.integer  "last_user_id"
   end
 
   add_index "topics", ["updated_at"], name: "index_topics_on_updated_at"
