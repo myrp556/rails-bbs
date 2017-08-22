@@ -1,14 +1,23 @@
+= stylesheet_link_tag 'zone/edit'
+
 h1
   | edit zone
 
 //= render 'form_zone'
-= form_for :icon, url: "#{zone_icon_url(id: @zone.id)}" do |f|
-  = f.file_field :file, class: "form-control"
-  
-  = f.submit t(:change), class: "btn btn-primary"
+.row
+  .col-sm-4
+    .detail-icon
+      = render 'layouts/image_upload', img_url: "icon/#{@zone.icon}", allow_commit: is_manage_zone?(@zone), tag: :icon, url: zone_icon_url(id: @zone.id) 
+      
+  .col-sm-8
 
-= form_for @zone, url: @url do |f|
-  = f.text_field :name, class: "form-control"
-  = f.text_field :description, class: "form-control"
-  
-  = f.submit t :submit
+    = form_for @zone, url: @url do |f|
+      label 
+        = t(:zone_name)
+      = f.text_field :name, class: "form-control"
+      label 
+        = t(:description)
+      = f.text_field :description, class: "form-control"
+      
+      //= f.submit t :submit, class: "btn btn-primary btn-block"
+      input.btn.btn-primary.btn-block.form-zone-submit type="sumit" value="#{t :submit}"
