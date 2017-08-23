@@ -32,6 +32,7 @@ class User < ActiveRecord::Base
   has_many :topics
   has_many :notes
   has_many :balls
+  has_many :favorites
   #has_many :pmails
 
   has_secure_password

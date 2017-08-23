@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823055714) do
+ActiveRecord::Schema.define(version: 20170823064050) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 20170823055714) do
   end
 
   add_index "ckeditor_assets", ["type"], name: "index_ckeditor_assets_on_type"
+
+  create_table "favorites", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "favorites", ["user_id"], name: "index_favorites_on_user_id"
 
   create_table "hexes", force: :cascade do |t|
     t.string   "url"

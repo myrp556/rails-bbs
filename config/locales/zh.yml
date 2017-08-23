@@ -84,6 +84,10 @@ zh:
   cancle_top: "取消置顶"
   set_nice: "设为精品"
   cancle_nice: "取消精品"
+  favorite: "收藏"
+  add_favorite: "添加收藏"
+  delete_favorite: "取消收藏"
+  favorite_topics: "收藏话题"
 
   invalid_icon_file: "不正确的图标文件!"
   invalid_image_file: "不正确的图片文件!"

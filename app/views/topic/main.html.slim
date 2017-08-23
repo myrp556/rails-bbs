@@ -6,6 +6,13 @@
 hr
 = will_paginate @notes, :previous_label => '<', :next_label => '>'
 
+- if !has_favorite_topic?(@topic)
+  a.add-favorite id="#{@topic.id}"
+    = t :add_favorite
+- else
+  a.delete-favorite id="#{@topic.id}"
+    = t :delete_favorite
+    
 - @notes.each do |note|
   - if note.valid?
     = render 'note_floor', user: note.user, note: note

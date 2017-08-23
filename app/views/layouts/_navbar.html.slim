@@ -37,8 +37,11 @@ nav.navbar.navbar-default
               span.caret
             ul.dropdown-menu
               li
-                a href="#{user_detail_url(id: @current_user)}"
+                a href="#{user_detail_url(id: @current_user.id)}"
                   = t :personal_info
+                a href="#{favorites_url(id: @current_user.id)}"
+                  = t :favorite
+              li.devider
               li
                 a href="#{logout_url}"
                   = t :logout

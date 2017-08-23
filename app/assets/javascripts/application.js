@@ -16,6 +16,7 @@
 //= require_tree ./bootstrap/
 //= require ./home/index.coffee
 //= require ./users/manage.coffee
+//= require ./users/favorites.coffee
 //= require ./mail/form.coffee
 //= require ./mail/main.coffee
 //= require ./zone/main.coffee

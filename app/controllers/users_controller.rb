@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   include PrivilegeHelper
-  before_action :require_user, except: [:new, :create, :list, :search_user_name]
+  include UsersHelper
+  before_action :require_user, except: [:new, :create, :list, :search_user_name, :add_user_favorite, :delete_user_favorite]
   before_action :require_login, except: [:new, :create]
   before_action :require_user_self, only: [:update_detail, :update_icon]
   before_action :require_admin, only: [:destroy]
@@ -131,6 +132,50 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       format.json { render json: {'message': 'success', 'user_id': @user.id, 'zone_id': @zone.id} }
+    end
+  end
+
+  def favorites
+    @topics = get_user_favorite_topics()
+  end
+
+  def add_user_favorite
+    topic_id = params[:topic_id]
+    topic = Topic.find_by(id: topic_id)
+    if topic.nil?
+      respond_to do |format|
+        format.json { render json: {'message': 'no topic'}, status: 'error' }
+      end
+    else
+      favorite = @current_user.favorites.find_by(topic_id: topic_id)
+      if favorite.nil?
+        favorite = @current_user.favorites.new(topic_id: topic_id)
+        if favorite.save()
+          respond_to do |format|
+            format.json { render json: {'message': 'success'} }
+          end
+        else
+          respond_to do |format|
+            format.json { render json: {'message': make_error_message(favorite)}, status: 'error' }
+          end
+        end
+      else
+        respond_to do |format|
+          format.json { render json: {'message': 'success'} }
+        end
+      end
+    end
+  end
+
+  def delete_user_favorite
+    topic_id = params[:topic_id]
+    topic = Topic.find_by(id: topic_id)
+    if !topic.nil?
+      favorite = @current_user.favorites.find_by(topic_id: topic_id)
+      favorite.destroy() if !favorite.nil?
+    end
+    respond_to do |format|
+      format.json { render json: {'message':'success'} }
     end
   end
 

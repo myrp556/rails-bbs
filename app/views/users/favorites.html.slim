@@ -1,0 +1,15 @@
+h2
+  = t :favorite_topics
+table.table
+  .tbody
+    - for topic in @topics
+      tr
+        td
+          a href="#{topic_url(id: topic.id)}"
+            = topic.topic_detail
+        td
+          = topic.zone.name
+        td
+          a.delete-favorite id="#{topic.id}"
+            = t :delete_favorite
+    

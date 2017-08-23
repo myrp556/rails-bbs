@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   get '/set_user_ball' => 'users#set_user_ball'
   get '/set_user_ball' => 'users#cancle_user_ball'
   get '/search_user_name' => 'users#search_user_name'
+  get '/favorites' => 'users#favorites'
+  get '/add_user_favorite' => 'users#add_user_favorite'
+  get '/delete_user_favorite' => 'users#delete_user_favorite'
 
   get '/user_manage_zones' => 'users#get_user_manage_zones'
   post '/user_manage_zones' => 'users#post_user_manage_zones'
