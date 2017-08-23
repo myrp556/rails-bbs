@@ -42,11 +42,12 @@ hr
 = will_paginate @topics
 
 hr
-- if has_ball?(@current_user, @zone.id)
-  = render 'layouts/balling_form'
-- else
-  h2
-    = t :write_topic
-  = render 'form_topic'
+- if !@current_user.nil?
+  - if has_ball?(@current_user, @zone.id)
+    = render 'layouts/balling_form'
+  - else
+    h2
+      = t :write_topic
+    = render 'form_topic'
 
 //= render 'layouts/page_footer'
