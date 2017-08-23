@@ -1,0 +1,13 @@
+.facorite list
+  .topic
+  .zone
+.trace
+.my-topics
+.my-notes
+.at code
+.reply note
+.value note
+.like!
+.emoji?
+.exp
+.invitation code

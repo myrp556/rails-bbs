@@ -30,6 +30,11 @@
                   = t :delete
   
     hr.sm-hr
-    = raw note.note_detail
+    .note-content-detail
+      = raw note.note_detail
+    .note-button
+      a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
+        = t :reply
+    
   .timestamp
     = get_time_s_s(note.created_at)

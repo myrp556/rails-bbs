@@ -21,3 +21,22 @@ hr
   h2
     = t :write_note
   = render 'note_form'
+  
+- if !@current_user.nil?
+  .modal.fade id='note-reply-modal'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title.modal-reply-title reply="#{t :reply}"
+              = t :reply
+          .modal-body
+            textarea.note-reply-detail.form-control
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.note-reply-submit data-dismiss='modal' type='button'
+              = t :reply

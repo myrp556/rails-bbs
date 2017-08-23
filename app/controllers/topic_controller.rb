@@ -11,13 +11,13 @@ class TopicController < ApplicationController
   # @note
   # @topic
   # @zone
-  before_action :pre_action_note, only: [:create_note, :edit_note, :update_note, :destroy_note]
+  before_action :pre_action_note, only: [:create_note, :edit_note, :update_note, :destroy_note, :reply_to_note]
   # require @zone, @topic, or redirect page!
   before_action :require_content_topic, only: [:main, :create_note]
   # require @note or redirect
   before_action :require_content_note, except: [:main, :create_note]
   before_action :get_login
-  before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note]
+  before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note, :reply_to_note]
   before_action :edit_require, only: [:edit_note, :update_note]
   before_action :delete_require, only: [:destroy_note]
   before_action :require_no_ball, only: [:create_note, :edit_note, :update_note, :destroy_note]
@@ -41,14 +41,10 @@ class TopicController < ApplicationController
       @note = @topic.notes.new()
       @note.assign_attributes(permit_params_note(params))
       @note.zone_id = @zone.id
-      #puts note
-      #puts floor
       if @note.valid? and @note.save()
-        @topic.update(floor_count: floor + 1)
         @note.update(floor: floor + 1)
-        #@note.update(author_id: @current_user.id)
-        #@note.update(author_name: @current_user.name)
         @note.update(user: @current_user)
+        @topic.update(floor_count: floor + 1)
         @topic.update(last_user_id: @current_user.id)
         page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
@@ -92,6 +88,32 @@ class TopicController < ApplicationController
     else
       flash[:danger] = make_error_message(@note)
       redirect_to topic_url(id: @topic.id)
+    end
+  end
+
+  def reply_to_note
+    reply_params = permit_params_note_reply(params)
+    @note = @topic.notes.new
+    @note.note_detail = reply_params[:note_reply_detail]
+    @note.zone_id = @zone.id
+    if @note.valid? and @note.save()
+      floor = @topic.floor_count
+      @note.update(user: @current_user)
+      @note.update(floor: floor+1)
+      @topic.update(floor_count: floor+1)
+      @topic.update(last_user_id: @current_user.id)
+      page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
+
+      #redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
+      respond_to do |format|
+        format.json { render json: {'message': 'success', 'redirect': topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}" } }
+      end
+    else
+      #flash[:danger] = make_error_message(@note)
+      #redirect_to topic_url(id: topic.id)
+      respond_to do |format|
+        format.json { render json: {'message': make_error_message(@note)}, status: 'error' }
+      end
     end
   end
 
@@ -166,6 +188,10 @@ class TopicController < ApplicationController
     end
     def permit_params_note(params)
       params.require(:note).permit(:note_detail)
+    end
+
+    def permit_params_note_reply(params)
+      params.permit(:parse_to, :note_reply_detail)
     end
 
     def pre_action_topic

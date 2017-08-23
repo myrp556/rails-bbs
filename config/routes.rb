@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   get '/delete_reply' => 'topic#destroy_note'
   get '/edit_reply' => 'topic#edit_note'
   patch '/update_reply' => 'topic#update_note'
+  post '/reply_to_note' => 'topic#reply_to_note'
 
   get '/mails' => 'mail#main'
   get '/new_mail' => 'mail#new'
