@@ -1,5 +1,6 @@
 class TopicController < ApplicationController
   include PrivilegeHelper
+  include NoteHelper
   # get topic form id, and get zone, notes
   # params
   # @topic
@@ -93,15 +94,19 @@ class TopicController < ApplicationController
 
   def reply_to_note
     reply_params = permit_params_note_reply(params)
-    @note = @topic.notes.new
-    @note.note_detail = reply_params[:note_reply_detail]
-    @note.zone_id = @zone.id
-    if @note.valid? and @note.save()
+    reply_note = @topic.notes.new
+    reply_note.note_detail = reply_params[:note_reply_detail]
+    reply_note.zone_id = @zone.id
+    if reply_note.valid? and reply_note.save()
       floor = @topic.floor_count
-      @note.update(user: @current_user)
-      @note.update(floor: floor+1)
+      reply_note.update(user: @current_user)
+      reply_note.update(floor: floor+1)
+      reply_note.update(reply_to: params[:id])
+      reply_note.update(reply_to_user_id: @note.user_id)
+      reply_note.update(parse_to: reply_params[:parse_to])
       @topic.update(floor_count: floor+1)
       @topic.update(last_user_id: @current_user.id)
+      #page = get_page(@topic.notes, reply_note, Settings.note_lines_per_page)
       page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
       #redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
@@ -112,7 +117,7 @@ class TopicController < ApplicationController
       #flash[:danger] = make_error_message(@note)
       #redirect_to topic_url(id: topic.id)
       respond_to do |format|
-        format.json { render json: {'message': make_error_message(@note)}, status: 'error' }
+        format.json { render json: {'message': make_error_message(reply_note)}, status: 'error' }
       end
     end
   end

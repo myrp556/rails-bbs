@@ -35,6 +35,13 @@
     .note-button
       a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
         = t :reply
+    - if note_has_reply?(note)
+      .note-replies
+        h4
+          = t :reply
+        - for reply_note in get_note_replies(note)
+          .note-reply
+            = raw "<strong>#{get_user_name(reply_note.reply_to_user_id)}: </strong>"+reply_note.note_detail
     
   .timestamp
     = get_time_s_s(note.created_at)
