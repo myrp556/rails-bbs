@@ -13,10 +13,12 @@ module UsersHelper
   end
 
   def has_favorite_topic?(topic)
+    return nil if @current_user.nil?
     !@current_user.favorites.find_by(topic.id).nil?
   end
 
   def has_rate_point?
+    return nil if @current_user.nil?
     @current_user.rate_point > 0
   end
 end

@@ -32,12 +32,13 @@ hr
 //= render 'layouts/page_footer'
 
 hr
-- if has_ball?(@current_user, @zone.id)
-  = render 'layouts/balling_form'
-- else
-  h2
-    = t :write_note
-  = render 'note_form'
+- if !@current_user.nil?
+  - if has_ball?(@current_user, @zone.id)
+    = render 'layouts/balling_form'
+  - else
+    h2
+      = t :write_note
+    = render 'note_form'
   
 - if !@current_user.nil?
   .modal.fade id='note-reply-modal'
