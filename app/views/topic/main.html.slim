@@ -8,16 +8,17 @@ hr
 .plane-box.topic-detail-title-block
   .topic-detail-title
     = @topic.topic_detail
-  .topic-favorite-button
-    span.glyphicon.glyphicon-bookmark.dropdown-toggle data-toggle="dropdown"
-    ul.dropdown-menu.pull-right
-      li
-        - if !has_favorite_topic?(@topic)
-          a.add-favorite id="#{@topic.id}"
-            = t :add_favorite
-        - else
-          a.delete-favorite id="#{@topic.id}"
-            = t :delete_favorite
+  - if !@current_user.nil?
+    .topic-favorite-button
+      span.glyphicon.glyphicon-bookmark.dropdown-toggle data-toggle="dropdown"
+      ul.dropdown-menu.pull-right
+        li
+          - if !has_favorite_topic?(@topic)
+            a.add-favorite id="#{@topic.id}"
+              = t :add_favorite
+          - else
+            a.delete-favorite id="#{@topic.id}"
+              = t :delete_favorite
     
   
 = will_paginate @notes, :previous_label => '<', :next_label => '>'

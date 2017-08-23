@@ -6,11 +6,12 @@
       strong
         = user.name
     .center-line
-      .buttons
-        a.user-profile-detail.mr60 href="#{user_detail_url(id: user.id)}"
-          span.glyphicon.glyphicon-user
-        a.user-profile-mail
-          span.glyphicon.glyphicon-envelope
+      - if !@current_user.nil?
+        .buttons
+          a.user-profile-detail.mr60 href="#{user_detail_url(id: user.id)}"
+            span.glyphicon.glyphicon-user
+          a.user-profile-mail
+            span.glyphicon.glyphicon-envelope
       
   .note-content
     .note-content-head
@@ -43,9 +44,10 @@
            
     .note-content-detail
       = raw note.note_detail
-    .note-button style="text-align:right;"
-      a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
-        = t :reply
+    - if !@current_user.nil?
+      .note-button style="text-align:right;"
+        a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
+          = t :reply
     - if note_has_reply?(note)
       .note-replies
         h4
