@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.topic-detail-title-block {
+  position: relative;
+}
+
 .nav-links {
 }
 .nav-link {
@@ -10,11 +14,10 @@
   padding: 5px;
   margin-right: 10px;
 }
-.right {
-  position: absolute;
-  right: 0;
+.text-right {
+  display: inline-block;
+  text-align: right;
 }
-
 .plane-box {
   border: 1px solid #cacaca;
   box-shadow: 0 0 5px -3px #000;
@@ -51,8 +54,4 @@
 
 .image-upload-form {
   display: none;
-}
-
-.topic-table-font {
-  font-size: 20px;
 }

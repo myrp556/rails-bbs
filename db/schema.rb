@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823091249) do
+ActiveRecord::Schema.define(version: 20170823103713) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -67,11 +67,13 @@ ActiveRecord::Schema.define(version: 20170823091249) do
     t.integer  "zone_id",          default: 0
     t.integer  "topic_id"
     t.integer  "user_id"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
     t.integer  "reply_to"
     t.integer  "parse_to"
     t.integer  "reply_to_user_id"
+    t.boolean  "rate",             default: false
+    t.integer  "rated",            default: 0
   end
 
   add_index "notes", ["created_at"], name: "index_notes_on_created_at"
@@ -125,6 +127,7 @@ ActiveRecord::Schema.define(version: 20170823091249) do
     t.integer  "topic_id"
     t.integer  "note_id"
     t.integer  "rate_point",      default: 3
+    t.integer  "point",           default: 0
   end
 
   add_index "users", ["note_id"], name: "index_users_on_note_id"

@@ -35,13 +35,13 @@ $(document).on 'turbolinks:load', ->
     note_reply_detail = $('.note-reply-detail').val()
     console.log note_reply_detail
 
-    $.post '/reply_to_note.json?id='+reply_to, {'parse_to': parse_to, 'note_reply_detail': note_reply_detail}, (respond, status) ->
+    $.post '/reply_to_note.json?id='+reply_to, {'parse_to': parse_to, 'note_reply_detail': note_reply_detail, 'rate': $('.note-reply-rate').is(':checked') }, (respond, status) ->
       if status == 'success'
         if respond.message == 'success'
           #console.log 'redirect '+respond.redirect
           window.location.replace respond.redirect
           window.location.reload()
         else
-          alert 'error'
+          alert respond.message
       else
         alert 'error'

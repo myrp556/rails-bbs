@@ -1,3 +1,25 @@
+.topic-detail-title-block {
+  width: 100%;
+  position: relative;
+  vertical-align: middle;
+  left: 0;
+  right: 0;
+}
+.topic-favorite-button {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  right: 10px;
+}
+.topic-detail-title {
+  font-size: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: bold;
+  display: inline-block;
+}
 .note-floor {
   width: 100%;
   height: auto;

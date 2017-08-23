@@ -8,6 +8,8 @@
   width: 100%;
 }
 .topic-table-cell {
+  vertical-align: middle !important;
+  display: table-cell;
 }
 .topic-table-tr-topic-count{
   width: 10%;

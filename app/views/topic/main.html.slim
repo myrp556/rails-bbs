@@ -4,15 +4,25 @@
 .topic-top-tools
   = render 'layouts/nav_link'
 hr
+
+.plane-box.topic-detail-title-block
+  .topic-detail-title
+    = @topic.topic_detail
+  .topic-favorite-button
+    span.glyphicon.glyphicon-bookmark.dropdown-toggle data-toggle="dropdown"
+    ul.dropdown-menu.pull-right
+      li
+        - if !has_favorite_topic?(@topic)
+          a.add-favorite id="#{@topic.id}"
+            = t :add_favorite
+        - else
+          a.delete-favorite id="#{@topic.id}"
+            = t :delete_favorite
+    
+  
 = will_paginate @notes, :previous_label => '<', :next_label => '>'
 
-- if !has_favorite_topic?(@topic)
-  a.add-favorite id="#{@topic.id}"
-    = t :add_favorite
-- else
-  a.delete-favorite id="#{@topic.id}"
-    = t :delete_favorite
-    
+  
 - @notes.each do |note|
   - if note.valid?
     = render 'note_floor', user: note.user, note: note
@@ -40,6 +50,13 @@ hr
             h4.modal-title.modal-reply-title reply="#{t :reply}"
               = t :reply
           .modal-body
+            - if has_rate_point?
+              .reply-rate style="text-align:right;"
+                input.note-reply-rate type="checkbox"
+                span
+                  strong
+                    = t :nice_one              
+                    
             textarea.note-reply-detail.form-control
           
           .modal-footer

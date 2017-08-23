@@ -1,6 +1,7 @@
 class TopicController < ApplicationController
   include PrivilegeHelper
   include NoteHelper
+  include UsersHelper
   # get topic form id, and get zone, notes
   # params
   # @topic
@@ -81,6 +82,8 @@ class TopicController < ApplicationController
 
   def destroy_note
     if @note.destroy
+      reply = Reply.find_by(note_id: @note.id)
+      reply.destroy if !reply.nil?
       if @topic.notes.size == 0
         @topic.destroy
         redirect_to zone_url(id: @zone.id)
@@ -97,7 +100,21 @@ class TopicController < ApplicationController
     reply_params = permit_params_note_reply(params)
     reply_note = @topic.notes.new
     reply_note.note_detail = reply_params[:note_reply_detail]
+    reply_note.rate = reply_params[:rate]
     reply_note.zone_id = @zone.id
+    #reply_note.rate = false if !has_rate_point?
+    if reply_note.rate
+      user = @note.user
+      user.update(point: user.point+1) if !user.nil?
+      #@current_user.update(rate_point: @current_user.rate_point-1)
+    end
+    #reply_note.rate = false if @note.user_id == @current_user.id
+    #reply_note.rate = false if !has_rate_point?
+    #puts reply_note.to_s
+    if reply_note.note_detail.blank? and reply_note.rate == true
+      reply_note.note_detail = t(:nice_one)
+    end
+
     if reply_note.valid? and reply_note.save()
       floor = @topic.floor_count
       reply_note.update(user: @current_user)
@@ -108,18 +125,22 @@ class TopicController < ApplicationController
       @topic.update(floor_count: floor+1)
       @topic.update(last_user_id: @current_user.id)
       @zone.update(today_notes: @zone.today_notes+1)
-      #page = get_page(@topic.notes, reply_note, Settings.note_lines_per_page)
+
+      @note.update(rated: @note.rated+1) if reply_note.rate
+      user = @note.user
+      user.update(point: user.point+1) if !user.nil? and reply_note.rate
+      #@current_user.update(rate_point: @current_user.rate_point-1) if @current_user.rate_point>0 and eply_note.rate
       page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
-      #redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
       respond_to do |format|
         format.json { render json: {'message': 'success', 'redirect': topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}" } }
       end
     else
       #flash[:danger] = make_error_message(@note)
       #redirect_to topic_url(id: topic.id)
+      puts reply_note.errors.full_messages
       respond_to do |format|
-        format.json { render json: {'message': make_error_message(reply_note)}, status: 'error' }
+        format.json { render json: {'message': make_error_message(reply_note)} }
       end
     end
   end
@@ -198,7 +219,7 @@ class TopicController < ApplicationController
     end
 
     def permit_params_note_reply(params)
-      params.permit(:parse_to, :note_reply_detail)
+      params.permit(:parse_to, :note_reply_detail, :rate)
     end
 
     def pre_action_topic

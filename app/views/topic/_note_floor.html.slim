@@ -16,6 +16,9 @@
     .note-content-head
       span
         = "##{note.floor}"
+        - if note.rated>0
+          strong
+            = "  +#{note.rated}"
       - if has_note_options?(note)
         .btn-group.note-options
           span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
@@ -32,7 +35,7 @@
     hr.sm-hr
     .note-content-detail
       = raw note.note_detail
-    .note-button
+    .note-button style="text-align:right;"
       a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
         = t :reply
     - if note_has_reply?(note)
@@ -41,7 +44,13 @@
           = t :reply
         - for reply_note in get_note_replies(note)
           .note-reply
-            = raw "<strong>#{get_user_name(reply_note.reply_to_user_id)}: </strong>"+reply_note.note_detail
+            strong
+              = "#{get_user_name(reply_note.reply_to_user_id)}: "
+            - if reply_note.rate
+              //span.glyphicon.glyphicon-star
+              strong
+                |+1
+            = raw reply_note.note_detail
     
   .timestamp
     = get_time_s_s(note.created_at)
