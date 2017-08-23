@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   get '/edit_topic' => 'zone#edit_topic'
   patch '/update_topic' => 'zone#update_topic'
   get 'set_topic_color' => 'zone#set_topic_color'
+  get 'set_topic_nice' => 'zone#set_topic_nice'
+  get 'cancle_topic_nice' => 'zone#cancle_topic_nice'
 
   post '/new_reply' => 'topic#create_note'
   get '/delete_reply' => 'topic#destroy_note'

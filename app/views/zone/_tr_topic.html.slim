@@ -4,6 +4,9 @@ tr.topic-table-tr
       = topic.notes.size
   td.topic-table-tr-topic-detail.topic-table-cell.topic-table-font
     a href="#{topic_url(id: topic.id)}"
+      - if topic.nice
+        span
+          = "[#{t :nice}]"
       - if topic.color.nil?
         = topic.topic_detail
       - else
@@ -24,6 +27,7 @@ tr.topic-table-tr
               a href="#{delete_topic_url(id: topic.id)}"
                 = t :delete
           - if can_edit_zone?(@zone)
+            li.divider
             li
               - if topic.is_top
                 a href="#{cancle_top_topic_url(id: topic.id)}"
@@ -31,6 +35,13 @@ tr.topic-table-tr
               - else
                 a href="#{set_top_topic_url(id: topic.id)}"
                   = t :set_top
+            li
+              - if topic.nice
+                a href="#{cancle_topic_nice_url(id: topic.id)}"
+                  = t :cancle_nice
+              - else
+                a href="#{set_topic_nice_url(id: topic.id)}"
+                  = t :set_nice
             li.divider
             li.dropdown-submenu
               a

@@ -7,7 +7,7 @@ class ZoneController < ApplicationController
   # get topic from id, and get zone from zone_id or from topic
   # @topic
   # @zone
-  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic, :set_top_topic, :cancle_top_topic, :set_topic_color]
+  before_action :pre_action_topic, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic, :set_top_topic, :cancle_top_topic, :set_topic_color, :set_topic_nice, :cancle_topic_nice]
   # require @zone, or redirect
   before_action :require_content_zone, only: [:main, :create_topic, :edit_zone, :update_zone, :destroy_zone, :update_icon]
   # require @topic, or redirect
@@ -17,7 +17,7 @@ class ZoneController < ApplicationController
   before_action :require_login, except: [:main]
   before_action :edit_require, only: [:edit_topic, :update_topic]
   before_action :delete_require, only: [:destroy_topic]
-  before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon, :set_topic_color]
+  before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon, :set_topic_color, :set_topic_nice, :cancle_topic_nice]
   before_action :require_no_ball, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
   #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
@@ -169,6 +169,16 @@ class ZoneController < ApplicationController
     respond_to do |format|
       format.json { render json: {message: 'success', color: color} }
     end
+  end
+
+  def set_topic_nice
+    @topic.update(nice: true)
+    redirect_to zone_url(id: @zone.id)
+  end
+
+  def cancle_topic_nice
+    @topic.update(nice: false)
+    redirect_to zone_url(id: @zone.id)
   end
 
   def get_zones
