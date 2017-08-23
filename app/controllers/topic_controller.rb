@@ -82,8 +82,6 @@ class TopicController < ApplicationController
 
   def destroy_note
     if @note.destroy
-      reply = Reply.find_by(note_id: @note.id)
-      reply.destroy if !reply.nil?
       if @topic.notes.size == 0
         @topic.destroy
         redirect_to zone_url(id: @zone.id)
@@ -103,17 +101,12 @@ class TopicController < ApplicationController
     reply_note.rate = reply_params[:rate]
     reply_note.zone_id = @zone.id
     #reply_note.rate = false if !has_rate_point?
-    if reply_note.rate
-      user = @note.user
-      user.update(point: user.point+1) if !user.nil?
-      #@current_user.update(rate_point: @current_user.rate_point-1)
-    end
-    #reply_note.rate = false if @note.user_id == @current_user.id
-    #reply_note.rate = false if !has_rate_point?
-    #puts reply_note.to_s
+    reply_note.rate = false if @note.user_id == @current_user.id
+
     if reply_note.note_detail.blank? and reply_note.rate == true
       reply_note.note_detail = t(:nice_one)
     end
+    reply_note.note_detail = '<p>'+reply_note.note_detail+'</p>' if !reply_note.note_detail.blank?
 
     if reply_note.valid? and reply_note.save()
       floor = @topic.floor_count
@@ -138,7 +131,6 @@ class TopicController < ApplicationController
     else
       #flash[:danger] = make_error_message(@note)
       #redirect_to topic_url(id: topic.id)
-      puts reply_note.errors.full_messages
       respond_to do |format|
         format.json { render json: {'message': make_error_message(reply_note)} }
       end

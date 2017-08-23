@@ -99,7 +99,7 @@ hr.sm-hr {
   margin-top: 10px;
 }
 
-.note-replies {
+.note-replies, .note-reply-to {
   border: 1px solid #f0f0f0;
   padding: 10px;
 }

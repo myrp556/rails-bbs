@@ -33,6 +33,18 @@
                   = t :delete
   
     hr.sm-hr
+    - get_note_by_id(note.reply_to).each do |reply_to_note|
+      - if !reply_to_note.nil?
+        .note-reply-to
+          strong
+            = "#{get_user_name(reply_to_note.user_id)}: "
+          = raw get_note_detail_short(reply_to_note)
+      - else
+        |xxxxxxx
+    = note.reply_to
+    = get_note_by_id(note.reply_to).nil?
+            
+           
     .note-content-detail
       = raw note.note_detail
     .note-button style="text-align:right;"
@@ -44,6 +56,9 @@
           = t :reply
         - for reply_note in get_note_replies(note)
           .note-reply
+            strong
+              = "#{get_user_name(reply_note.user_id)}"
+            = t :reply
             strong
               = "#{get_user_name(reply_note.reply_to_user_id)}: "
             - if reply_note.rate
