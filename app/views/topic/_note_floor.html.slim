@@ -39,10 +39,6 @@
           strong
             = "#{get_user_name(reply_to_note.user_id)}: "
           = raw get_note_detail_short(reply_to_note)
-      - else
-        |xxxxxxx
-    = note.reply_to
-    = get_note_by_id(note.reply_to).nil?
             
            
     .note-content-detail
