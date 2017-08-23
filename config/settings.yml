@@ -1,3 +1,4 @@
 user_lines_per_page: 10
 topic_lines_per_page : 10
 note_lines_per_page: 15
+user_max_rate_point: 3

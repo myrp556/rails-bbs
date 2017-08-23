@@ -47,6 +47,7 @@ class TopicController < ApplicationController
         @note.update(user: @current_user)
         @topic.update(floor_count: floor + 1)
         @topic.update(last_user_id: @current_user.id)
+        @zone.update(today_notes: @zone.today_notes+1)
         page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
         redirect_to topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
@@ -106,6 +107,7 @@ class TopicController < ApplicationController
       reply_note.update(parse_to: reply_params[:parse_to])
       @topic.update(floor_count: floor+1)
       @topic.update(last_user_id: @current_user.id)
+      @zone.update(today_notes: @zone.today_notes+1)
       #page = get_page(@topic.notes, reply_note, Settings.note_lines_per_page)
       page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 

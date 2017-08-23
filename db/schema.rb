@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823064050) do
+ActiveRecord::Schema.define(version: 20170823091249) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -124,6 +124,7 @@ ActiveRecord::Schema.define(version: 20170823064050) do
     t.datetime "reset_sent_at"
     t.integer  "topic_id"
     t.integer  "note_id"
+    t.integer  "rate_point",      default: 3
   end
 
   add_index "users", ["note_id"], name: "index_users_on_note_id"
@@ -133,8 +134,9 @@ ActiveRecord::Schema.define(version: 20170823064050) do
     t.string   "name"
     t.text     "description"
     t.string   "icon"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+    t.integer  "today_notes", default: 0
   end
 
 end

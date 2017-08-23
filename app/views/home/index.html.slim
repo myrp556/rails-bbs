@@ -18,7 +18,7 @@ hr
           = info[:zone].description
       .line
         small.
-          = "#{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
+          = "#{t :today_notes}: #{info[:zone].today_notes} #{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
 
 - if is_super_user?
   a href="/new_zone"
