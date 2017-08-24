@@ -6,3 +6,5 @@ note_detail_short_length: 80
 note_detail_short_short_length: 20
 admin_avatar: "九十九机关"
 sent_pmail_when_replied: true
+pmail_lines_per_page: 10
+pmail_detail_preview_length: 20

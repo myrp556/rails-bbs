@@ -28,8 +28,10 @@ nav.navbar.navbar-default
                 a.new-mail href="#" data-toggle='modal' data-target='#new-mail-modal'
                   = t :write_mail
               li
-                a.mail-inbox href="#{mails_url}"
+                a.mail-inbox href="#{mail_inbox_url}"
                   = t :mail_inbox
+                a.mail-sendbox href="#{mail_outbox_url}"
+                  = t :mail_outbox
                 
           li.dropdown
             a.dropdown-toggle data-toggle="dropdown" role="button" href='#'

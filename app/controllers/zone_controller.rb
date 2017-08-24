@@ -25,7 +25,7 @@ class ZoneController < ApplicationController
   def main
     @url = new_topic_url(zone_id: @zone.id)
     if params[:search]
-      @topics = @zone.topics.where('topic_detail LIKE ?', "%#{params[:search]}%")
+      @topics = @zone.topics.where('topic_detail LIKE ?', "%#{params[:search]}%").order('updated_at DESC')
     else
       @topics = @zone.topics.where("is_top = ?", FALSE).order('updated_at DESC')
       @top_topics = @zone.topics.where('is_top = ?', TRUE).order('updated_at DESC').first(10)

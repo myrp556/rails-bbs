@@ -3,8 +3,8 @@ inputTimer = 0
 $(document).on 'turbolinks:load', ->
 
   $('.new-mail').click ->
-    $('.mail-receiver').html ''
-    $('.mail-detail').html ''
+    $('.mail-receiver').val ''
+    $('.mail-detail').val ''
 
   $('.mail-receiver').change ->
     console.log 'changed'

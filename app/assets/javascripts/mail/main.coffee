@@ -1,18 +1,18 @@
 $(document).on 'turbolinks:load', ->
 
-  $('.pmail').each ->
+  $('.pmail-tr').each ->
     $(this).click ->
       name = $(this).find('.name').html()
       $.get '/get_user_mail.json?pmail_id='+$(this).attr('id'), (respond, status) ->
         if status == 'success'
           if respond.mail_detail?
-            $('.mail-detail').html respond.mail_detail
-            $('.modal-title.mail-name').html name
+            $('.pmail-detail').html respond.mail_detail
+            $('.modal-title.pmail-name').html name
           else
-            $('.mail-detail').html 'error'
+            $('.pmail-detail').html respond.message
         else
-          $('.mail-detail').html 'error'
+          $('.pmail-detail').html 'error'
 
-  $('.mail-reply').click ->
+  $('.read-pmail-reply').click ->
     $('.new-mail').click()
-    $('.mail-receiver').val $('.modal-title.mail-name').html()
+    $('.mail-receiver').val $('.modal-title.pmail-name').html()

@@ -1,0 +1,16 @@
+hr
+table.table.mails-table.plane-box
+  tbody
+    - @pmails.each do |pmail|
+      tr.pmail-tr id="#{pmail.id}" data-toggle='modal' data-target='#read-pmail-modal'
+        td.name
+          = pmail.sender_name
+        td
+          .small
+            = get_pure_text_one_line(pmail.mail_detail)
+        td
+          = get_time_s(pmail.created_at)
+        td
+          = pmail.readed ? t(:readed) : t(:unread)
+          
+= will_paginate @pmails

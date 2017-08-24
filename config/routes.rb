@@ -64,6 +64,8 @@ Rails.application.routes.draw do
   post '/reply_to_note' => 'topic#reply_to_note'
 
   get '/mails' => 'mail#main'
+  get '/mail_inbox' => 'mail#in_box'
+  get '/mail_outbox' => 'mail#out_box'
   get '/new_mail' => 'mail#new'
   post '/new_mail' => 'mail#create'
   get '/delete_mail' => 'mail#delete'

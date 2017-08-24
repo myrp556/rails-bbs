@@ -23,22 +23,22 @@ table.table
           = pmail.updated_at
           
 - if !@current_user.nil?
-  .modal.fade id='read-mail-modal'
+  .modal.fade id='read-pmail-modal'
       .modal-dialog
         .modal-content
           .modal-header
             button.close data-dismiss='modal'
               span
                 |&times;
-            h4.modal-title.mail-name
+            h4.modal-title.pmail-name
               | title
           .modal-body
-            p.mail-detail
+            p.pmail-detail
           
           .modal-footer
             button.btn.btn-default data-dismiss='modal' type='button'
               = t :close
-            button.btn.btn-primary.mail-reply data-dismiss='modal' type='button'
+            button.btn.btn-primary.read-pmail-reply data-dismiss='modal' type='button'
               = t :reply
   
           

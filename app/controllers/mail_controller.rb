@@ -1,5 +1,6 @@
 class MailController < ApplicationController
   include PrivilegeHelper
+  include PmailHelper
   include TextHelper
   before_action :require_login
   before_action :require_pmail_id, only: [:delete, :get_user_pmail]
@@ -7,8 +8,18 @@ class MailController < ApplicationController
   #before_action :require_user_self, only: [:get_user_pmails]
 
   def main
-    @receive_pmails = Pmail.where('receiver_id = ?', @current_user.id)
-    @send_pmails = Pmail.where('sender_id = ?', @current_user.id)
+    @receive_pmails = Pmail.where('receiver_id = ?', @current_user.id).order('updated_at DESC')
+    @send_pmails = Pmail.where('sender_id = ?', @current_user.id).order('updated_at DESC')
+  end
+
+  def in_box
+    @pmails = Pmail.where('receiver_id = ?', @current_user.id).order('updated_at DESC')
+    @pmails = @pmails.paginate(page: params[:page], per_page: Settings.pmail_lines_per_page)
+  end
+
+  def out_box
+    @pmails = Pmail.where('sender_id = ?', @current_user.id).order('updated_at DESC')
+    @pmails = @pmails.paginate(page: params[:page], per_page: Settings.pmail_lines_per_page)
   end
 
   def new
@@ -17,35 +28,52 @@ class MailController < ApplicationController
 
   def create
     #@pmail = Pmail.new(pmail_params)
-    @pmail = Pmail.new
-    @pmail.mail_detail = get_pure_text params[:mail_detail]
-    @pmail.sender_name = @current_user.name
-    @pmail.sender_id = @current_user.id
-    @pmail.receiver_name = params[:receiver_name]
-    @receiver = User.find_by(name: params[:receiver_name])
-    puts 'receiver: ' + @receiver.to_s
-
-    if @receiver.nil?
+    receiver_name = params[:receiver_name]
+    if !receiver_name.nil? and receiver_name[0]=='@'
       respond_to do |format|
-        format.html { (flash[:danger] = t(:user_not_found)) and redirect_to('/') and return }
-        format.json { render(json: {'message': t(:user_not_found)}, status: 'error') and return }
-      end
-    end
-    @pmail.receiver_id = @receiver.id
-    puts 'receiver id: '+@receiver.id.to_s
-    if !@pmail.save()
-      puts 'cant save '+@pmail.errors.full_messages[0]
-      respond_to do |format|
-        format.html { (flash[:danger] = make_error_message(@pmail)) and redirect_to('/') and return }
-        format.json { render(json: {'message': make_error_message(@pmail)}) }
+        found = 0
+        if receiver_name == '@all'
+          if is_super_user?
+            found = 1
+            for user in User.all
+              make_admin_pmail_to_user user, params[:mail_detail]
+            end
+            format.json { render json: {'message': t(:send_all_fin)} }
+          else
+            format.json { render json: {'message': t(:no_privilege)} }
+          end
+        end
+        if found == 0
+          format.json { render json: {'message': t(:send_faild)} }
+        end
       end
     else
-      puts 'saved'
-      #@current_user.pmails << @pmail
-      #@receiver.pmails << @pmail
-      respond_to do |format|
-        format.html { (flash[:success] = t(:send_success)) and redirect_to('/') and return }
-        format.json { render(json: {'message': t(:send_success)}) }
+      @pmail = Pmail.new
+      @pmail.mail_detail = get_pure_text params[:mail_detail]
+      @pmail.sender_name = @current_user.name
+      @pmail.sender_id = @current_user.id
+      @pmail.receiver_name = params[:receiver_name]
+      @receiver = User.find_by(name: params[:receiver_name])
+
+      if @receiver.nil?
+        respond_to do |format|
+          format.html { (flash[:danger] = t(:user_not_found)) and redirect_to('/') }
+          format.json { render(json: {'message': t(:user_not_found)}) }
+        end
+      end
+      @pmail.receiver_id = @receiver.id
+      if !@pmail.save()
+        respond_to do |format|
+          format.html { (flash[:danger] = make_error_message(@pmail)) and redirect_to('/') }
+          format.json { render(json: {'message': make_error_message(@pmail)}) }
+        end
+      else
+        #@current_user.pmails << @pmail
+        #@receiver.pmails << @pmail
+        respond_to do |format|
+          format.html { (flash[:success] = t(:send_success)) and redirect_to('/') and return }
+          format.json { render(json: {'message': t(:send_success)}) }
+        end
       end
     end
   end
@@ -65,7 +93,7 @@ class MailController < ApplicationController
       end
     else
       respond_to do |format|
-        format.json { render(json: {'message': t(:delete_failed)}, status: 'error') }
+        format.json { render(json: {'message': t(:delete_failed)}) }
       end
     end
   end
@@ -125,7 +153,7 @@ class MailController < ApplicationController
     def require_sender_or_receiver
       if @pmail.sender_id != @current_user.id and @pmail.receiver_id != @current_user.id
         respond_to do |format|
-          format.json { render(json: {'message': t(:no_privilege)}, status: 'error') and return}
+          format.json { render(json: {'message': t(:no_privilege)}) and return}
         end
       end
     end
@@ -134,7 +162,7 @@ class MailController < ApplicationController
       @user = User.find_by(params[:user_id])
       if @user.nil? or @usr.id != @current_user.id
         respond_to do |format|
-          format.json { render(json: {'message': t(:no_privilege)}, status: 'error') and return}
+          format.json { render(json: {'message': t(:no_privilege)}) and return}
         end
       end
     end
