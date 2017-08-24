@@ -9,7 +9,7 @@ module PmailHelper
   def make_reply_pmail(note, url)
     pmail = make_up_pmail_with_user_id get_user_name_by_note_id(note.reply_to)
     pmail.mail_detail = t(:you_are_replied) +' '+ "<a href='#{url}'>#{t :check}</a>"
-    pmail.mail_detail = add_sign(pmail.mail_detail)
+    pmail.mail_detail += sign()
     pmail.save
     pmail
   end

@@ -115,12 +115,11 @@ class TopicController < ApplicationController
     reply_note.rate = reply_params[:rate]
     reply_note.zone_id = @zone.id
     #reply_note.rate = false if !has_rate_point?
-    #reply_note.rate = false if @note.user_id == @current_user.id
+    reply_note.rate = false if @note.user_id == @current_user.id
 
     if reply_note.note_detail.blank? and reply_note.rate == true
-      reply_note.note_detail = t(:nice_one) + 'xxxx'
+      reply_note.note_detail = t(:nice_one)
     end
-    reply_note.note_detail='xxxx' if reply_note.note_detail.blank?
     reply_note.note_detail = '<p>'+reply_note.note_detail+'</p>' if !reply_note.note_detail.blank?
 
     if reply_note.valid? and reply_note.save()
@@ -142,10 +141,6 @@ class TopicController < ApplicationController
       redirect_url = topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
 
       pmail = make_reply_pmail(reply_note, redirect_url) if Settings.sent_pmail_when_replied
-      puts '==========='
-      puts pmail.errors.full_messages
-      puts '==========='
-
 
       respond_to do |format|
         format.json { render json: {'message': 'success', 'redirect': redirect_url } }
