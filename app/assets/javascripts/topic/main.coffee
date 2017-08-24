@@ -26,8 +26,9 @@ $(document).on 'turbolinks:load', ->
       parse_to = $(this).attr('parse-to')
       #name = $(this).parent().parent().parent().find('.user-name > strong').html()
       reply_name = $(this).attr('name')
-      console.log 'parse-to: ' + parse_to + ' name: ' + reply_name
-
+      #console.log 'parse-to: ' + parse_to + ' name: ' + reply_name
+      $('.note-reply-detail').val ''
+      $('.note-reply-rate').prop 'checked', false
       $('.modal-reply-title').html $('.modal-reply-title').attr('reply')+': '+reply_name
 
 
