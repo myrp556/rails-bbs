@@ -60,19 +60,20 @@ class MailController < ApplicationController
           format.html { (flash[:danger] = t(:user_not_found)) and redirect_to('/') }
           format.json { render(json: {'message': t(:user_not_found)}) }
         end
-      end
-      @pmail.receiver_id = @receiver.id
-      if !@pmail.save()
-        respond_to do |format|
-          format.html { (flash[:danger] = make_error_message(@pmail)) and redirect_to('/') }
-          format.json { render(json: {'message': make_error_message(@pmail)}) }
-        end
       else
-        #@current_user.pmails << @pmail
-        #@receiver.pmails << @pmail
-        respond_to do |format|
-          format.html { (flash[:success] = t(:send_success)) and redirect_to('/') and return }
-          format.json { render(json: {'message': t(:send_success)}) }
+        @pmail.receiver_id = @receiver.id
+        if !@pmail.save()
+          respond_to do |format|
+            format.html { (flash[:danger] = make_error_message(@pmail)) and redirect_to('/') }
+            format.json { render(json: {'message': make_error_message(@pmail)}) }
+          end
+        else
+          #@current_user.pmails << @pmail
+          #@receiver.pmails << @pmail
+          respond_to do |format|
+            format.html { (flash[:success] = t(:send_success)) and redirect_to('/') and return }
+            format.json { render(json: {'message': t(:send_success)}) }
+          end
         end
       end
     end
