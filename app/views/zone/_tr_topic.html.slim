@@ -24,8 +24,15 @@ tr.topic-table-tr
                 = t :edit
           - if can_delete_topic?(topic) 
             li
-              a href="#{delete_topic_url(id: topic.id)}"
-                = t :delete
+              //a href="#{delete_topic_url(id: topic.id)}"
+               // = t :delete
+              - if @current_user.id == topic.user_id
+                a.topic-option-delete-self data-toggle='modal' data-target='#delete-topic-modal-self' url="#{delete_topic_url(id: topic.id, format: 'json')}"
+                  = t :delete
+              - else
+                a.topic-option-delete-manage data-toggle='modal' data-target='#delete-topic-modal-manage' url="#{delete_topic_url(id: topic.id, format: 'json')}"
+                  = t :delete
+                  
           - if can_edit_zone?(@zone)
             li.divider
             li

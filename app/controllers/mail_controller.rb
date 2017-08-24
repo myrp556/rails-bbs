@@ -1,5 +1,6 @@
 class MailController < ApplicationController
   include PrivilegeHelper
+  include TextHelper
   before_action :require_login
   before_action :require_pmail_id, only: [:delete, :get_user_pmail]
   before_action :require_sender_or_receiver, only: [:delete, :get_user_pmail]
@@ -17,7 +18,7 @@ class MailController < ApplicationController
   def create
     #@pmail = Pmail.new(pmail_params)
     @pmail = Pmail.new
-    @pmail.mail_detail = params[:mail_detail]
+    @pmail.mail_detail = get_pure_text params[:mail_detail]
     @pmail.sender_name = @current_user.name
     @pmail.sender_id = @current_user.id
     @pmail.receiver_name = params[:receiver_name]

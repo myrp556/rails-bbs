@@ -45,3 +45,33 @@ $(document).on 'turbolinks:load', ->
           alert respond.message
       else
         alert 'error'
+
+  $('.note-option-delete-self').click ->
+    url = $(this).attr('url')
+    $('.delete-note-self-submit').attr('url', url)
+  $('.note-option-delete-manage').click ->
+    url = $(this).attr('url')
+    $('.delete-note-addition-message').val('')
+    $('.delete-note-manage-submit').attr('url', url)
+
+  $('.delete-note-self-submit').click ->
+    url = $(this).attr('url')
+    $.get url, (respond, status) ->
+      if status == 'success'
+        if respond.message == 'success'
+          window.location.replace respond.redirect
+        else
+          alert respond.message
+      else
+        alert 'error!'
+  $('.delete-note-manage-submit').click ->
+    url = $(this).attr('url')
+    $.get url+'&am='+$('.delete-note-addition-message').val(), (respond, status) ->
+      console.log respond
+      if status == 'success'
+        if respond.message == 'success'
+          window.location.replace respond.redirect
+        else
+          alert respond.message
+      else
+        alert 'error'

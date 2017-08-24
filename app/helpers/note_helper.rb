@@ -1,6 +1,14 @@
 module NoteHelper
-  def get_note_by_id(id)
+  include TextHelper
+
+  def get_note_by_id_in_list(id)
     Note.where(id: id)
+  end
+
+  def get_user_name_by_note_id(note_id)
+    note = Note.find_by(id: note_id)
+    return nil if note.nil?
+    note.user_id
   end
 
   def note_has_reply?(note)
@@ -25,17 +33,21 @@ module NoteHelper
     note.note_detail.first
   end
 
-  def get_note_detail_short(note)
+  def get_pure_note_detail_short(note)
     return nil if note.nil?
-    detail = note.note_detail.truncate(Settings.note_detail_short_length)
-    return nil if detail.nil?
-    if detail.start_with?('<p>')
-      return detail if detail.end_with?('</p>')
-      return detail+'>' if detail.end_with?('</p')
-      return detail+'p>' if detail.end_with?('</')
-      return detail+'/p>' if detail.end_with?('<')
-      return detail+'</p>'
-    end
-    detail
+    detail = get_pure_text(note.note_detail)
+    return nil if detail.blank?
+    #detail
+    detail.truncate(Settings.note_detail_short_length)
   end
+
+  def get_pure_note_detail_short_short(note)
+    return nil if note.nil?
+    detail = get_pure_text(note.note_detail)
+    return nil if detail.blank?
+    deail.truncate(Settings.note_detail_short_short_length)
+  end
+
+  private
+
 end

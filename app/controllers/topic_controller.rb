@@ -2,6 +2,8 @@ class TopicController < ApplicationController
   include PrivilegeHelper
   include NoteHelper
   include UsersHelper
+  include PmailHelper
+  include TextHelper
   # get topic form id, and get zone, notes
   # params
   # @topic
@@ -82,30 +84,43 @@ class TopicController < ApplicationController
 
   def destroy_note
     if @note.destroy
+      make_delete_note_pmail(@note, params[:am]) if is_manage_zone?(@zone) and @note.user_id != @current_user.id
       if @topic.notes.size == 0
         @topic.destroy
-        redirect_to zone_url(id: @zone.id)
+        #redirect_to zone_url(id: @zone.id)
+        redirect_url = zone_url(id: @zone.id)
       else
-        redirect_to topic_url(id: @topic.id)
+        #redirect_to topic_url(id: @topic.id)
+        redirect_url = topic_url(id: @topic.id)
+      end
+      respond_to do |format|
+        format.html { redirect_to redirect_url }
+        format.json { render json: {'message': 'success', 'redirect': redirect_url} }
       end
     else
-      flash[:danger] = make_error_message(@note)
-      redirect_to topic_url(id: @topic.id)
+      #flash[:danger] = make_error_message(@note)
+      #redirect_to topic_url(id: @topic.id)
+      redirect_url = topic_url(id: @topic.id)
+      respond_to do |format|
+        format.html { flash[:danger] = make_error_message(@note) and redirect_to redirect_url }
+        format.json { render json: {'message': make_error_message(@note)} }
+      end
     end
   end
 
   def reply_to_note
     reply_params = permit_params_note_reply(params)
     reply_note = @topic.notes.new
-    reply_note.note_detail = reply_params[:note_reply_detail]
+    reply_note.note_detail = get_pure_text reply_params[:note_reply_detail]
     reply_note.rate = reply_params[:rate]
     reply_note.zone_id = @zone.id
     #reply_note.rate = false if !has_rate_point?
-    reply_note.rate = false if @note.user_id == @current_user.id
+    #reply_note.rate = false if @note.user_id == @current_user.id
 
     if reply_note.note_detail.blank? and reply_note.rate == true
-      reply_note.note_detail = t(:nice_one)
+      reply_note.note_detail = t(:nice_one) + 'xxxx'
     end
+    reply_note.note_detail='xxxx' if reply_note.note_detail.blank?
     reply_note.note_detail = '<p>'+reply_note.note_detail+'</p>' if !reply_note.note_detail.blank?
 
     if reply_note.valid? and reply_note.save()
@@ -124,9 +139,16 @@ class TopicController < ApplicationController
       user.update(point: user.point+1) if !user.nil? and reply_note.rate
       #@current_user.update(rate_point: @current_user.rate_point-1) if @current_user.rate_point>0 and eply_note.rate
       page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
+      redirect_url = topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}"
+
+      pmail = make_reply_pmail(reply_note, redirect_url) if Settings.sent_pmail_when_replied
+      puts '==========='
+      puts pmail.errors.full_messages
+      puts '==========='
+
 
       respond_to do |format|
-        format.json { render json: {'message': 'success', 'redirect': topic_url(id: @topic.id) + "&page=#{page}#floor#{@note.floor}" } }
+        format.json { render json: {'message': 'success', 'redirect': redirect_url } }
       end
     else
       #flash[:danger] = make_error_message(@note)

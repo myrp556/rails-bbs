@@ -50,6 +50,9 @@
   word-wrap: break-word;
   word-break: break-all;
 }
+.note-content-detail > p, .note-reply-to > p, .note-reply > p {
+  margin-bottom: 0;
+}
 .clear-fix::after {
   clear: both;
 }

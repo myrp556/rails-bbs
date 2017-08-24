@@ -66,3 +66,45 @@ hr
               = t :close
             button.btn.btn-primary.note-reply-submit data-dismiss='modal' type='button'
               = t :reply
+  
+  .modal.fade id='delete-note-modal-self'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title
+              = t :delete
+          .modal-body
+            p
+              = t :sure_delete?
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.delete-note-self-submit data-dismiss='modal' type='button'
+              = t :confirm
+  
+  .modal.fade id='delete-note-modal-manage'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title
+              = t :delete
+          .modal-body
+            p
+              = t :sure_delete?
+            hr.sm-hr
+            label
+              = t :addtion_message
+            textarea.delete-note-addition-message.form-control
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.delete-note-manage-submit data-dismiss='modal' type='button'
+              = t :confirm

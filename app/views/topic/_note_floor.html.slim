@@ -20,7 +20,7 @@
         - if note.rated>0
           strong
             = "  +#{note.rated}"
-      - if has_note_options?(note)
+      - if !@current_user.nil? and has_note_options?(note)
         .btn-group.note-options
           span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
           ul.dropdown-menu.pull-right
@@ -30,16 +30,20 @@
                   = t :edit
             - if can_delete_note?(note)
               li
-                a href="#{delete_reply_url(id: note.id)}"
-                  = t :delete
-  
+                //a href="#{delete_reply_url(id: note.id)}"
+                - if note.user_id == @current_user.id
+                  a.note-option-delete-self id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-self' url="#{delete_reply_url(id: note.id, format: 'json')}"
+                    = t :delete
+                - else
+                  a.note-option-delete-manage id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-manage' url="#{delete_reply_url(id: note.id, format: 'json')}"
+                    = t :delete
     hr.sm-hr
-    - get_note_by_id(note.reply_to).each do |reply_to_note|
+    - get_note_by_id_in_list(note.reply_to).each do |reply_to_note|
       - if !reply_to_note.nil?
         .note-reply-to
           strong
             = "#{get_user_name(reply_to_note.user_id)}: "
-          = raw get_note_detail_short(reply_to_note)
+          = raw get_pure_note_detail_short(reply_to_note)
             
            
     .note-content-detail

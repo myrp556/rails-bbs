@@ -1,5 +1,6 @@
 class ZoneController < ApplicationController
   include PrivilegeHelper
+  include PmailHelper
   # get zone from id, and topics
   # @zone
   # @topics
@@ -142,10 +143,23 @@ class ZoneController < ApplicationController
 
   def destroy_topic
     if @topic.destroy
-      redirect_to zone_url(id: @zone.id)
+      #redirect_to zone_url(id: @zone.id)
+      make_delete_topic_pmail(@topic, params[:am]) if is_manage_zone?(@zone) and @current_user.id != @topic.user_id
+
+      redirect_url = zone_url(id: @zone.id)
+      respond_to do |format|
+        format.html { flash[:success]=t(:delete_success) and redirect_to redirect_url }
+        format.json { render json: {'message': 'success', 'redirect': redirect_url} }
+      end
     else
-      flash[:danger] = make_error_message(@topic)
-      redirect_to zone_url(id: @zone.id)
+      #flash[:danger] = make_error_message(@topic)
+      #redirect_to zone_url(id: @zone.id)
+      redirect_url = zone_url(id: @zone.id)
+      message = make_error_message(@topic)
+      respond_to do |format|
+        format.html { flash[:danger]=message and redirect_to redirect_url }
+        format.json { render json: {'message': message} }
+      end
     end
   end
 
