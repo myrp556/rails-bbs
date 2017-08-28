@@ -9,12 +9,12 @@ Ckeditor.setup do |config|
   # Allowed image file types for upload.
   # Set to nil or [] (empty array) for all file types
   # By default: %w(jpg jpeg png gif tiff)
-  # config.image_file_types = %w(jpg jpeg png gif tiff)
+  config.image_file_types = %w(jpg jpeg png gif tiff)
 
   # Allowed flash file types for upload.
   # Set to nil or [] (empty array) for all file types
   # By default: %w(jpg jpeg png gif tiff)
-  # config.flash_file_types = %w(swf)
+  #config.flash_file_types = %w(swf)
 
   # Allowed attachment file types for upload.
   # Set to nil or [] (empty array) for all file types
@@ -23,11 +23,11 @@ Ckeditor.setup do |config|
 
   # Setup authorization to be run as a before filter
   # By default: there is no authorization.
-  # config.authorize_with :cancan
+  #config.authorize_with :cancan
 
   # Override parent controller CKEditor inherits from
   # By default: 'ApplicationController'
-  # config.parent_controller = 'MyController'
+  config.parent_controller = 'CkController'
 
   # Asset model classes
   # config.picture_model { Ckeditor::Picture }
@@ -35,7 +35,7 @@ Ckeditor.setup do |config|
 
   # Paginate assets
   # By default: 24
-  # config.default_per_page = 24
+  config.default_per_page = 24
 
   # Customize ckeditor assets path
   # By default: nil
@@ -43,7 +43,7 @@ Ckeditor.setup do |config|
 
   # To reduce the asset precompilation time, you can limit plugins and/or languages to those you need:
   # By default: nil (no limit)
-  # config.assets_languages = ['en', 'uk']
+  config.assets_languages = ['en', 'zh-cn']
   # config.assets_plugins = ['image', 'smiley']
 
   # CKEditor CDN
@@ -54,5 +54,5 @@ Ckeditor.setup do |config|
   # JS config url
   # Used when CKEditor CDN enabled
   # By default: "ckeditor/config.js"
-  # config.js_config_url = 'ckeditor/config.js'
+  config.js_config_url = 'ckeditor/config.js'
 end

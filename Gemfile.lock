@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/galetahub/ckeditor.git
+  revision: 32bc0c6702388549cb4b3f00f82afbc3798d6891
+  specs:
+    ckeditor (4.2.4)
+      cocaine
+      orm_adapter (~> 0.5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -50,10 +58,7 @@ GEM
       activesupport (>= 4.0.0)
       mime-types (>= 1.16)
     chronic (0.10.2)
-    ckeditor (4.2.2)
-      cocaine
-      orm_adapter (~> 0.5.0)
-    climate_control (0.1.0)
+    climate_control (0.2.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coffee-rails (4.1.1)
@@ -186,7 +191,7 @@ DEPENDENCIES
   bootstrap_form
   byebug
   carrierwave
-  ckeditor
+  ckeditor!
   coffee-rails (~> 4.1.0)
   config
   jbuilder (~> 2.0)
@@ -206,4 +211,4 @@ DEPENDENCIES
   will_paginate
 
 BUNDLED WITH
-   1.15.3
+   1.15.4

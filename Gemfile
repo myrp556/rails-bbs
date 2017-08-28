@@ -6,7 +6,7 @@ gem 'will_paginate'
 gem 'whenever', :require => false
 gem 'bootstrap-will_paginate'
 # add ckedirot to use it!
-gem 'ckeditor'
+gem 'ckeditor', github: 'galetahub/ckeditor'
 # this is for image upload!
 gem 'carrierwave'
 gem 'mini_magick'

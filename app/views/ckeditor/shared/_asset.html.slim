@@ -1,0 +1,20 @@
+= content_tag(:div, id: dom_id(asset), class: "gal-item", data: { url: image_path(asset.url_content) }) do
+  - if is_super_user?
+    = link_to '', polymorphic_path(asset, format: :json),
+          remote: true,
+          method: :delete,
+          title: I18n.t('ckeditor.buttons.delete'),
+          data: { confirm: t('ckeditor.confirm_delete') },
+          class: "fileupload-cancel gal-del"
+
+  .fileupload-file.gal-inner-holder
+    .img
+      = image_tag(asset.url_thumb, title: asset.filename)
+    .img-data
+      .img-name
+        = asset.filename
+      .time-size
+        .time
+          = asset.format_created_at
+        .fileupload-size.size
+          = number_to_human_size(asset.size) if asset.size

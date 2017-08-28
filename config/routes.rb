@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'ability/initialize'
+
   mount Ckeditor::Engine => '/ckeditor'
   root 'home#index'
 

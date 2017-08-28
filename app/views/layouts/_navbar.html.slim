@@ -2,13 +2,13 @@ nav.navbar.navbar-default
   .container
     .navbar-header
       a.navbar-brand href="#{root_url}"
-        | 主页
+        = t :home
 
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li
           a href="#"
-            |link
+            = t :link
       ul.nav.navbar-nav.navbar-right
         - if !@current_user.nil?
           - if is_high_rank_user?
@@ -63,8 +63,13 @@ nav.navbar.navbar-default
             h4.modal-title
               = t :new_mail
           .modal-body
-            input.mail-receiver.form-control
-            .receivers
+            label
+              = t :name
+            .receiver-line style="position: relative;"
+              input.mail-receiver.form-control
+              .receivers style="position: absolute;"
+            label
+              = t :detail
             textarea.mail-detail.form-control
           
           .modal-footer

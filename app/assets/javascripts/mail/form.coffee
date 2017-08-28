@@ -7,12 +7,16 @@ $(document).on 'turbolinks:load', ->
     $('.mail-detail').val ''
 
   $('.mail-receiver').change ->
-    console.log 'changed'
     $.get '/search_user_name.json?search='+$(this).val(), (respond, status) ->
       html = ''
       for name in respond.names
           html += "<div class='receiver-name'>"+name+"</div>"
+      $('.receivers').css('top', $('receivers').parent().find('.mail-receiver').height())
       $('.receivers').html html
+      $('.receivers').width $('.receivers').parent().find('.mail-receiver').width()
+      $('.receiver-name').width $('.receivers').width()
+      console.log $('.receivers').width()
+
       $('.receiver-name').each ->
         $(this).click ->
           $('.mail-receiver').val $(this).html()

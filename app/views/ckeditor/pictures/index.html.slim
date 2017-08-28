@@ -1,0 +1,19 @@
+- if logged_in?
+  #fileupload.gal-holder
+    - if is_super_user?
+      .gal-item
+        .fileupload-button.gal-upload-holder
+          = link_to I18n.t(:upload, scope: [:ckeditor, :buttons]), 'javascript:void(0)', class: "add"
+    - else
+      .gal-item style="display:none;"
+        .fileupload-button.gal-upload-holder
+
+    .fileupload-list data-endless="true"
+      = render partial: 'ckeditor/shared/asset', collection: @pictures.scoped
+
+    - unless @pictures.last_page?
+      .pagination
+        = link_to I18n.t("ckeditor.buttons.next"), ckeditor.pictures_path(page: @pictures.next_page), class: "next", rel: "next"
+
+    script type="text/javascript"
+      = Ckeditor::Utils.js_fileuploader('image')
