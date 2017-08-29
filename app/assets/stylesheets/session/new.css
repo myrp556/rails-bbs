@@ -1,0 +1,29 @@
+body{
+  background-color: #f0f0f0;
+}
+.signin, .signup {
+  width: calc(50vw);
+  background-color: #ffffff;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+.login-form {
+}
+.signup-footer {
+  text-align: right;
+}
+.login-wrap {
+  position: relative;
+}
+.login-figure {
+  margin-left: auto;
+  margin-right: auto;
+  height: 200px;
+  width: auto;
+  position: relative;
+  float: left;
+}

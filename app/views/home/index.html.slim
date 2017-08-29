@@ -14,7 +14,8 @@ h1
 - @info.each do |info|
   .zone-block.plane-box
     .zone-icon
-      = image_tag "icon/#{info[:zone].icon}", class: 'wh100 img-circle'
+      .zone-icon-block.home-zone-icon
+        = image_tag "icon/#{info[:zone].icon}", class: 'zone-icon-img img-circle'
     .zone-info
       .line
         a href="/zone?id=#{info[:zone].id}"

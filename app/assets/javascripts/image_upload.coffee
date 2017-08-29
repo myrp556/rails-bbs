@@ -2,7 +2,7 @@ $(document).on 'turbolinks:load', ->
   image_preview = $('.image-upload-preview-block')
   if image_preview?
     parent = image_preview.parent()
-    image_preview.height(image_preview.width())
+    #image_preview.height(image_preview.width())
 
   $('.image-upload-change-button').click ->
     $('.image-upload-file-field').click()

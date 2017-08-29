@@ -84,6 +84,13 @@ zh:
   delete_note_format: "你在分区%{zone}话题%{topic}的帖子%{note_short}%已经被管理局删除"
   delete_topic_format: "你在分区%{zone}的话题%{topic}已经被管理局删除"
   thats_all: "以上"
+  user_name_tip: "用户名必须唯一不重复，并且由字母开头以数字字母下划线组成，长度2-15"
+  name_tip: "昵称ID必须唯一不重复，长度2-20"
+  mail_tip: "邮箱地址必须唯一不重复，符合邮箱规范"
+  number_tip: "编号必须唯一不重复"
+  password_tip: "密码长度在6-30"
+  password_confirmation_tip: "密码必须与之前一致"
+  detail_password_info: "输入新密码并确认可以修改，留空则不更改"
 
   user_name: "账号"
   name: "昵称ID"

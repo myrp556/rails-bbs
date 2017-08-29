@@ -24,4 +24,5 @@
 //= require ./image_upload.coffee
 //= require ckeditor/init
 //= require ./init_ckeditor
+//= require ./base
 // require_tree .

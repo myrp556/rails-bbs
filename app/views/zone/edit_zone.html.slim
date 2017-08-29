@@ -1,26 +1,28 @@
 = stylesheet_link_tag 'zone/edit'
 
 h1
-  | edit zone
+  = t :edit_zone
+hr.hr-sm
 
 //= render 'form_zone'
 .row
   .col-sm-4
-    .detail-icon
-      = render 'layouts/image_upload', img_url: "icon/#{@zone.icon}", allow_commit: is_manage_zone?(@zone), tag: :icon, url: zone_icon_url(id: @zone.id) 
+    .zoom-edit-detail-icon
+      .detail-icon
+        = render 'layouts/image_upload', img_url: "icon/#{@zone.icon}", allow_commit: is_manage_zone?(@zone), tag: :icon, url: zone_icon_url(id: @zone.id) 
       
   .col-sm-8
-
-    = form_for @zone, url: @url do |f|
-      label 
-        = t(:zone_name)
-      = f.text_field :name, class: "form-control"
-      label 
-        = t(:description)
-      = f.text_field :description, class: "form-control"
-      label
-        = t :bulletin
-      = f.cktext_area :bulletin, class: "form-control"
-      
-      //= f.submit t :submit, class: "btn btn-primary btn-block"
-      input.btn.btn-primary.btn-block.form-zone-submit type="submit" value="#{t :submit}"
+    .plane-box.edit-zone-form
+      = form_for @zone, url: @url do |f|
+        label 
+          = t(:zone_name)
+        = f.text_field :name, class: "form-control"
+        label 
+          = t(:description)
+        = f.text_field :description, class: "form-control"
+        label
+          = t :bulletin
+        = f.cktext_area :bulletin, class: "form-control edit-zone-textarea"
+        
+        //= f.submit t :submit, class: "btn btn-primary btn-block"
+        input.btn.btn-primary.btn-block.form-zone-submit type="submit" value="#{t :submit}"

@@ -1,41 +1,47 @@
 = stylesheet_link_tag 'users/detail'
 h1 
-  | user#detail
+  = t :personal_info
+hr
 .row
   .col-md-4
-    .detail-icon
-      = render 'layouts/image_upload', img_url: (@user.icon.blank? ? "icon/soundonly" : "icon/#{@user.icon}"), allow_commit: is_user_self?(@user), tag: :icon, url: user_icon_url(id: @user.id)
+    .zoom
+      .detail-icon
+        = render 'layouts/image_upload', img_url: (@user.icon.blank? ? "icon/soundonly" : "icon/#{@user.icon}"), allow_commit: is_user_self?(@user), tag: :icon, url: user_icon_url(id: @user.id)
 
   .col-md-8
-    = form_for @user, url: user_detail_url(id: @user.id) do |f|
-      - if is_user_self?(@user)
-        = f.label t :user_name
+    .plane-box.user-detail
+      = form_for @user, url: user_detail_url(id: @user.id) do |f|
+        - if is_user_self?(@user)
+          = f.label t :user_name
+          div
+            = @user.user_name
+
+        = f.label t :name
         div
-          = @user.user_name
+          = @user.name
+        
+        - if is_user_self?(@user)
+          = f.label t :num
+          div
+            = @user.number
 
-      = f.label t :name
-      div
-        = @user.name
-      
-      - if is_user_self?(@user)
-        = f.label t :num
-        div
-          = @user.number
+        - if is_user_self?(@user)
+          = f.label t :mail
+          = f.text_field :mail, class: "form-control"
 
-      - if is_user_self?(@user)
-        = f.label t :mail
-        = f.text_field :mail, class: "form-control"
+        - if is_user_self?(@user)
+          hr
 
-      - if is_user_self?(@user)
-        hr
+          = f.label t :password
+          = f.password_field :password, class: "form-control"
 
-        = f.label t :password
-        = f.password_field :password, class: "form-control"
+          = f.label t :password_confirmation
+          = f.password_field :password_confirmation, class: "form-control"
+          .detail-passwd-footer.text-right
+            label.small.grey
+              = t :detail_password_info
+            
 
-        = f.label t :password_confirmation
-        = f.password_field :password_confirmation, class: "form-control"
-
-
-      - if is_user_self?(@user)
-        hr
-        = f.submit t(:change) , class: "btn btn-primary btn-block"
+        - if is_user_self?(@user)
+          hr
+          = f.submit t(:change) , class: "btn btn-primary btn-block"
