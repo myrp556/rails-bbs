@@ -1,3 +1,13 @@
+.home-welcome {
+  background-color: #333333;
+  text-align: center;
+  color: #ffffff;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin-top: -20px;
+  margin-left: -200px;
+  margin-right: -200px;
+}
 .zone-block {
   margin-bottom: 10px;
   width: 100%;
