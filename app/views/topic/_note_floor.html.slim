@@ -17,29 +17,31 @@
             span.glyphicon.glyphicon-envelope
       
   .note-content
+    - if !@current_user.nil? and has_note_options?(note)
+      .btn-group.note-options
+        span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
+        ul.dropdown-menu.pull-right
+          - if can_edit_note?(note)
+            li
+              a href="#{edit_reply_url(id: note.id)}"
+                = t :edit
+          - if can_delete_note?(note)
+            li
+              //a href="#{delete_reply_url(id: note.id)}"
+              - if note.user_id == @current_user.id
+                a.note-option-delete-self id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-self' url="#{delete_reply_url(id: note.id, format: 'json')}"
+                  = t :delete
+              - else
+                a.note-option-delete-manage id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-manage' url="#{delete_reply_url(id: note.id, format: 'json')}"
+                  = t :delete
     .note-content-head
       span
         = "##{note.floor}"
         - if note.rated>0
           strong
             = "  +#{note.rated}"
-      - if !@current_user.nil? and has_note_options?(note)
-        .btn-group.note-options
-          span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
-          ul.dropdown-menu.pull-right
-            - if can_edit_note?(note)
-              li
-                a href="#{edit_reply_url(id: note.id)}"
-                  = t :edit
-            - if can_delete_note?(note)
-              li
-                //a href="#{delete_reply_url(id: note.id)}"
-                - if note.user_id == @current_user.id
-                  a.note-option-delete-self id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-self' url="#{delete_reply_url(id: note.id, format: 'json')}"
-                    = t :delete
-                - else
-                  a.note-option-delete-manage id="#{note.id}" data-toggle="modal" data-target='#delete-note-modal-manage' url="#{delete_reply_url(id: note.id, format: 'json')}"
-                    = t :delete
+      span.timestamp
+        = get_time_s_s(note.created_at)
     hr.sm-hr
     - get_note_by_id_in_list(note.reply_to).each do |reply_to_note|
       - if !reply_to_note.nil?
@@ -55,22 +57,5 @@
       .note-button style="text-align:right;"
         a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
           = t :reply
-    - if note_has_reply?(note)
-      .note-replies
-        h4
-          = t :reply
-        - for reply_note in get_note_replies(note)
-          .note-reply
-            strong
-              = "#{get_user_name(reply_note.user_id)}"
-            = t :reply
-            strong
-              = "#{get_user_name(reply_note.reply_to_user_id)}: "
-            - if reply_note.rate
-              //span.glyphicon.glyphicon-star
-              strong
-                |+1
-            = raw reply_note.note_detail
-    
-  .timestamp
-    = get_time_s_s(note.created_at)
+    = render 'iterate_reply', note: note
+  

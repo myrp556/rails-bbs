@@ -43,7 +43,7 @@
   float: right;
   height: auto;
   min-height: 200px;
-  width: 82%;
+  width: 78%;
   display: inline-block;
   position: relative;
   overflow-y: hidden;
@@ -83,15 +83,16 @@
 
 .timestamp {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 0;
 }
 .note-content-head {
+  margin-top: 10px;
   position: relative;
 }
 .note-options {
   position: absolute;
   right: 0;
+  top: 0;
 }
 hr.sm-hr {
   margin-top: 5px !important;
@@ -105,4 +106,9 @@ hr.sm-hr {
 .note-replies, .note-reply-to {
   border: 1px solid #f0f0f0;
   padding: 10px;
+  position: relative;
+}
+
+.note-reply-head {
+  position: relative;
 }
