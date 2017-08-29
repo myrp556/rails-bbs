@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170823103713) do
+ActiveRecord::Schema.define(version: 20170829035643) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20170823103713) do
     t.integer  "last_user_id"
     t.string   "color"
     t.boolean  "nice"
+    t.integer  "hot",           default: 0
   end
 
   add_index "topics", ["updated_at"], name: "index_topics_on_updated_at"

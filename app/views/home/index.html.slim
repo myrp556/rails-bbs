@@ -1,6 +1,12 @@
 //= javascript_include_tag 'home/index'
 = stylesheet_link_tag 'home/index'
 
+table.table.hot-topic-table.plane-box
+    - for topic in @hot_topics
+      tr
+        td
+          = link_to topic_url(id: topic.id)
+hr
 h1 
   = t :zone
 hr
@@ -22,4 +28,4 @@ hr
 
 - if is_super_user?
   a href="/new_zone"
-    | new zone
+    = t :new_zone

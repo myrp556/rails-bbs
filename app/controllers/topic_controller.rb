@@ -50,6 +50,7 @@ class TopicController < ApplicationController
         @note.update(user: @current_user)
         @topic.update(floor_count: floor + 1)
         @topic.update(last_user_id: @current_user.id)
+        @topic.update(hot: @topic.hot + 1)
         @zone.update(today_notes: @zone.today_notes+1)
         page = get_page(@topic.notes, @note, Settings.note_lines_per_page)
 
@@ -131,6 +132,7 @@ class TopicController < ApplicationController
       reply_note.update(parse_to: reply_params[:parse_to])
       @topic.update(floor_count: floor+1)
       @topic.update(last_user_id: @current_user.id)
+      @topic.update(hot: @topic.hot + 1)
       @zone.update(today_notes: @zone.today_notes+1)
 
       @note.update(rated: @note.rated+1) if reply_note.rate

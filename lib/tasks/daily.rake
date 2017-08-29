@@ -11,4 +11,10 @@ namespace :daily do
       user.update(rate_point: Settings.user_max_rate_point)
     end
   end
+
+  task :reset_topic_hot => :environment do
+    for topic in Topic.where("hot > ?", 0)
+      topic.update(hot: 0)
+    end
+  end
 end

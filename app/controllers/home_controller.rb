@@ -8,6 +8,7 @@ class HomeController < ApplicationController
 			num_notes = Note.where('zone_id = ?', zone.id).size()
 			@info.push({'zone': zone, 'num_topics': num_topics, 'num_notes': num_notes})
 		end
+		@hot_topics = Topic.all.order("updated_at DESC").first(Settings.hot_topic_num)
 	end
 
 	private

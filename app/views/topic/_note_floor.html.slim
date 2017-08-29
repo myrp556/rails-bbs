@@ -42,6 +42,10 @@
             = "  +#{note.rated}"
       span.timestamp
         = get_time_s_s(note.created_at)
+        - if !@current_user.nil?
+          |  
+          a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
+            = t :reply
     hr.sm-hr
     - get_note_by_id_in_list(note.reply_to).each do |reply_to_note|
       - if !reply_to_note.nil?
@@ -53,9 +57,5 @@
            
     .note-content-detail
       = raw note.note_detail
-    - if !@current_user.nil?
-      .note-button style="text-align:right;"
-        a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
-          = t :reply
     = render 'iterate_reply', note: note
   

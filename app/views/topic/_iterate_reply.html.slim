@@ -14,9 +14,10 @@
                 |+1
           span.timestamp
             = get_time_s_s reply_note.created_at
-            |  
-            a.note-reply-button id="#{reply_note.id}" parse-to="#{reply_note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{reply_note.user.name}"
-              = t :reply
+            - if !@current_user.nil?
+              |  
+              a.note-reply-button id="#{reply_note.id}" parse-to="#{reply_note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{reply_note.user.name}"
+                = t :reply
         = raw reply_note.note_detail
         
         = render 'iterate_reply', note: reply_note

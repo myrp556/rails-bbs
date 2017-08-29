@@ -8,3 +8,4 @@ admin_avatar: "九十九机关"
 sent_pmail_when_replied: true
 pmail_lines_per_page: 10
 pmail_detail_preview_length: 20
+hot_topic_num: 5
