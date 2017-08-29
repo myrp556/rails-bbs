@@ -1,8 +1,14 @@
+.zone-bulletin {
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 10px;
+}
 .topics-table, .top-topics-table {
   width: 100%;
 }
 .topic-table-cell {
-  padding: 15px !important;
+  padding: 10px !important;
 }
 .topic-table-tr {
   width: 100%;

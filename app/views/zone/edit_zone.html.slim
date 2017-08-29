@@ -18,6 +18,9 @@ h1
       label 
         = t(:description)
       = f.text_field :description, class: "form-control"
+      label
+        = t :bulletin
+      = f.cktext_area :bulletin, class: "form-control"
       
       //= f.submit t :submit, class: "btn btn-primary btn-block"
-      input.btn.btn-primary.btn-block.form-zone-submit type="sumit" value="#{t :submit}"
+      input.btn.btn-primary.btn-block.form-zone-submit type="submit" value="#{t :submit}"

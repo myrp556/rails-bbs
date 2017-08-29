@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.pagination {
+  margin: 0 !important;
+}
+
 .topic-detail-title-block {
   position: relative;
 }

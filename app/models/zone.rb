@@ -5,6 +5,7 @@ class Zone < ActiveRecord::Base
 
   validates :name, presence: true, length: {in: 5..35}
   validates :description, presence: true, length: {in: 3..50}
+  validates :bulletin, length: {in: 0..2000}
 
   def url
     "/zone?id=#{self.id}"

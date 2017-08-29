@@ -300,8 +300,9 @@ class ZoneController < ApplicationController
     end
 
     def permit_params_zone(params)
-      params.require(:zone).permit(:name, :description)
+      params.require(:zone).permit(:name, :description, :bulletin)
     end
+
     def permit_params_topic(params)
       params.require(:topic).permit(:topic_detail, :note_detail)
     end

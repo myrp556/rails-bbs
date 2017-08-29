@@ -11,19 +11,28 @@
           li
             a href="#{edit_zone_url(id: @zone.id)}"
               = t :edit_zone
+              
+= render 'layouts/nav_link'  
+
+- if !@zone.bulletin.blank?
+  hr.sm-hr
+  .plane-box.zone-bulletin
+    = raw @zone.bulletin
   
 .zone-top-tools
-  = render 'layouts/nav_link'  
+  = will_paginate(@topics, :previous_label => '<', :next_label => '>') || render('layouts/paginate_single', url: zone_url(id: @zone.id))
   = form_tag zone_url(id: @zone.id), :class => 'form-inline', :style => 'float:right', method: :get do
       .form-group
         = hidden_field_tag :id, @zone.id
+        label
+          = t :topic_search
+          |:
         = text_field_tag :search, params[:search], :class => 'form-control topic-search-input'
         //= submit_tag t :search, class: 'btn btn-primary form-control'
         input.btn.btn-primary type='submit' value="#{t :search}" name="commit"
         
 hr
 
-= will_paginate @topics
 - if !@top_topics.nil?
   table.table.top-topics-table.plane-box
     tbody
@@ -39,7 +48,7 @@ hr
         - if topic.valid?
           = render 'tr_topic', :topic => topic
           
-= will_paginate @topics
+= will_paginate(@topics, :previous_label => '<', :next_label => '>') || render('layouts/paginate_single', url: zone_url(id: @zone.id))
 
 hr
 - if !@current_user.nil?

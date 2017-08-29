@@ -21,7 +21,7 @@ hr
               = t :delete_favorite
     
   
-= will_paginate @notes, :previous_label => '<', :next_label => '>'
+= will_paginate(@notes, :previous_label => '<', :next_label => '>') || render('layouts/paginate_single', url: topic_url(id: @topic.id))
 
   
 - @notes.each do |note|
