@@ -1,14 +1,12 @@
-.nav-links style="display:inline-block;font-size: 20px;"
-  .nav-link
+ul.pager.nav-link 
+  li
     a href="#{root_url}"
       = t :home
   - if !@zone.nil? and !@zone.id.nil?
-    .nav-link
+    li
       a href="#{zone_url(id: @zone.id)}"
         = @zone.name
     - if !@topic.nil? and !@topic.id.nil?
-      span
-        | >>
-      .nav-link
+      li
         a href="#{topic_url(id: @topic.id)}"
           = @topic.topic_detail

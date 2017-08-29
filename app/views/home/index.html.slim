@@ -1,17 +1,18 @@
 //= javascript_include_tag 'home/index'
 = stylesheet_link_tag 'home/index'
 
-table.table.hot-topic-table.plane-box
+h1
+  = t :hot_topics
+table.table.hot-topic-table.table-hover.plane-box
     - for topic in @hot_topics
       tr
-        td
-          = link_to topic_url(id: topic.id)
+        td.hot-topic-td
+          = link_to topic.topic_detail, topic_url(id: topic.id)
 hr
 h1 
   = t :zone
-hr
 - @info.each do |info|
-  .zone-block
+  .zone-block.plane-box
     .zone-icon
       = image_tag "icon/#{info[:zone].icon}", class: 'wh100 img-circle'
     .zone-info
@@ -22,8 +23,8 @@ hr
       .line
         small.zone-description
           = info[:zone].description
-      .line
-        small.
+      .zone-activity
+        small
           = "#{t :today_notes}: #{info[:zone].today_notes} #{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
 
 - if is_super_user?

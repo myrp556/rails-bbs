@@ -73,3 +73,16 @@
 .receivers > .receiver-name:hover {
   background-color: #f0f0f0;
 }
+
+.read-pmail-modal-body {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.pager.nav-link {
+  text-align: left !important;
+  margin: 0 !important;
+}
+.pager.nav-link > li {
+  margin-right: 10px;
+}

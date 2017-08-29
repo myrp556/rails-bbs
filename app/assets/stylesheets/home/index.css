@@ -1,8 +1,10 @@
 .zone-block {
   margin-bottom: 10px;
   width: 100%;
-  height: 100px;
+  height: 120px;
   padding: 10px;
+  overflow-y: hidden;
+  position: relative;
 }
 .zone-block:hover {
   background-color: #ececec;
@@ -11,7 +13,26 @@
   display: inline-block;
 }
 .zone-icon {
-  margin-right: 10px;
-  width: 80px;
-  height: 80px;
+  height: 100%;
+  width: auto;
+  padding-left: 0%;
+  left: 0;
+  margin-right: 20px;
+}
+.zone-info {
+  width: 80%;
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+}
+.zone-activity {
+  bottom: 0;
+  width: 100%;
+  float: left;
+  position: absolute;
+  word-wrap: normal;
+}
+.hot-topic-td {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
 }

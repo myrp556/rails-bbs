@@ -1,4 +1,23 @@
 h1
-  = t :mail_sendbox
+  = t :mail_outbox
   
 = render 'mail_table'
+
+- if !@current_user.nil?
+  .modal.fade id='read-pmail-modal'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title.pmail-name
+              | title
+          .modal-body
+            p.pmail-detail.read-pmail-modal-body
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.read-pmail-reply data-dismiss='modal' type='button'
+              = t :reply
