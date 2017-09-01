@@ -22,3 +22,6 @@ config/environments/*.local.yml
 
 public/images/
 ./public/uploads/
+public/save_page
+./public/save_page
+./public/save_page/
