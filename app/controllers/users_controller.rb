@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   include PrivilegeHelper
   include UsersHelper
+  include PmailHelper
   before_action :require_user, except: [:new, :create, :list, :search_user_name, :add_user_favorite, :delete_user_favorite]
   before_action :require_login, except: [:new, :create]
   before_action :require_user_self, only: [:update_detail, :update_icon]
@@ -75,10 +76,11 @@ class UsersController < ApplicationController
   end
 
   def get_user_manage_zones
-    ret = []
+    ret = {:data => []}
     for zone in @user.zones
-      ret.push({'name': zone.name, 'id': zone.id})
+      ret[:data].push({'name': zone.name, 'id': zone.id})
     end
+    ret['message'] = 'success'
     respond_to do |format|
       format.json { render json: ret }
     end
@@ -94,7 +96,7 @@ class UsersController < ApplicationController
       end
     end
     respond_to do |format|
-      format.json { render json: {'message': 'update success'}}
+      format.json { render json: {'message': 'success', 'message_t': t(:update_success)}}
     end
   end
 
@@ -102,27 +104,27 @@ class UsersController < ApplicationController
     duration_s = get_ball_duration_s(@user, @zone.id)
     if duration_s == ''
       status = 'normal'
-      message = t :normal
+      status_t = t :normal
     else
       status = 'balling'
-      message = t :balling
+      status_t = t :balling
     end
     respond_to do |format|
-      format.json { render json: {'message': message, 'status': status, 'duration_s': duration_s, 'user_id': @user.id, 'zone_id': @zone.id} }
+      format.json { render json: {'message': 'success', 'status': status, 'status_t': status_t, 'duration_s': duration_s, 'user_id': @user.id, 'zone_id': @zone.id} }
     end
   end
 
   def set_user_ball
+    ball_params = permit_ball_params
     ball = @user.balls.find_by(zone_id: @zone.id)
     ball = @user.balls.create(zone_id: @zone.id) if ball.nil?
-    day = params[:day].nil? ? 0 : params[:day].to_i
-    hour = params[:hour].nil? ? 0 : params[:hour].to_i
-    minute = params[:minute].nil? ? 0 : params[:minute].to_i
+    day = ball_params[:day].nil? ? 0 : ball_params[:day].to_i
+    hour = ball_params[:hour].nil? ? 0 : ball_params[:hour].to_i
+    minute = ball_params[:minute].nil? ? 0 : ball_params[:minute].to_i
     tot = day.days + hour.hours + minute.minutes
-    ball.update(expire: tot.from_now)
-
+    make_ball_pmail @user.id, @zone.name, get_ball_duration_s(@user, @zone.id), ball_params[:addtion_message] if tot>0
     respond_to do |format|
-      format.json { render json: {'message': ball.expire, 'user_id': @user.id, 'zone_id': @zone.id}}
+      format.json { render json: {'message': 'success', 'message_t': t(:set_success), 'expire': ball.expire, 'user_id': @user.id, 'zone_id': @zone.id}}
     end
   end
 
@@ -131,7 +133,7 @@ class UsersController < ApplicationController
     ball.destroy if !ball.nil?
 
     respond_to do |format|
-      format.json { render json: {'message': 'success', 'user_id': @user.id, 'zone_id': @zone.id} }
+      format.json { render json: {'message': 'success', 'message_t': t(:set_success), 'user_id': @user.id, 'zone_id': @zone.id} }
     end
   end
 
@@ -144,7 +146,8 @@ class UsersController < ApplicationController
     topic = Topic.find_by(id: topic_id)
     if topic.nil?
       respond_to do |format|
-        format.json { render json: {'message': 'no topic'}, status: 'error' }
+        format.json { render json: {'message': 'no topic'}}
+        return
       end
     else
       favorite = @current_user.favorites.find_by(topic_id: topic_id)
@@ -152,16 +155,16 @@ class UsersController < ApplicationController
         favorite = @current_user.favorites.new(topic_id: topic_id)
         if favorite.save()
           respond_to do |format|
-            format.json { render json: {'message': 'success'} }
+            format.json { render json: {'message': 'success', 'message_t': t(:add_success)} }
           end
         else
           respond_to do |format|
-            format.json { render json: {'message': make_error_message(favorite)}, status: 'error' }
+            format.json { render json: {'message': 'error', 'message_t': make_error_message(favorite)}, status: 'error' }
           end
         end
       else
         respond_to do |format|
-          format.json { render json: {'message': 'success'} }
+          format.json { render json: {'message': 'success', 'message_t': t(:already_added)} }
         end
       end
     end
@@ -175,7 +178,7 @@ class UsersController < ApplicationController
       favorite.destroy() if !favorite.nil?
     end
     respond_to do |format|
-      format.json { render json: {'message':'success'} }
+      format.json { render json: {'message':'success', 'message_t': t(:delete_success)} }
     end
   end
 
@@ -187,7 +190,7 @@ class UsersController < ApplicationController
       names.push user.name
     end
     respond_to do |format|
-      format.json { render json: {'names': names} }
+      format.json { render json: {'message': 'success', 'names': names} }
     end
   end
 
@@ -195,6 +198,10 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:user_name, :name, :mail, :number, \
                                   :password, :password_confirmation)
+    end
+
+    def permit_ball_params
+      params.permit(:user_id, :zone_id, :day, :hour, :minute, :addtion_message)
     end
 
     def user_update_params
@@ -213,7 +220,7 @@ class UsersController < ApplicationController
       if @user.nil?
         respond_to do |format|
           format.html { redirect_to '/' and return }
-          format.json { render(json: {'message': 'no user'}, status: 'error') and return }
+          format.json { render(json: {'message': 'no user'}) and return }
         end
       end
     end
@@ -262,7 +269,7 @@ class UsersController < ApplicationController
       if @zone.nil?
         respond_to do |format|
           format.html { redirect_to(user_manage_url(id: @user.id)) and return  }
-          format.json { render(json: {'message':'no zone found'}, status: 'error') and return }
+          format.json { render(json: {'message':'no zone found', 'message_t': t(:no_zone_found)}) and return }
         end
       end
     end
@@ -271,7 +278,8 @@ class UsersController < ApplicationController
         if !is_manage_zone?(@zone) and !is_super_user?
           respond_to do |format|
             format.html { (flash[:danger] = (t :require_privilege)) and redirect_to(user_manage_url(id: @user.id)) and return }
-            format.json { render(json: {"message": "require privilege"}, status: "error")}
+            format.json { render(json: {"message": "require privilege", 'message_t': t(:require_privilege)}) }
+            return
           end
         end
     end

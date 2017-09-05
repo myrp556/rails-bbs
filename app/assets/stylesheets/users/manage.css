@@ -8,3 +8,7 @@
 .set-ball {
   float: right;
 }
+
+.manage-zone-name, .manage-user-name, .manage-insdruction {
+  display: none;
+}

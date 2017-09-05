@@ -6,29 +6,34 @@ refresh_user_zone_privileges = () ->
       user_id = $('.zone-manage').attr('id')
       $.get '/user_manage_zones.json?id=' + user_id, (respond, status) ->
         #console.log respond
+        if status == 'success'
+          if respond.message == 'success'
+            manage_zone_ids = (data.id for data in respond.data)
+            html = "<ul class='nav nav-pills'>"
+            for zone in zones
+              zone_name = zone.name
+              zone_id = zone.id
+              cls = 'manage-zone'
+              if zone_id in manage_zone_ids
+                cls += ' active'
+              html += "<li class='"+cls+"' id='"+zone_id+"' >"
+              html += "<a>"+zone_name+"</a>"
+              html += "</li>"
+            html += "</ul>"
 
-        manage_zone_ids = (data.id for data in respond)
-        html = "<ul class='nav nav-pills'>"
-        for zone in zones
-          zone_name = zone.name
-          zone_id = zone.id
-          cls = 'manage-zone'
-          if zone_id in manage_zone_ids
-            cls += ' active'
-          html += "<li class='"+cls+"' id='"+zone_id+"' >"
-          html += "<a>"+zone_name+"</a>"
-          html += "</li>"
-        html += "</ul>"
 
-
-        $('.manage-zones').html( html )
-        $('.manage-zone').each ->
-          $(this).click ->
-            zone_id = $(this).attr('id')
-            if $(this).hasClass('active')
-              $(this).removeClass('active')
-            else
-              $(this).addClass('active')
+            $('.manage-zones').html( html )
+            $('.manage-zone').each ->
+              $(this).click ->
+                zone_id = $(this).attr('id')
+                if $(this).hasClass('active')
+                  $(this).removeClass('active')
+                else
+                  $(this).addClass('active')
+          else
+            alert 'x'+respond.message_t
+        else
+          alert 'error'
 
 send_user_zone_privileges = () ->
   ids = []
@@ -40,30 +45,34 @@ send_user_zone_privileges = () ->
   $.post '/user_manage_zones.json?id='+user_id, {'ids': ids}, (respond, status) ->
     #console.log status
     if status == 'success'
-      refresh_user_zone_privileges()
+      if respond.message == 'success'
+        refresh_user_zone_privileges()
+      alert respond.message_t
     else
-      console.log 'faild..'
+      alert 'error'
 
 refresh_ball = () ->
-  $('.ball').each ->
+  $('.zone-ball').each ->
     block = $(this)
-    user_id = $('.zone-manage').attr('id')
+    user_id = $(this).attr('user-id')
     zone_id = $(this).attr('id')
     $.get '/get_user_ball.json?user_id='+user_id+'&zone_id='+zone_id, (respond, status) ->
       #console.log respond.message
       #console.log respond
       if status == 'success'
-        block.html respond.message
-        if respond.status != 'normal' and respond.duration_s?
-          block.removeClass('label-success')
-          block.addClass('label-danger')
-          block.parent().find('.ball-duration').html respond.duration_s
-        else
-          block.removeClass('label-danger')
-          block.addClass('label-success')
-          block.parent().find('.ball-duration').html ''
+        if respond.message == 'success'
+          ball_block = $('#'+respond.zone_id+'.ball.label')
+          duration_block = $('#'+respond.zone_id+'.ball-duration')
+          if respond.status != 'normal' and respond.duration_s?
+            ball_block.removeClass('label-success')
+            ball_block.addClass('label-danger')
+          else
+            ball_block.removeClass('label-danger')
+            ball_block.addClass('label-success')
+          duration_block.html respond.duration_s
+          ball_block.html respond.status_t
       else
-        block.html 'error'
+        alert 'error!'
 
 set_user_ball = (block, zone_id) ->
   #zone_id = block.find('.zone').attr('id')
@@ -76,13 +85,14 @@ set_user_ball = (block, zone_id) ->
     console.log bb
 
   console.log value
-  $.get '/set_user_ball.json?user_id='+user_id+'&zone_id='+zone_id+value, (respond, status) ->
+  $.post '/set_user_ball.json?user_id='+user_id+'&zone_id='+zone_id, {'user_id': user_id, 'zone_id': zone_id, 'day': day, 'hour': hour, 'minute': minute, 'addtion_message': $('.ball-message').val()}, (respond, status) ->
     #console.log respond.message
     if status == 'success'
-      console.log 'set ball success'
-      refresh_ball()
+      if respond.message == 'success'
+        refresh_ball()
+      alert respond.message_t
     else
-      console.log 'set ball failed'
+      alert 'error!'
 
 init_button = () ->
   $('.post-zone-manage').click ->
@@ -97,7 +107,9 @@ init_view = () ->
   $('.zone-ball').each ->
     $(this).click ->
       zone_id = $(this).attr('id')
-      $('.ball-modal-title').html $(this).attr('name')
+      $('.ball-time').val 0
+      $('.ball-message').val ''
+      $('.ball-modal-title').html $('.manage-user-name').html()+$('.manage-insdruction.uat-zone').html()+$(this).attr('name')+$('.manage-insdruction.uball').html()
       #$('.modal-body').html $(this).find('.ball-manage').html()
       $('.modal-set').one 'click', ->
         set_user_ball($('.modal-body'), zone_id)
@@ -108,5 +120,7 @@ $(document).on 'turbolinks:load',  ->
   init_button()
   init_view()
 
-  refresh_user_zone_privileges()
-  refresh_ball()
+  if $('.zone-manage').length
+    refresh_user_zone_privileges()
+  if $('.ball-manage-table').length
+    refresh_ball()

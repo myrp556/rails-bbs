@@ -41,11 +41,15 @@
           strong
             = "  +#{note.rated}"
       span.timestamp
+        a.note-only-read href="#{topic_url(id: @topic.id, only_read: user.id)}"
+          = t :only_read_user
+        |  
         = get_time_s_s(note.created_at)
         - if !@current_user.nil?
           |  
           a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
-            = t :reply
+            strong
+              = t :reply
     hr.sm-hr
     - get_note_by_id_in_list(note.reply_to).each do |reply_to_note|
       - if !reply_to_note.nil?

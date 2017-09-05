@@ -33,7 +33,7 @@ module PrivilegeHelper
   def has_ball?(user, zone_id)
     return false if user.nil?
     ball = user.balls.find_by(zone_id: zone_id)
-    if !ball.nil? and ball.expire > Time.current()
+    if !ball.nil? and !ball.expire.nil? and ball.expire > Time.current()
       return true
     end
     return false
@@ -46,7 +46,7 @@ module PrivilegeHelper
     if ball.nil? or ball.expire.nil?
       return ''
     else
-      if ball.expire < Time.zone.now
+      if ball.expire and ball.expire < Time.zone.now
         ball.destroy
       else
         #message = t :balling

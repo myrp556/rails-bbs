@@ -33,7 +33,12 @@ class TopicController < ApplicationController
     if !@topic.nil?
       @base_url = "/topic?id=#{@topic.id}"
       #@notes = make_up_page(@topic.notes, Settings.note_lines_per_page)
-      @notes = @topic.notes.paginate(page: params[:page], per_page: Settings.note_lines_per_page)
+      if params[:only_read].blank?
+        @notes = @topic.notes
+      else
+        @notes = @topic.notes.where(user_id: params[:only_read])
+      end
+      @notes = @notes.paginate(page: params[:page], per_page: Settings.note_lines_per_page)
       #@notes = @topic.notes
     end
   end

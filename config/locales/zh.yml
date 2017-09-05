@@ -50,6 +50,9 @@ zh:
   update_failed: "更新失败"
   delete_success: "删除成功"
   send_success: "发送成功"
+  set_success: "设置成功"
+  add_success: "添加成功"
+  already_added: "已经添加"
   send_faild: "发送失败"
   send_all_fin: "全体发送完毕"
   no_privilege: "权限不足"
@@ -79,6 +82,8 @@ zh:
   your_note: "你的帖子"
   your_topic: "你的话题"
   at_zone: "在分区"
+  no_zone_found: "未找到分区"
+  only_read_user: "只看作者"
   # your_note_at_zone: "你在分区"
 
   has_been_deleted_by_admin: "已经被管理机关删除"
@@ -92,6 +97,9 @@ zh:
   password_tip: "密码长度在6-30"
   password_confirmation_tip: "密码必须与之前一致"
   detail_password_info: "输入新密码并确认可以修改，留空则不更改"
+  ball_time: 禁言时间
+  ball_instruction: "你可以修改该用户在你管理的分区下的禁言状态"
+  you_are_balled: "你已被禁言"
 
   user_name: "账号"
   name: "昵称ID"

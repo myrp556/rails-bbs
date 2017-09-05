@@ -4,6 +4,13 @@
 h1
   | user#manage
 
+span.manage-user-name
+  = @user.name
+span.manage-insdruction.uat-zone
+  = t :at_zone
+span.manage-insdruction.uball
+  = t :ball
+
 - if is_super_user?
   h2
     = t :manage_zone
@@ -16,20 +23,23 @@ h1
 - if !@current_user.zones.nil? and @current_user.zones.size()>0
   h2
     = t :zone_ball
-  - for zone in @current_user.zones
-    .zone-ball id="#{zone.id}" name="#{zone.name}"
-      .ball-status data-toggle='modal' data-target='#manage-modal'
-        span
-          strong
-            = zone.name
-            |:
-        span
-          = ' '
-        span.ball.label id="#{zone.id}"
-          = t :normal
-        span.ball-duration id="#{zone.id}"
-      .ball-manage
-        .zone id="#{zone.id}"
+  h5
+    small
+      = t :ball_instruction
+  table.table.table-hover.ball-manage-table
+    
+    tbody
+      - for zone in @current_user.zones
+        tr.zone-ball.row id="#{zone.id}" name="#{zone.name}" user-id="#{@user.id}" style="vertical-align: middle;" data-toggle='modal' data-target='#manage-modal'
+          td.ball-status.col-sm-5
+            span
+              strong
+                = zone.name
+                |:
+          td.col-sm-7 style="text-align: center;"
+            span.ball.label id="#{zone.id}"
+              = t :normal
+            span.ball-duration id="#{zone.id}"
          
   .modal.fade id='manage-modal'
     .modal-dialog
@@ -41,15 +51,21 @@ h1
           h4.modal-title.ball-modal-title
             | title
         .modal-body
-          input.ball-time.ball-day value="0"
-          span
-            = t :day
-          input.ball-time.ball-hour value="0"
-          span
-            = t :hour
-          input.ball-time.ball-minute value="0"
-          span
-            = t :minute
+          label
+            = t :ball_time
+          .ball-time-line
+            input.ball-time.ball-day value="0"
+            span
+              = t :day
+            input.ball-time.ball-hour value="0"
+            span
+              = t :hour
+            input.ball-time.ball-minute value="0"
+            span
+              = t :minute
+          label
+            = t :addtion_message
+          textarea.form-control.ball-message
         
         .modal-footer
           button.btn.btn-default data-dismiss='modal' type='button'

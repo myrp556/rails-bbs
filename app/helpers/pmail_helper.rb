@@ -32,9 +32,9 @@ module PmailHelper
       if !message.blank? and message!='undefined'
         pmail.mail_detail += '<br>'+strong(t(:addtion_message)+':') + '<br>'
         pmail.mail_detail += get_pure_text(message)
-        pmail.mail_detail += sign()
-        pmail.save
       end
+      pmail.mail_detail += sign()
+      pmail.save
     end
   end
 
@@ -48,10 +48,23 @@ module PmailHelper
       if !message.blank? and message!='undefined'
         pmail.mail_detail += '<br>'+strong(t(:addtion_message)+':')+'<br>'
         pmail.mail_detail += get_pure_text(message)
-        pmail.mail_detail += sign()
-        pmail.save
       end
+      pmail.mail_detail += sign()
+      pmail.save
     end
+  end
+
+  def make_ball_pmail(user_id, zone_name, time_s, message)
+    pmail = make_up_pmail_with_user_id user_id
+    return if pmail.nil?
+    pmail.mail_detail = t(:zone)+'<strong>'+zone_name+'</strong>'+t(:you_are_balled)+"<br>"
+    pmail.mail_detail += t(:ball_time)+'<strong>'+time_s+'</strong>'
+    if !message.blank?
+      pmail.mail_detail += '<br>'+strong(t(:addtion_message)+':')+'<br>'
+      pmail.mail_detail += get_pure_text(message)
+    end
+    pmail.mail_detail += sign()
+    pmail.save
   end
 
   private
