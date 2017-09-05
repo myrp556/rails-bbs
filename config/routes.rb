@@ -3,8 +3,7 @@ Rails.application.routes.draw do
 
   mount Ckeditor::Engine => '/ckeditor'
   root 'home#index'
-  post '/save_page' => 'home#save_page'
-  
+
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
   #patch '/user/update' => 'users#update'
