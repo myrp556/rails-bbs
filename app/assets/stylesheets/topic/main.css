@@ -84,7 +84,7 @@
 
 .timestamp {
   position: absolute;
-  right: 0;
+  right: 20px;
 }
 .note-content-head {
   margin-top: 10px;
@@ -109,4 +109,10 @@
 
 .note-reply-head {
   position: relative;
+}
+.note-reply-wrap {
+  padding-left: 10px;
+}
+.note-reply-wrap > p {
+  margin: 0 !important;
 }

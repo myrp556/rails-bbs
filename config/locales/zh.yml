@@ -42,6 +42,7 @@ zh:
   hour: "小时"
   minute: "分钟"
   hot_topics: "最新回复"
+  quote: "引用"
   nice: "精品"
   nice_one: "好顶赞"
   signup_success: "注册成功"
@@ -84,6 +85,7 @@ zh:
   at_zone: "在分区"
   no_zone_found: "未找到分区"
   only_read_user: "只看作者"
+  floorhead: "楼主"
   # your_note_at_zone: "你在分区"
 
   has_been_deleted_by_admin: "已经被管理机关删除"
@@ -100,6 +102,7 @@ zh:
   ball_time: 禁言时间
   ball_instruction: "你可以修改该用户在你管理的分区下的禁言状态"
   you_are_balled: "你已被禁言"
+  mail_modal_name_instruction: "输入用户名称按下Enter可以进行相关搜索"
 
   user_name: "账号"
   name: "昵称ID"

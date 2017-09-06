@@ -40,6 +40,10 @@
         - if note.rated>0
           strong
             = "  +#{note.rated}"
+        - if user.id == @topic.user_id
+          |  
+          strong
+            = t :floorhead
       span.timestamp
         a.note-only-read href="#{topic_url(id: @topic.id, only_read: user.id)}"
           = t :only_read_user
@@ -54,6 +58,12 @@
     - get_note_by_id_in_list(note.reply_to).each do |reply_to_note|
       - if !reply_to_note.nil?
         .note-reply-to
+          .note-quote
+            = t :quote
+            |  
+            = "##{reply_to_note.floor}"
+            span.timestamp
+              = get_time_s_s(reply_to_note.created_at)
           strong
             = "#{get_user_name(reply_to_note.user_id)}: "
           = raw get_pure_note_detail_short(reply_to_note)
