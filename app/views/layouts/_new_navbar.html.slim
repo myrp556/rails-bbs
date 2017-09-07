@@ -52,4 +52,29 @@
         .simple-nav-button
           a href="#{login_url}"
             = t :login
-        
+            
+- if !@current_user.nil?
+  .modal.fade id='new-mail-modal'
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close data-dismiss='modal'
+              span
+                |&times;
+            h4.modal-title
+              = t :new_mail
+          .modal-body
+            label
+              = t :name
+            .receiver-line style="position: relative;"
+              input.mail-receiver.form-control data-toggle="tooltip" data-placement="top" title="#{t :mail_modal_name_instruction}"
+              .receivers style="position: absolute;"
+            label
+              = t :detail
+            textarea.mail-detail.form-control
+          
+          .modal-footer
+            button.btn.btn-default data-dismiss='modal' type='button'
+              = t :close
+            button.btn.btn-primary.mail-send data-dismiss='modal' type='button'
+              = t :send      
