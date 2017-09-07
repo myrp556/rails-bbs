@@ -16,6 +16,7 @@
  *= require ./base
  *= require ./dropdown-submenu
  *= require ./color
+ *= require ./simple_nav
  *= require_self
  */
 

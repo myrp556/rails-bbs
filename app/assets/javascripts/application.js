@@ -25,4 +25,5 @@
 //= require ckeditor/init
 //= require ./init_ckeditor
 //= require ./base
+//= require ./simple_nav
 // require_tree .

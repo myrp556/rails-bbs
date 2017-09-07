@@ -1,11 +1,14 @@
 //= javascript_include_tag 'home/index'
 = stylesheet_link_tag 'home/index'
 
-.home-welcome
-  h3
-    | WELCOME TO
-  h1
-    | AGENCY. 99
+.home-big-screen
+  = image_tag "screen/kannatsuki", class: "home-big-screen-img"
+  .home-big-screen-subtitle
+  .home-big-screen-none
+    .home-big-screen-subtitle-content
+      .home-big-screen-subtitle-wrap
+        .home-big-screen-subtitle-text
+          | WELCOME
 h1
   = t :hot_topics
 table.table.hot-topic-table.table-hover.plane-box
