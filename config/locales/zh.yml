@@ -105,6 +105,7 @@ zh:
   mail_modal_name_instruction: "输入用户名称按下Enter可以进行相关搜索"
 
   user_name: "账号"
+  someone: "OOO"
   name: "昵称ID"
   mail: "邮箱"
   num: "编号"
@@ -123,6 +124,7 @@ zh:
   personal_info: "个人信息"
   send: "发送"
   reply: "回复"
+  anonymous: "匿名"
   set_top: "设为置顶"
   cancle_top: "取消置顶"
   set_nice: "设为精品"

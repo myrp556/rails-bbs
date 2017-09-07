@@ -1,15 +1,18 @@
 .plane-box.note-floor.clear-fix id="floor#{note.floor}"
   .user-profile
     .user-icon
-      - if user.icon.blank?
+      - if user.icon.blank? or @zone.anonymous
         = image_tag "icon/soundonly", class: 'user-icon-img'
       - else
         = image_tag "icon/#{user.icon}", class: 'user-icon-img'
     .user-name
       strong
-        = user.name
+        - if @zone.anonymous
+          | u never know
+        - else
+          = user.name
     .center-line
-      - if !@current_user.nil?
+      - if !@current_user.nil? and !@zone.anonymous
         .buttons
           a.user-profile-detail.mr60 href="#{user_detail_url(id: user.id)}"
             span.glyphicon.glyphicon-user
@@ -21,7 +24,7 @@
       .btn-group.note-options
         span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown" aira-hidden="true"
         ul.dropdown-menu.pull-right
-          - if can_edit_note?(note)
+          - if can_edit_note?(note) and !@zone.anonymous
             li
               a href="#{edit_reply_url(id: note.id)}"
                 = t :edit
@@ -40,18 +43,19 @@
         - if note.rated>0
           strong
             = "  +#{note.rated}"
-        - if user.id == @topic.user_id
+        - if user.id == @topic.user_id and !@zone.anonymous
           |  
           strong
             = t :floorhead
       span.timestamp
-        a.note-only-read href="#{topic_url(id: @topic.id, only_read: user.id)}"
-          = t :only_read_user
+        - if !@zone.anonymous
+          a.note-only-read href="#{topic_url(id: @topic.id, only_read: user.id)}"
+            = t :only_read_user
         |  
         = get_time_s_s(note.created_at)
         - if !@current_user.nil?
           |  
-          a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{user.name}"
+          a.note-reply-button id="#{note.id}" parse-to="#{note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{@zone.anonymous ? t(:someone) : user.name}"
             strong
               = t :reply
     hr.sm-hr

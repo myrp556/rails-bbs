@@ -1,5 +1,20 @@
 = form_for @zone, url: @url do |f|
-  = f.text_field :name, class: "form-control"
-  = f.text_field :description, class: "form-control"
+  .form-group
+    label
+      = t :zone_name
+    = f.text_field :name, class: "form-control"
+  - if is_super_user?
+    .form-group
+      label
+        = t :anonymous
+      = f.check_box :anonymous
+  .form-group
+    label
+      = t :rank
+    = f.select :rank, ['1', '2']
+  .form-group
+    label
+      = t :description
+    = f.text_area :description, class: "form-control"
 
   = f.submit t :submit

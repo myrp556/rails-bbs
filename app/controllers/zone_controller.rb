@@ -1,6 +1,7 @@
 class ZoneController < ApplicationController
   include PrivilegeHelper
   include PmailHelper
+  include ZoneHelper
   # get zone from id, and topics
   # @zone
   # @topics
@@ -20,6 +21,7 @@ class ZoneController < ApplicationController
   before_action :delete_require, only: [:destroy_topic]
   before_action :require_manage_zone, only: [:set_top_topic, :cancle_top_topic, :edit_zone, :update_zone, :update_icon, :set_topic_color, :set_topic_nice, :cancle_topic_nice]
   before_action :require_no_ball, only: [:create_topic, :edit_topic, :update_topic, :destroy_topic]
+  before_action :require_rank, except: [:create_zone]
   #before_action :require_privilege, only: [:edit_topic, :update_topic, :destroy_topic]
 
   def main
@@ -61,6 +63,11 @@ class ZoneController < ApplicationController
   end
 
   def update_zone
+    r_rank = @zone.rank
+    if r_rank > 0 and r_rank > @current_user.rank
+      flash[:danger] = t :no_privilege
+      redirect_to edit_zone(id: @zone.id)
+    end
     if @zone.update_attributes(permit_params_zone(params))
       flash[:success] = t :update_success
       redirect_to zone_url(id: @zone.id)
@@ -299,8 +306,16 @@ class ZoneController < ApplicationController
       end
     end
 
+    def require_rank
+      if @zone.rank >0 and (!@current_user.nil? or @current_user.rank < @zone.rank)
+        falsh[:danger] = t :no_privilege
+        redirect_to root_url
+        return
+      end
+    end
+
     def permit_params_zone(params)
-      params.require(:zone).permit(:name, :description, :bulletin)
+      params.require(:zone).permit(:name, :description, :bulletin, :anonymous, :rank)
     end
 
     def permit_params_topic(params)

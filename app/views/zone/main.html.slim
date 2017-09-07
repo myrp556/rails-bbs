@@ -4,6 +4,9 @@
 .zone-header
   .h2
     = @zone.name
+    - if @zone.anonymous
+      label.label.label-default
+        = t :anonymous
     - if can_edit_zone?(@zone)
       .btn-group.zone-options
         span.glyphicon.glyphicon-cog.dropdown-toggle data-toggle="dropdown"
@@ -11,7 +14,7 @@
           li
             a href="#{edit_zone_url(id: @zone.id)}"
               = t :edit_zone
-              
+            .label  
 = render 'layouts/nav_link'  
 
 - if !@zone.bulletin.blank?

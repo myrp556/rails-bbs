@@ -17,21 +17,22 @@ hr
 h1 
   = t :zone
 - @info.each do |info|
-  .zone-block.plane-box
-    .zone-icon
-      .zone-icon-block.home-zone-icon
-        = image_tag "icon/#{info[:zone].icon}", class: 'zone-icon-img img-circle'
-    .zone-info
-      .line
-        a href="/zone?id=#{info[:zone].id}"
-          strong.zone-name
-            = info[:zone].name
-      .line
-        small.zone-description
-          = info[:zone].description
-      .zone-activity
-        small
-          = "#{t :today_notes}: #{info[:zone].today_notes} #{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
+  - if info[:zone].rank == 0 or (!@current_user.nil? and @current_user.rank >= info[:zone].rank)
+    .zone-block.plane-box
+      .zone-icon
+        .zone-icon-block.home-zone-icon
+          = image_tag "icon/#{info[:zone].icon}", class: 'zone-icon-img img-circle'
+      .zone-info
+        .line
+          a href="/zone?id=#{info[:zone].id}"
+            strong.zone-name
+              = info[:zone].name
+        .line
+          small.zone-description
+            = info[:zone].description
+        .zone-activity
+          small
+            = "#{t :today_notes}: #{info[:zone].today_notes} #{t :topic }: #{info[:num_topics]} #{t :note}: #{info[:num_notes]}"
 
 - if is_super_user?
   a href="/new_zone"

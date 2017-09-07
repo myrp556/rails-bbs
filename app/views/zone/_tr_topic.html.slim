@@ -80,12 +80,14 @@ tr.topic-table-tr
   td.topic-table-tr-created.topic-table-cell
     .line
       = get_time_s(topic.created_at)
-    .line
-      = get_user_name(topic.first_user_id)
+    - if !@zone.anonymous
+      .line
+        = get_user_name(topic.first_user_id)
     
   td.topic-table-tr-updated.topic-table-cell
     .line
       = get_time_s(topic.updated_at)
-    .line
-      = get_user_name(topic.last_user_id)
+    - if !@zone.anonymous
+      .line
+        = get_user_name(topic.last_user_id)
     

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170901041054) do
+ActiveRecord::Schema.define(version: 20170906032656) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -145,10 +145,12 @@ ActiveRecord::Schema.define(version: 20170901041054) do
     t.string   "name"
     t.text     "description"
     t.string   "icon"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "today_notes", default: 0
     t.text     "bulletin"
+    t.boolean  "anonymous",   default: false
+    t.integer  "rank",        default: 0
   end
 
 end

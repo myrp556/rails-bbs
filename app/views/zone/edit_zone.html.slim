@@ -14,15 +14,28 @@ hr.hr-sm
   .col-sm-8
     .plane-box.edit-zone-form
       = form_for @zone, url: @url do |f|
-        label 
-          = t(:zone_name)
-        = f.text_field :name, class: "form-control"
-        label 
-          = t(:description)
-        = f.text_field :description, class: "form-control"
-        label
-          = t :bulletin
-        = f.cktext_area :bulletin, class: "form-control edit-zone-textarea"
+        .form-group
+          label 
+            = t(:zone_name)
+          = f.text_field :name, class: "form-control"
+        .form-group
+          label 
+            = t(:description)
+          = f.text_area :description, class: "form-control"
+        - if @current_user.rank > 0
+          .form-group
+            label
+              = t :rank
+            = f.select :rank, zone_rank_options()[0..@current_user.rank], default: @zone.rank
+        - if is_super_user?
+          .form-group
+            label
+              = t :anonymous
+            = f.check_box :anonymous
+        .form-group
+          label
+            = t :bulletin
+          = f.cktext_area :bulletin, class: "form-control edit-zone-textarea"
         
         //= f.submit t :submit, class: "btn btn-primary btn-block"
         input.btn.btn-primary.btn-block.form-zone-submit type="submit" value="#{t :submit}"

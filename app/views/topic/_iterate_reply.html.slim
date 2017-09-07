@@ -5,10 +5,11 @@
         .note-reply-head
           span.reply-users
             strong
-              = "#{get_user_name(reply_note.user_id)}"
-            = t :reply
-            strong
-              = "#{get_user_name(reply_note.reply_to_user_id)}: "
+              - if @zone.anonymous 
+                = t :someone
+              - else
+                = "#{get_user_name(reply_note.user_id)}"
+              | :
             - if reply_note.rate
               strong
                 |+1
@@ -16,8 +17,9 @@
             = get_time_s_s reply_note.created_at
             - if !@current_user.nil?
               |  
-              a.note-reply-button id="#{reply_note.id}" parse-to="#{reply_note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{reply_note.user.name}"
-                = t :reply
+              a.note-reply-button id="#{reply_note.id}" parse-to="#{reply_note.id}" data-toggle="modal" data-target='#note-reply-modal' name="#{@zone.anonymous ? t(:someone) : reply_note.user.name}"
+                strong
+                  = t :reply
         .note-reply-wrap
           = raw reply_note.note_detail
         
