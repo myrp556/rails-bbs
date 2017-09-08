@@ -103,6 +103,7 @@ zh:
   ball_instruction: "你可以修改该用户在你管理的分区下的禁言状态"
   you_are_balled: "你已被禁言"
   mail_modal_name_instruction: "输入用户名称按下Enter可以进行相关搜索"
+  reply_instruction: "点击可以回复作者"
 
   user_name: "账号"
   someone: "OOO"
