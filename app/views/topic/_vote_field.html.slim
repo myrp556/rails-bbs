@@ -1,0 +1,38 @@
+- if !@vote_options.nil?
+  .topic-vote.plane-box
+    label
+      = t :vote
+    .topic-vote-bars
+      - @vote_options.each do |vote_option|
+        .topic-vote-option
+          .topic-vote-option-bar
+            .topic-vote-option-valuebar value="#{vote_option[:value]}"
+            .topic-vote-option-text
+              strong
+                = vote_option[:description]
+                = " "
+                = vote_option[:count]
+                = t :votes
+                = " (#{vote_option[:percent]}%)"
+            ||
+          
+          label.topic-vote-radio
+            - if !@voted and !@vote_expired
+              input.topic-vote-radio name="vote" type="radio" value="" num="#{vote_option[:num]}"
+    - if !@vote_expire.nil?
+      .topic-vote-expire
+        small.grey
+          - if @vote_exired
+            = t :vote_has_expired
+          - else
+            strong
+              = get_time_s(@vote_expire)
+            = t :vote_will_be_expired
+    - if @voted
+      .topic-vote-voted
+        small.grey
+          = t :you_have_voted
+    .topic-vote-buttons
+      - if !@current_user.nil? and @topic.vote.users.find_by(id: @current_user.id).nil? and !@vote_expired
+        a.btn.btn-default.topic-vote-button id="#{@topic.vote.id}"
+          = t :vote

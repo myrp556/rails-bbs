@@ -2,6 +2,7 @@ class Topic < ActiveRecord::Base
   after_initialize :initilize
   belongs_to :zone
   has_many :notes
+  has_one :vote
 
   belongs_to :user
 

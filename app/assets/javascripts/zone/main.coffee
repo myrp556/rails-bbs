@@ -41,3 +41,9 @@ $(document).on 'turbolinks:load', ->
           alert respond.message
       else
         alert 'error'
+
+  $('a.add-vote-option-button').click ->
+    $('.vote-options').append "<div class='form-group vote-option-line added'> <div class='col-sm-10'><input class='form-control vote-option' name='topic[vote_options][]'></input></div><a class='btn btn-default col-sm-1 note-option-delete-button'>"+$('.vote-options').attr('delete')+"</a></div>"
+    $('.note-option-delete-button').one 'click', ->
+      parent = $(this).parent()
+      parent.remove()

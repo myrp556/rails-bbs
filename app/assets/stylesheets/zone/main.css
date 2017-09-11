@@ -49,3 +49,15 @@ input.form-topic-submit {
 .topic-search-input {
   margin-right: 10px;
 }
+
+.vote-option-line {
+  margin-bottom: 5px;
+}
+
+.topic-form-title {
+  margin-bottom: 10px;
+}
+
+.topic-vote-form {
+  padding: 10px;
+}

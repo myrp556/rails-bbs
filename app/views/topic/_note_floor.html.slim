@@ -70,11 +70,16 @@
             span.timestamp
               = get_time_s_s(reply_to_note.created_at)
           strong
-            = "#{get_user_name(reply_to_note.user_id)}: "
+            - if @zone.anonymous
+              = "XXX"
+            - else
+              = "#{get_user_name(reply_to_note.user_id)}: "
           = raw get_pure_note_detail_short(reply_to_note)
             
            
     .note-content-detail
       = raw note.note_detail
+      - if !@topic.vote.nil? and note.floor == 1
+        = render "vote_field"
     = render 'iterate_reply', note: note
   

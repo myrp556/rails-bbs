@@ -13,7 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree ./bootstrap/
+//= require ./bootstrap/bootstrap.min.js
+//= require ./bootstrap/bootstrap-datetimepicker.min.js
 //= require ./home/index.coffee
 //= require ./users/manage.coffee
 //= require ./users/favorites.coffee

@@ -1,8 +1,43 @@
-= form_for @topic, url: @url do |f|
-  .form-group
-    label
-      = t :title
-    = f.text_field :topic_detail, class: "form-control form-topic-title"
+= form_for @topic, url: @url, html: {role: "form", class: 'form-horizontal'} do |f|
+  div.form-group.topic-form-title
+    .col-sm-12
+      label.control-label
+        = t :title
+      = f.text_field :topic_detail, class: "form-control form-topic-title col-sm-12"
+  .plane-box.topic-vote-form
+    .topic-vote-form-head
+      label.control-label
+        = t :vote
+      .topic-vote-form-buttons style="float:right"
+        a.btn.btn-default.topic-vote-form-close-button
+          = t :close
+    hr.sm-hr
+    .vote-expire
+      label
+        = t :expire_time
+      .input-append.form_datetime.date.vote-datetime.datetimepicker typt="text" id="vote-datetimepicker" data-format="yyyy-mm-dd hh:ii"
+        input.form-control type="text" readonly='' value="" name='topic[vote_expire]'
+        span.add-on
+          i.icon-th
+    - if @topic.new_record?
+      .vote-options add-option="#{t :add_option}" delete="#{t :delete}"
+        label
+          = t :vote_option
+        .form-group.vote-option-line
+          .col-sm-10
+            input.form-control.vote-option type='text' name='topic[vote_options][]'
+          .col-sm-1
+            a.btn.btn-default.add-vote-option-button
+              = t :add
+    - else
+      .vote-options
+        label
+          = t :vote_option
+        - if @topic.vote? and @topic.vote.vote_options?
+          - @topic.vote.vote_options.each do |vote_option|
+            label.vote_option.vote-option-line
+              = "#{vote_option.description}"
+              
   - if (@topic.topic_detail.nil? and @topic.note_detail.nil?) or (!@topic.topic_detail.nil? and !@topic.note_detail.nil?)
     label
       = t :detail

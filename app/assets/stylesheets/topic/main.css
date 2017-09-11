@@ -116,3 +116,50 @@
 .note-reply-wrap > p {
   margin: 0 !important;
 }
+
+.topic-vote-option {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.topic-vote {
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+
+.topic-vote-option-bar {
+  position: relative;
+  width: 90%;
+  height: 100%;
+  display: inline-block;
+  background-color: #f8f8f8;
+}
+.topic-vote-option-valuebar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #2196F3;
+}
+.topic-vote-option-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.topic-vote-radio {
+  width: 10%;
+  position: relative;
+  text-align: center;
+  display: inline-block;
+}
+
+.topic-vote-buttons {
+  text-align: right;
+}
+.topic-vote-expire, .topic-vote-voted {
+  text-align: right;
+}

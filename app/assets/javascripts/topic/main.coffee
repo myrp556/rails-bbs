@@ -76,3 +76,24 @@ $(document).on 'turbolinks:load', ->
           alert respond.message
       else
         alert 'error'
+
+  $('.topic-vote-option-valuebar').each ->
+    $(this).css('width', $(this).attr('value')+'%')
+
+  $('.datetimepicker').datetimepicker({
+    'format': 'yyyy-mm-dd hh:ii',
+    'autoclose': true,
+
+  })
+
+  $('.topic-vote-button').click ->
+    num = $('input.topic-vote-radio:checked').attr('num')
+    $.post '/topic_vote?id='+$(this).attr('id'), {'num': num}, (respond, status) ->
+      if status == 'success'
+        if respond['message'] == 'success'
+          alert respond['message_t']
+          location.reload()
+        else
+          alert respond['message_t']
+      else
+        alert 'error'

@@ -19,9 +19,9 @@ class TopicController < ApplicationController
   # require @zone, @topic, or redirect page!
   before_action :require_content_topic, only: [:main, :create_note]
   # require @note or redirect
-  before_action :require_content_note, except: [:main, :create_note]
+  before_action :require_content_note, except: [:main, :create_note, :topic_vote]
   before_action :get_login
-  before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note, :reply_to_note]
+  before_action :require_login, only: [:create_note, :edit_note, :update_note, :destroy_note, :reply_to_note, :topic_vote]
   before_action :edit_require, only: [:edit_note, :update_note]
   before_action :delete_require, only: [:destroy_note]
   before_action :require_no_ball, only: [:create_note, :edit_note, :update_note, :destroy_note]
@@ -40,6 +40,39 @@ class TopicController < ApplicationController
       end
       @notes = @notes.paginate(page: params[:page], per_page: Settings.note_lines_per_page)
       #@notes = @topic.notes
+      if !@topic.vote.nil? and @topic.vote.vote_options
+        max = 0
+        for vote_option in @topic.vote.vote_options
+          max = vote_option.count if vote_option.count? and vote_option.count > max
+        end
+        @vote_options = []
+        @voted = !@topic.vote.users.find_by(id: @current_user.id).nil?
+        if !@topic.vote.expire.nil?
+          @vote_expire = @topic.vote.expire
+          @vote_expired = @topic.vote.expire < DateTime.now
+        end
+        cou = 0
+        tot = 0
+        for vote_option in @topic.vote.vote_options
+          @vote_options.push({:description => vote_option.description, :count => vote_option.count, :num => cou})
+          @vote_options.last[:count] = 0 if @vote_options.last[:count].nil?
+          tot += vote_option.count if vote_option.count?
+          cou += 1
+          if max == 0
+            @vote_options.last[:value] = 0
+          else
+            count = vote_option.count.nil? ? 0 : vote_option.count
+            @vote_options.last[:value] = count / Float(max) * 100
+          end
+        end
+        for vote_option in @vote_options
+          if tot == 0
+            vote_option[:percent] = 0
+          else
+            vote_option[:percent] = (vote_option[:count] / Float(tot) * 100 * 100).round / 100.0
+          end
+        end
+      end
     end
   end
 
@@ -161,6 +194,45 @@ class TopicController < ApplicationController
     end
   end
 
+  def topic_vote
+    vote = Vote.find_by(id: params[:id])
+    if vote.nil?
+      redirect_to root_url
+    else
+      if vote.expire < DateTime.now
+        respond_to do |format|
+          format.json { render json: {'message': 'expired', 'message_t': t(:vote_has_expired)} }
+        end
+        return
+      end
+      if vote.topic.nil?
+        flash[:info] = t :no_topic_found
+        vote.destroy
+        redirect_to root_url
+      else
+        num = topic_vote_params[:num].to_i
+        message = ''
+        message_t = ''
+        if num >=0 and num < vote.vote_options.size
+          if vote.users.find_by(id: @current_user.id).nil?
+            count = vote.vote_options[num].count.nil? ? 0 : vote.vote_options[num].count
+            vote.vote_options[num].update(count: +1)
+            message = 'success'
+            vote.users << @current_user
+            message_t = t :vote_success
+          else
+            message_t = t :already_voted
+          end
+        else
+          message_t = t :invalid_vote
+        end
+        respond_to do |format|
+          format.json { render json: {'message': message, 'message_t': message_t} }
+        end
+      end
+    end
+  end
+
   private
     def pre_action_note
       @note = Note.find_by(id: params[:id]) if !params[:id].nil?
@@ -176,6 +248,10 @@ class TopicController < ApplicationController
       if @topic.nil?
         redirect_to zone_url(id: @zone.id)
       end
+    end
+
+    def topic_vote_params
+      params.permit(:num)
     end
 
     def require_content_note

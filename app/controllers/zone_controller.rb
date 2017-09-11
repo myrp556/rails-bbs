@@ -105,6 +105,39 @@ class ZoneController < ApplicationController
     @topic = @zone.topics.new
     ps = permit_params_topic(params)
     @topic.topic_detail = ps[:topic_detail]
+    vote_options = ps[:vote_options]
+    vote_expire = ps[:vote_expire]
+    if vote_options and vote_options.length > 0
+      vps = []
+      vote = Vote.new
+      @topic.vote = vote
+      for vote_option in vote_options
+        next if vote_option.blank?
+        vp = vote.vote_options.new(description: get_pure_text(vote_option), count: 0)
+        if !vp.save
+          for tvp in vps
+            tvp.destroy
+          end
+          flash[:danger] = t(:vote_option)+make_error_message(vp)
+          redirect_to zone_url(id: @zone.id)
+          return
+        else
+          vps.push vp
+        end
+      end
+      if !vote_expire.blank?
+        dt = DateTime.parse vote_expire rescue nil
+        vote.expire = dt
+      end
+      if !vote.save
+        for tvp in vps
+          tvp.destroy
+        end
+        flash[:danger] = t(:vote)+make_error_message(vote)
+        redirect_to zone_url(id: @zone.id)
+        return
+      end
+    end
     if @topic.save
       @note = @topic.notes.new
       @note.note_detail = ps[:note_detail]
@@ -116,11 +149,12 @@ class ZoneController < ApplicationController
 
         @note.update(user: @current_user)
         @note.update(floor: 1)
+        redirect_to topic_url(id: @topic.id)
       else
         @topic.destroy
         flash[:danger] = make_error_message(@note)
+        redirect_to zone_url(id: @zone.id)
       end
-      redirect_to zone_url(id: @zone.id)
     else
       flash[:danger] = make_error_message(@topic)
       redirect_to zone_url(id: @zone.id)
@@ -145,7 +179,7 @@ class ZoneController < ApplicationController
     else
       flash[:danger] = make_error_message(@note)
     end
-      redirect_to topic_url(id: @topic.id)
+    redirect_to topic_url(id: @topic.id)
   end
 
   def destroy_topic
@@ -319,7 +353,7 @@ class ZoneController < ApplicationController
     end
 
     def permit_params_topic(params)
-      params.require(:topic).permit(:topic_detail, :note_detail)
+      params.require(:topic).permit(:topic_detail, :note_detail, :vote_expire, vote_options:[])
     end
 
     def icon_params

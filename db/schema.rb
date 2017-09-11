@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170906032656) do
+ActiveRecord::Schema.define(version: 20170911075639) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -133,6 +133,35 @@ ActiveRecord::Schema.define(version: 20170906032656) do
 
   add_index "users", ["note_id"], name: "index_users_on_note_id"
   add_index "users", ["topic_id"], name: "index_users_on_topic_id"
+
+  create_table "vote_options", force: :cascade do |t|
+    t.integer  "vote_id"
+    t.integer  "count"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "vote_options", ["vote_id"], name: "index_vote_options_on_vote_id"
+
+  create_table "vote_user_agents", force: :cascade do |t|
+    t.integer  "vote_id"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "vote_user_agents", ["user_id"], name: "index_vote_user_agents_on_user_id"
+  add_index "vote_user_agents", ["vote_id"], name: "index_vote_user_agents_on_vote_id"
+
+  create_table "votes", force: :cascade do |t|
+    t.integer  "topic_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "expire"
+  end
+
+  add_index "votes", ["topic_id"], name: "index_votes_on_topic_id"
 
   create_table "yys", force: :cascade do |t|
     t.string   "number"
