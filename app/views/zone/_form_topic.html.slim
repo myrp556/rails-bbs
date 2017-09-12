@@ -9,14 +9,14 @@
       label.control-label
         = t :vote
       .topic-vote-form-buttons style="float:right"
-        a.btn.btn-default.topic-vote-form-close-button
+        a.btn.btn-default.close-topic-vote-form-button
           = t :close
     hr.sm-hr
     .vote-expire
       label
         = t :expire_time
       .input-append.form_datetime.date.vote-datetime.datetimepicker typt="text" id="vote-datetimepicker" data-format="yyyy-mm-dd hh:ii"
-        input.form-control type="text" readonly='' value="" name='topic[vote_expire]'
+        input.form-control.topic-vote-form-expire type="text" readonly='' value="" name='topic[vote_expire]'
         span.add-on
           i.icon-th
     - if @topic.new_record?

@@ -47,3 +47,20 @@ $(document).on 'turbolinks:load', ->
     $('.note-option-delete-button').one 'click', ->
       parent = $(this).parent()
       parent.remove()
+
+  $('.topic-vote-form').attr("height", $('.topic-vote-form').outerHeight())
+  $('.topic-vote-form').height 0
+  $('.topic-vote-form').css('display', 'none')
+
+  $('.open-topic-vote-form-button').click ->
+    block = $('.topic-vote-form')
+    block.css('display', 'block')
+    block.animate {'height': block.attr('height')}, 200
+
+  $('.close-topic-vote-form-button').click ->
+    block = $('.topic-vote-form')
+    block.animate {'height': 0}, 200, ->
+      block.css('display', 'none')
+      $('.vote-option').val ''
+      $('.topic-vote-form-expire').val ''
+      $('.vote-option-line.added').remove()

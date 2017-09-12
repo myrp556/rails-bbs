@@ -7,6 +7,9 @@ tr.topic-table-tr
       - if topic.nice
         span
           = "[#{t :nice}]"
+      - if !topic.vote.nil?
+        span
+          = "[#{t :vote}]"
       - if topic.color.nil?
         = topic.topic_detail
       - else

@@ -60,6 +60,14 @@ hr
   - else
     h2
       = t :write_topic
+      span.btn.btn-default.dropdown
+        a.dropdown-toggle data-toggle="dropdown" role="button" href='#'
+          span.caret
+        ul.dropdown-menu
+          li
+            a.open-topic-vote-form-button
+              = t :vote
+        
     = render 'form_topic'
 
 - if !@current_user.nil?
