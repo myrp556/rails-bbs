@@ -1,0 +1,117 @@
+.container {
+  padding: 0;
+}
+
+.main {
+  width: calc(100vw);
+  height: calc(141.4vw);
+}
+.header {
+  width: 100%;
+  height: 20%;
+  background-color: #2196F3;
+  padding-left: calc(5vw);
+  padding-right: calc(5vw);
+  padding-bottom: calc(3vw);
+  padding-top: calc(3vw);
+}
+.header-left {
+  width: 25%;
+  height: 100%;
+  float: left;
+}
+.figure-img {
+  width: 100%;
+  height: 100%;
+}
+.header-right {
+  margin-left: 10%;
+  width: 55%;
+  height: 100%;
+  float: left;
+}
+.header-name-text, .header-tel-text, .header-email-text {
+  color: white;
+}
+.header-name-text {
+  font-size: calc(4vw);
+  font-weight: bold;
+  margin-top: calc(2vw);
+  margin-bottom: calc(1vw);
+}
+.header-tel-text, .header-email-text {
+  font-size: calc(3vw);
+}
+
+.content {
+  height: 80%;
+  width: 100%;
+  position: relative;
+}
+.content-left {
+  float: left;
+  position: relative;
+  width: 35%;
+  height: 100%;
+  background-color: #EEEEEE;
+}
+.content-right {
+  float: left;
+  position: relative;
+  width: 65%;
+  height: 100%;
+}
+.content-block {
+  margin-top: calc(1.5vw);
+  padding-left: calc(5vw);
+  padding-right: calc(5vw);
+}
+.content-block-header {
+  font-size: calc(3.5vw);
+  font-weight: bold;
+  margin-bottom: calc(1vw);
+}
+.content-block-content-block {
+  margin-bottom: calc(1.2vw);
+}
+.content-block-content-block-header {
+  font-size: calc(2.2vw);
+  font-weight: bold;
+}
+.content-block-content-block-duration {
+  color: grey;
+  font-size: calc(1.5vw);
+}
+.content-block-content-block-content {
+  font-size: calc(1.8vw);
+}
+.hr-sm {
+  margin-top: calc(1vw);
+  margin-bottom: calc(1vw);
+}
+.degree {
+  font-weight: bold;
+}
+.degree {
+  font-size: calc(2.5vw);
+}
+.major, .school {
+  font-size: calc(2vw);
+}
+
+.education-duration {
+  color: grey;
+  font-size: calc(1.5vw);
+}
+
+.content-block-skill-block {
+  margin-bottom: calc(1.5vw);
+}
+
+.content-block-skill-block-header {
+  font-size: calc(2.5vw);
+  font-weight: bold;
+}
+.content-block-skill-block-content {
+  font-size: calc(1.8vw);
+}

@@ -1,0 +1,67 @@
+= stylesheet_link_tag 'cv/index'
+
+.main 
+  .header 
+    .header-left
+      img.img-circle.figure-img src="http://nier2.com/blog/wp-content/uploads/2015/12/emil-head.jpg"
+    .header-right
+      .header-name-text
+        | Emil
+      .header-tel-text
+        | Tel: 18811369935
+      .header-email-text
+        | E-mail: i556san@gmail.com
+  .content
+    .content-left
+      .skills.content-block
+        .content-block-header
+          | Skills
+        .content-block-content
+          - for skill in @skills
+            .content-block-skill-block
+              .content-block-skill-block-header
+                = raw skill[:name]
+              .content-block-skill-block-content
+                = raw skill[:content]
+            
+          
+    .content-right
+      .work.content-block
+        .content-block-header
+          | Works
+        hr.hr-sm
+        .content-block-content
+          - for work in @works
+            .content-block-content-block
+              .content-block-content-block-header
+                = raw work[:title]
+              .content-block-content-block-duration
+                = raw work[:duration]
+              .content-block-content-block-content
+                = raw work[:description]
+                
+      .education.content-block
+        .content-block-header
+          | Education
+        hr.hr-sm
+        .content-block-content
+          .degree
+            | Bachelor
+          .education-duration
+            | 2012.9 - 2016.6
+          .major
+            | Computer Science and Technology
+          .school
+            | Tsinghua University
+          
+      .education.content-block
+        .content-block-content
+          .degree
+            | Master
+          .education-duration
+            | 2016.9 - Present
+          .major
+            | Computer Science and Technology
+          .school
+            | Tsinghua University
+        

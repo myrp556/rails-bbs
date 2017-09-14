@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   get 'ability/initialize'
 
   mount Ckeditor::Engine => '/ckeditor'
+  get '/active/edit/<token>' => 'account_activations#edit'
   root 'home#index'
+  get '/cv' => 'cv#index'
 
   get '/signup' => 'users#new'
   post '/signup' => 'users#create'
