@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911075639) do
+ActiveRecord::Schema.define(version: 20170914041329) do
 
   create_table "agents", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -116,19 +116,22 @@ ActiveRecord::Schema.define(version: 20170911075639) do
     t.string   "name"
     t.string   "mail"
     t.string   "number"
-    t.integer  "rank",            default: 0
+    t.integer  "rank",              default: 0
     t.integer  "zone_auth"
     t.string   "icon"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.string   "password_digest"
     t.string   "remember_digest"
     t.string   "reset_digest"
     t.datetime "reset_sent_at"
     t.integer  "topic_id"
     t.integer  "note_id"
-    t.integer  "rate_point",      default: 3
-    t.integer  "point",           default: 0
+    t.integer  "rate_point",        default: 3
+    t.integer  "point",             default: 0
+    t.string   "activation_digest"
+    t.boolean  "activated",         default: false
+    t.datetime "activated_at"
   end
 
   add_index "users", ["note_id"], name: "index_users_on_note_id"

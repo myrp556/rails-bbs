@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   get 'ability/initialize'
 
   mount Ckeditor::Engine => '/ckeditor'
-  get '/active/edit/<token>' => 'account_activations#edit'
+  get '/activate_account/:token' => 'account_activations#edit', as: :activate_account
+
   root 'home#index'
   get '/cv' => 'cv#index'
 
@@ -75,6 +76,8 @@ Rails.application.routes.draw do
   get '/delete_mail' => 'mail#delete'
   get '/get_user_mails' => 'mail#get_user_pmails'
   get '/get_user_mail' => 'mail#get_user_pmail'
+
+
   #resources :users
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

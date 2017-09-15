@@ -6,9 +6,14 @@ class SessionsController < ApplicationController
   def create
     user=User.find_by(user_name: params[:user][:user_name])
     if user && user.authenticate(params[:user][:password])
-      log_in user
-      remember user
-      redirect_to root_path
+      if user.activate?
+        log_in user
+        remember user
+        redirect_to root_path
+      else
+        flash[:warning] = t :account_not_activated
+        redirect_to root_url
+      end
     else
       flash.now[:danger] = t :fault_login
       render 'new'

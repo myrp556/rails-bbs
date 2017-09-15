@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   #404498
-  attr_accessor :remember_token, :reset_token
+  attr_accessor :remember_token, :reset_token, :activation_token
+  before_create :create_activation_digest
+
   before_save {
     self.user_name = user_name.downcase
     self.mail = mail.downcase
@@ -72,9 +74,10 @@ class User < ActiveRecord::Base
     UserMailer.passwd_reset(self).deliver_now
   end
 
-  def authenticated?(remember_token)
-    return false if remember_digest.nil?
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+  def authenticated?(attribute, token)
+    digest = self.send("#{attribute}_digest")
+    return false if digest.nil?
+    BCrypt::Password.new(digest).is_password?(token)
   end
 
   def has_privilege?(thing)
@@ -96,4 +99,16 @@ class User < ActiveRecord::Base
     Pmail.where('receiver_id = ? AND readed = ?', self.id, false).size() > 0
   end
 
+  def activate
+    update(activated: true)
+    update(activated_at: Time.zone.now)
+  end
+  def send_activation_mail
+    UserMail.account_activation(self).deliver_now
+  end
+  private
+    def create_activation_digest
+      self.activation_token = User.new_token
+      self.acticative_digest = User.digest(activation_token)
+    end
 end

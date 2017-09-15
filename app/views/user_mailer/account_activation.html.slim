@@ -1,0 +1,4 @@
+p
+  = "Greetings, #{@user.name}"
+  = "Welcome and please check the link below to activate your account:"
+  = link_to "Activate", activate_account_url(@user.activation_token, mail: @user.mail)

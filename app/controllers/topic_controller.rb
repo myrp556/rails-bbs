@@ -49,7 +49,7 @@ class TopicController < ApplicationController
         @voted = !@topic.vote.users.find_by(id: @current_user.id).nil?
         if !@topic.vote.expire.nil?
           @vote_expire = @topic.vote.expire
-          @vote_expired = @topic.vote.expire < DateTime.now
+          @vote_expired = @topic.vote.expire < Time.zone.now
         end
         cou = 0
         tot = 0

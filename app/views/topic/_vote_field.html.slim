@@ -2,6 +2,7 @@
   .topic-vote.plane-box
     label
       = t :vote
+      = @vote_expired
     .topic-vote-bars
       - @vote_options.each do |vote_option|
         .topic-vote-option
@@ -22,7 +23,7 @@
     - if !@vote_expire.nil?
       .topic-vote-expire
         small.grey
-          - if @vote_exired
+          - if @vote_expired
             = t :vote_has_expired
           - else
             strong
