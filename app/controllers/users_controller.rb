@@ -28,9 +28,15 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      @user.send_activation_mail
-      flash[:info] = t :check_activate
-      redirect_to login_url
+      if Rails.env.development?
+        @user.update(activated: true)
+        flash[:success] = t :signup_success
+        redirect_to login_url
+      else
+        @user.send_activation_mail
+        flash[:info] = t :check_activate
+        redirect_to root_url
+      end
     else
       flash[:danger] = make_error_message(@user)
       render 'new'
