@@ -109,6 +109,6 @@ class User < ActiveRecord::Base
   private
     def create_activation_digest
       self.activation_token = User.new_token
-      self.acticative_digest = User.digest(activation_token)
+      self.actication_digest = User.digest(activation_token)
     end
 end
