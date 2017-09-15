@@ -28,5 +28,5 @@ production:
   encoding: utf8
   database: jsd
   pool: 5
-  username: jsd
-  password: jsd
+  username: <%= ENV['JSD_DATABASE_USER'] %>
+  password: <%= ENV['JSD_DATABASE_PASSWORD'] %>

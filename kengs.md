@@ -8,6 +8,10 @@ try `bundle exec whenever`
 run `whenever --update-crontab` to write task...
 caution for environment, seems default is production..
 
+# brev
+see https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-with-rbenv-on-ubuntu-14-04
+to install rbenv
+
 # postgre sql
 see https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-14-04
 
@@ -31,8 +35,12 @@ username=`jsd` passwd=`jsd`
 >   encoding: utf8
 >   database: jsd
 >   pool: 5
->   username: jsd
->   password: jsd
+>   username: <%= ENV['JSD_DATABASE_USER'] %>
+>   password: <%= ENV['JSD_DATABASE_PASSWORD'] %>
+
+## install rbenv-vars plugin
+>   cd ~/.rbenv/plugins
+>   git clone https://github.com/sstephenson/rbenv-vars.git
 
 database=`jsd`
 

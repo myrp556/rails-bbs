@@ -20,8 +20,11 @@ config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
 
+.rbenv-vars
+
 public/images/
 ./public/uploads/
 public/save_page
 ./public/save_page
 ./public/save_page/
+
