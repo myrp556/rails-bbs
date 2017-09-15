@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'config'
 gem 'bootstrap_form'
-gem 'pg'
+gem 'pg', '0.21.0'
 gem 'will_paginate'
 gem 'whenever', :require => false
 gem 'bootstrap-will_paginate'
