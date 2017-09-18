@@ -14,7 +14,7 @@ class CvController < ApplicationController
 
     @skills = []
     @skills.push({'name': 'Basic program', 'content': 'Pyhton, Java, C++, Objective-C, Ruby'})
-    @skills.push({'name': 'Web', 'content': 'HTML, JavaScript, CSS, Ajax, JQuery, CoffeeScript'})
+    @skills.push({'name': 'Web', 'content': 'HTML, JavaScript, CSS, Ajax, JQuery, CoffeeScript, PHP'})
     @skills.push({'name': 'Web Application', 'content': 'Ruby on Rails, Django'})
     @skills.push({'name': 'Mobile Application', 'content': 'IOS, Android'})
     @skills.push({'name': 'Platform', 'content': 'Linux, Mac OS'})

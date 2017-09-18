@@ -15,6 +15,7 @@
   padding-right: calc(5vw);
   padding-bottom: calc(3vw);
   padding-top: calc(3vw);
+  text-align: center;
 }
 .header-left {
   width: 25%;
@@ -31,7 +32,7 @@
   height: 100%;
   float: left;
 }
-.header-name-text, .header-tel-text, .header-email-text {
+.header-name-text, .header-tel-text, .header-email-text, .header-school {
   color: white;
 }
 .header-name-text {
@@ -40,8 +41,11 @@
   margin-top: calc(2vw);
   margin-bottom: calc(1vw);
 }
-.header-tel-text, .header-email-text {
+.header-tel-text, .header-email-text, .header-school {
   font-size: calc(3vw);
+}
+.header-school {
+  margin-top: calc(1vw);
 }
 
 .content {
