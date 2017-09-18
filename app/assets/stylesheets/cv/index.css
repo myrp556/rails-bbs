@@ -1,5 +1,6 @@
 .container {
   padding: 0;
+  margin: 0;
 }
 
 .main {
@@ -96,7 +97,7 @@
   font-size: calc(2.5vw);
 }
 .major, .school {
-  font-size: calc(2vw);
+  font-size: calc(1.5vw);
 }
 
 .education-duration {
